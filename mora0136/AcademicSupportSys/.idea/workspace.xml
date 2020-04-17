@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ContactsPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/EditPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HistoryPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HomePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SettingPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/UploadPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ContactsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EditPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EditPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HistoryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HistoryPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HomePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HomePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SettingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SettingPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,8 +77,16 @@
       <option name="presentableId" value="Default" />
       <updated>1587112048663</updated>
       <workItem from="1587112050476" duration="300000" />
-      <workItem from="1587112368808" duration="3027000" />
+      <workItem from="1587112368808" duration="4147000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
+      <created>1587115588074</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1587115588074</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -89,7 +94,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit of file" />
-    <option name="LAST_COMMIT_MESSAGE" value="First commit of file" />
+    <MESSAGE value="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details." />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details." />
   </component>
   <component name="WindowStateProjectService">
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587113265301">
@@ -104,30 +110,30 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
-    <state x="272" y="99" key="CommitChangelistDialog2" timestamp="1587115583017">
+    <state x="0" y="99" key="CommitChangelistDialog2" timestamp="1587127563893">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state x="272" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587115583017" />
+    <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
     <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587112315714">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587115402956">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587127336019">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587115402956" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587115402956">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127336019" />
+    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587127336018">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587115402956" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587115402956">
+    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127336018" />
+    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587127336018">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587115402956" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587115402956">
+    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127336018" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587127336019">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587115402956" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127336019" />
     <state x="604" y="410" key="svn.upgradeDialog" timestamp="1587112327811">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
