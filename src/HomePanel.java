@@ -1,26 +1,29 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class HomePanel extends JPanel {
+public class HomePanel extends JPanel implements ActionListener {
     CardLayout cardLayout;
     JPanel cardPane;
+    JTextArea testMessage;
+    JButton upload, edit, history, setting, contacts;
     HomePanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
 
         JTextArea testMessage = new JTextArea("This is the Home Panel");
-        JButton upload = new JButton("Upload");
-        JButton edit = new JButton("Edit");
-        JButton history = new JButton("History");
-        JButton setting = new JButton("Settings");
-        JButton contacts = new JButton("Contacts");
+        upload = new JButton("Upload");
+        edit = new JButton("Edit");
+        history = new JButton("History");
+        setting = new JButton("Settings");
+        contacts = new JButton("Contacts");
 
-        upload.addActionListener(this::actionPerformed);
-//        edit.addActionListener(this::actionPerformed);
-//        history.addActionListener(this::actionPerformed);
-//        setting.addActionListener(this::actionPerformed);
-//        contacts.addActionListener(this::actionPerformed);
+        upload.addActionListener(this);
+        edit.addActionListener(this);
+        history.addActionListener(this);
+        setting.addActionListener(this);
+        contacts.addActionListener(this);
 
         add(testMessage);
         add(upload);
@@ -30,7 +33,20 @@ public class HomePanel extends JPanel {
         add(contacts);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e){
-        cardLayout.show(cardPane, "Upload");
+        if(e.getSource() == upload){
+            cardLayout.show(cardPane, "Upload");
+        }else if(e.getSource() == edit){
+            cardLayout.show(cardPane, "Edit");
+        }else if(e.getSource() == history){
+            cardLayout.show(cardPane, "History");
+        }else if(e.getSource() == setting){
+            cardLayout.show(cardPane, "Setting");
+        }else if(e.getSource() == contacts){
+            cardLayout.show(cardPane, "Contacts");
+        }else{
+            System.out.print("error action not recognised");
+        }
     }
 }
