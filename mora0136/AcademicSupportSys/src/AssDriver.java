@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class AssDriver {
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Academic Support System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         CardLayout cardLayout = new CardLayout();
@@ -25,7 +25,7 @@ public class AssDriver {
         cardPane.add(contacts, "Contacts");
         frame.add(cardPane);
 
-        frame.pack();
+        frame.setExtendedState( frame.getExtendedState()|JFrame.MAXIMIZED_BOTH );
         frame.setVisible(true);
     }
 }

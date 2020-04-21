@@ -8,6 +8,7 @@ public class HomePanel extends JPanel implements ActionListener {
     JPanel cardPane;
     JTextArea testMessage;
     JButton upload, edit, history, setting, contacts;
+    ButtonPanel home = new ButtonPanel();
     HomePanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
@@ -49,4 +50,10 @@ public class HomePanel extends JPanel implements ActionListener {
             System.out.print("error action not recognised");
         }
     }
+}
+
+//Since all 5 buttons will have same structure, this class will create an instance of them.
+//Could also just do a method to manually create and return the panel data.
+class ButtonPanel{
+
 }
