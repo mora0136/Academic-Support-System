@@ -17,32 +17,50 @@ public class HomePanel extends JPanel implements ActionListener {
     HomePanel(JPanel pane) throws IOException {
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
-        buttonGroup = new JPanel();
+//        buttonGroup = new JPanel();
         buttonGroupTop = new JPanel();
         buttonGroupBottom = new JPanel();
-//        setLayout(new GridLayout(2, 1));
+        GridBagLayout gridBag = new GridBagLayout();
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        buttonGroupTop.setLayout(gridBag);
+        buttonGroupBottom.setLayout(gridBag);
+        setLayout(gridBag);
 //        buttonGroup.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         upload = createButton("resources/upload.png", "Upload");
+        gridBag.setConstraints(upload, c);
         buttonGroupTop.add(upload);
 
         edit = createButton("resources/edit.png", "Edit");
+        gridBag.setConstraints(edit, c);
         buttonGroupTop.add(edit);
 
+        c.gridwidth = GridBagConstraints.REMAINDER;
         history = createButton("resources/history.png", "History");
+        gridBag.setConstraints(history, c);
         buttonGroupTop.add(history);
 
+        c.gridwidth = GridBagConstraints.RELATIVE;
         contacts = createButton("resources/contacts.png", "Contacts");
+        gridBag.setConstraints(contacts, c);
         buttonGroupBottom.add(contacts);
 
+        c.gridwidth = GridBagConstraints.REMAINDER;
         setting = createButton("resources/setting.png", "Setting");
+        gridBag.setConstraints(setting, c);
         buttonGroupBottom.add(setting);
-        buttonGroupTop.setLayout(new BoxLayout(buttonGroupTop, BoxLayout.X_AXIS));
-        buttonGroupBottom.setLayout(new BoxLayout(buttonGroupBottom, BoxLayout.X_AXIS));
-        buttonGroup.add(buttonGroupTop);
-        buttonGroup.add(buttonGroupBottom);
-        buttonGroup.setLayout(new BoxLayout(buttonGroup, BoxLayout.Y_AXIS));
-        add(buttonGroup);
+//        buttonGroupTop.setLayout(new BoxLayout(buttonGroupTop, BoxLayout.X_AXIS));
+//        buttonGroupBottom.setLayout(new BoxLayout(buttonGroupBottom, BoxLayout.X_AXIS));
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        gridBag.setConstraints(buttonGroupTop, c);
+        add(buttonGroupTop);
+
+        c.gridwidth= GridBagConstraints.REMAINDER;
+        gridBag.setConstraints(buttonGroupBottom,c);
+        add(buttonGroupBottom);
+//        buttonGroup.setLayout(new BoxLayout(buttonGroup, BoxLayout.Y_AXIS));
+//        add(buttonGroup);
 //        setLayout(new FlowLayout(FlowLayout.CENTER));
     }
 
