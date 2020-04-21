@@ -17,16 +17,17 @@ public class HomePanel extends JPanel implements ActionListener {
     HomePanel(JPanel pane) throws IOException {
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
-//        buttonGroup = new JPanel();
         buttonGroupTop = new JPanel();
         buttonGroupBottom = new JPanel();
+
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         buttonGroupTop.setLayout(gridBag);
         buttonGroupBottom.setLayout(gridBag);
         setLayout(gridBag);
-//        buttonGroup.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        c.insets = new Insets(20, 80, 20, 80);
 
         upload = createButton("resources/upload.png", "Upload");
         gridBag.setConstraints(upload, c);
@@ -50,8 +51,7 @@ public class HomePanel extends JPanel implements ActionListener {
         setting = createButton("resources/setting.png", "Setting");
         gridBag.setConstraints(setting, c);
         buttonGroupBottom.add(setting);
-//        buttonGroupTop.setLayout(new BoxLayout(buttonGroupTop, BoxLayout.X_AXIS));
-//        buttonGroupBottom.setLayout(new BoxLayout(buttonGroupBottom, BoxLayout.X_AXIS));
+
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(buttonGroupTop, c);
         add(buttonGroupTop);
@@ -59,9 +59,6 @@ public class HomePanel extends JPanel implements ActionListener {
         c.gridwidth= GridBagConstraints.REMAINDER;
         gridBag.setConstraints(buttonGroupBottom,c);
         add(buttonGroupBottom);
-//        buttonGroup.setLayout(new BoxLayout(buttonGroup, BoxLayout.Y_AXIS));
-//        add(buttonGroup);
-//        setLayout(new FlowLayout(FlowLayout.CENTER));
     }
 
     @Override
@@ -95,8 +92,7 @@ public class HomePanel extends JPanel implements ActionListener {
             btn.setHorizontalTextPosition(SwingConstants.CENTER);
             btn.addActionListener(this);
             btn.setFont(new Font("Arial", Font.PLAIN, 32));
-            btn.setBackground(null);
-            btn.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+            btn.setMargin(new Insets(0, 50, 0, 50));
         }catch(IOException io){
             System.out.println(io);
             //popUp Message?

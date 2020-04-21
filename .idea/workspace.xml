@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
+    <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="Centered location has been achieved. Using GirdBagLayout on two button groups to place. WIll now look at insets to act as padding between buttons.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HomePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HomePanel.java" afterDir="false" />
     </list>
@@ -73,7 +73,7 @@
       <updated>1587112048663</updated>
       <workItem from="1587112050476" duration="300000" />
       <workItem from="1587112368808" duration="5609000" />
-      <workItem from="1587465231268" duration="9066000" />
+      <workItem from="1587465231268" duration="9393000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -103,7 +103,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587472756700</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Centered location has been achieved. Using GirdBagLayout on two button groups to place. WIll now look at insets to act as padding between buttons.">
+      <created>1587474464908</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1587474464908</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -115,7 +122,8 @@
     <MESSAGE value="Able to move between each of the windows now" />
     <MESSAGE value="Set JFrame size to miximum and gave it a title. ALso a loose idea of how the buttons will be contained in HomePanel" />
     <MESSAGE value="createButton for all the menu buttons is functional. Having issues with layout of the button, can't get padding between buttons to work and still am not  happy with layout manager currently using. That is a box layout align x for each row then a button group with box layout aligned y axis. This is what has had best result so far" />
-    <option name="LAST_COMMIT_MESSAGE" value="createButton for all the menu buttons is functional. Having issues with layout of the button, can't get padding between buttons to work and still am not  happy with layout manager currently using. That is a box layout align x for each row then a button group with box layout aligned y axis. This is what has had best result so far" />
+    <MESSAGE value="Centered location has been achieved. Using GirdBagLayout on two button groups to place. WIll now look at insets to act as padding between buttons." />
+    <option name="LAST_COMMIT_MESSAGE" value="Centered location has been achieved. Using GirdBagLayout on two button groups to place. WIll now look at insets to act as padding between buttons." />
   </component>
   <component name="WindowStateProjectService">
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587113265301">
@@ -130,35 +138,35 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
-    <state x="0" y="99" key="CommitChangelistDialog2" timestamp="1587472753975">
+    <state x="0" y="99" key="CommitChangelistDialog2" timestamp="1587474688383">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587472753975" />
+    <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474688383" />
     <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587112315714">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587474213857">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587474691462">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474213857" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587474213857">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474691462" />
+    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587474691462">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474213857" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587474213857">
+    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474691462" />
+    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587474691461">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474213857" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587474213857">
+    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474691461" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587474691462">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474213857" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587474691462" />
     <state x="599" y="342" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587466289302">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
