@@ -57,7 +57,7 @@ public class HomePanel extends JPanel implements ActionListener {
         gridBag.setConstraints(buttonGroupBottom,c);
         add(buttonGroupBottom);
 
-
+        //TO-DO declare get height and get width as variables.
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
                 System.out.println("x="+getWidth()+", y="+getHeight());
@@ -112,16 +112,22 @@ public class HomePanel extends JPanel implements ActionListener {
         switch(e.getActionCommand()){
             case "Upload":
                 cardLayout.show(cardPane, "Upload");
+                break;
             case "Edit":
                 cardLayout.show(cardPane, "Edit");
+                break;
             case "History":
                 cardLayout.show(cardPane, "History");
+                break;
             case "Contacts":
                 cardLayout.show(cardPane, "Contacts");
+                break;
             case "Setting":
                 cardLayout.show(cardPane, "Setting");
+                break;
             default:
                 System.out.print("error action not recognised");
+                break;
         }
     }
 
