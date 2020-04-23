@@ -3,13 +3,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ContactsPanel extends JPanel {
     CardLayout cardLayout;
-    JPanel cardPane, left, right, leftTop, leftMiddle, rightTop, rightBottom, searchPanel;
+    JPanel cardPane, left, right, leftTop, rightTop, rightBottom, panelMiddle;
+    JScrollPane scrollMiddle;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg;
-    JButton back, search, addNew;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -18,7 +22,7 @@ public class ContactsPanel extends JPanel {
         left = new JPanel();
         right = new JPanel();
         leftTop = new JPanel();
-        leftMiddle = new JPanel();
+        panelMiddle = new JPanel();
         rightTop = new JPanel();
         rightBottom = new JPanel();
 
@@ -28,7 +32,7 @@ public class ContactsPanel extends JPanel {
         //Set the frame to 1x2 grid(left and right Panels)
         setLayout(new GridLayout(1, 2));
 
-        JButton back = new JButton("back");
+        JButton back = new JButton("Back");
         backImg = ImageIO.read(new File("resources/back.png"));
 
         JTextField searchField = new JTextField("Search...");
@@ -82,6 +86,29 @@ public class ContactsPanel extends JPanel {
         leftTop.add(search);
         leftTop.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
+        //Add contacts to leftMiddle scroll view
+//        ContactList contactList = new ContactList(rightTop);
+//        scrollMiddle.setLayout(new BoxLayout(scrollMiddle, BoxLayout.Y_AXIS));
+        JPanel content = new JPanel();
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+        ArrayList listOfContacts;
+        listOfContacts = new ArrayList<Contact>();
+        try {
+            File contacts = new File("data/contacts.txt");
+            Scanner scan = new Scanner(contacts);
+
+            while(scan.hasNext()){
+                String[] contactInfo = scan.next().split(",");
+                System.out.println(contactInfo);
+                Contact con = new Contact(contactInfo[0], contactInfo[1], contactInfo[2], contactInfo[3]);
+                JButton btn = new JButton(con.getName()+" "+con.getSurname());
+                listOfContacts.add(con);
+                content.add(btn);
+            }
+        }catch(Exception e1){
+            System.out.println(e1);
+        };
+        scrollMiddle = new JScrollPane(content);
 
         rightTop.add(new JTextArea("temp"));
         rightBottom.setLayout(new GridLayout(1, 2));
@@ -92,7 +119,7 @@ public class ContactsPanel extends JPanel {
         right.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         left.add(leftTop, BorderLayout.NORTH);
-        left.add(leftMiddle, BorderLayout.CENTER);
+        left.add(scrollMiddle, BorderLayout.CENTER);
         left.add(addNew, BorderLayout.SOUTH);
 
         right.add(rightTop, BorderLayout.NORTH);
@@ -156,4 +183,90 @@ public class ContactsPanel extends JPanel {
         cardLayout.show(cardPane, "Home");
     }
 
+}
+
+//Maybe put into contact file?? wait until working
+
+class ContactList extends JPanel{
+    ArrayList listOfContacts;
+    JPanel content;
+    JScrollPane sc;
+    ContactList(JPanel outputTo){
+        content = new JPanel();
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        listOfContacts = new ArrayList<Contact>();
+        try {
+            File contacts = new File("data/contacts.txt");
+            Scanner scan = new Scanner(contacts);
+
+            while(scan.hasNext()){
+                String[] contactInfo = scan.next().split(",");
+                System.out.println(contactInfo);
+                Contact c = new Contact(contactInfo[0], contactInfo[1], contactInfo[2], contactInfo[3]);
+                JButton btn = new JButton(c.getName()+" "+c.getSurname());
+                listOfContacts.add(c);
+                this.add(btn);
+            }
+        }catch(Exception e1){
+            System.out.println(e1);
+        };
+//        for(int i = 0; i < contacts1.size(); i++){
+//            JButton contact = new JButton());
+//        }
+//        add(content);
+    }
+
+    public ContactList searchForContact(String search){
+        return new ContactList(new JPanel());
+    }
+
+    public JButton contactButton(String label){
+        return new JButton();
+    }
+}
+
+class Contact{
+
+    String givenName;
+    String surname;
+    String email;
+    String phone;
+
+    public Contact(String givenName, String surname, String email, String phone) {
+        this.givenName = givenName;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+    }
+    public String getName() {
+        return givenName;
+    }
+
+    public void setName(String name) {
+        this.givenName = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

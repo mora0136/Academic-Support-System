@@ -2,6 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/data" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/out" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/out/production" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/AssDriver.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/ContactsPanel$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/ContactsPanel$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/ContactsPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/EditPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/GridTest$1$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/GridTest$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/GridTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/HistoryPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/HomePanel$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/HomePanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/SettingPanel.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/StretchIcon.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AcademicSupportSystem/UploadPanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ContactsPanel.java" afterDir="false" />
@@ -90,7 +108,7 @@
       <workItem from="1587112368808" duration="5609000" />
       <workItem from="1587465231268" duration="10138000" />
       <workItem from="1587543610625" duration="18136000" />
-      <workItem from="1587593498053" duration="14239000" />
+      <workItem from="1587593498053" duration="21254000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -162,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587606409129</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="All buttons added and are resized appropriatley. To add a button, first define it inside the constructor and add to associated panel. Then the buttons proprties can be altered in the Dimensions action method for each size of the window. This is complete for width, but unsure on if there should be any for height.">
+      <created>1587608186765</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1587608186765</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,7 +205,8 @@
     <MESSAGE value="contacts panel structure is set up. Default screen is contacts just for tetsing purpose. Will still use Dimension action and will determine expected changes." />
     <MESSAGE value="Back and search fields/buttons have been added per mockup. No functionaility but move onto contact list. This needs a modular approach so it can expand and reduce as list of contacts change due to adding/deleting and searching." />
     <MESSAGE value="streamlined home page code. No longer create method, as this will happen automatically through the new buttonProperties method, replacing resizeIcon." />
-    <option name="LAST_COMMIT_MESSAGE" value="streamlined home page code. No longer create method, as this will happen automatically through the new buttonProperties method, replacing resizeIcon." />
+    <MESSAGE value="All buttons added and are resized appropriatley. To add a button, first define it inside the constructor and add to associated panel. Then the buttons proprties can be altered in the Dimensions action method for each size of the window. This is complete for width, but unsure on if there should be any for height." />
+    <option name="LAST_COMMIT_MESSAGE" value="All buttons added and are resized appropriatley. To add a button, first define it inside the constructor and add to associated panel. Then the buttons proprties can be altered in the Dimensions action method for each size of the window. This is complete for width, but unsure on if there should be any for height." />
   </component>
   <component name="WindowStateProjectService">
     <state x="262" y="75" key="#Project_Structure" timestamp="1587567355408">
@@ -192,10 +218,10 @@
     </state>
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587113265301" />
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587546619373" />
-    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser" timestamp="1587553388998">
+    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser" timestamp="1587619002468">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587553388998" />
+    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587619002468" />
     <state x="512" y="291" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587546613917">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -205,38 +231,38 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
-    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587606407357">
+    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587608184233">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587606407357" />
+    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587608184233" />
     <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587112315714">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587607958082">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587622503633">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587607958082" />
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587622503633" />
     <state width="1877" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587607958081">
+    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587622503632">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587607958081" />
+    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587622503632" />
     <state width="1877" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587607958081">
+    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587622503632">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587607958081" />
+    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587622503632" />
     <state width="1877" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587607958082">
+    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587622503632">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587607958082" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587622503632" />
     <state width="1877" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587602270181">
       <screen x="0" y="0" width="1563" height="1002" />
