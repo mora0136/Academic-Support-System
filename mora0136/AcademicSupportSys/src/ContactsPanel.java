@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ContactsPanel extends JPanel {
     CardLayout cardLayout;
     JPanel cardPane, left, right, leftTop, leftMiddle, rightTop, rightBottom, searchPanel;
-    Image backImg, searchImg;
+    Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg;
     JButton back, search, addNew;
 
     ContactsPanel(JPanel pane) throws IOException {
@@ -28,15 +28,8 @@ public class ContactsPanel extends JPanel {
         //Set the frame to 1x2 grid(left and right Panels)
         setLayout(new GridLayout(1, 2));
 
-//        JButton back = new JButton("back");
+        JButton back = new JButton("back");
         backImg = ImageIO.read(new File("resources/back.png"));
-//        backImg = backImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
-//        back.setIcon(new ImageIcon(backImg));
-//        back.setVerticalTextPosition(SwingConstants.BOTTOM);
-//        back.setHorizontalTextPosition(SwingConstants.CENTER);
-//        back.setFont(new Font("Arial", Font.PLAIN, 16));
-//        back.setFocusPainted(false);
-        back = createButton(backImg, "Back", 50);
 
         JTextField searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
@@ -57,27 +50,18 @@ public class ContactsPanel extends JPanel {
 
         JButton search = new JButton("Search");
         searchImg = ImageIO.read(new File("resources/search.png"));
-        searchImg = searchImg.getScaledInstance(40, -1, Image.SCALE_DEFAULT);
-        search.setIcon(new ImageIcon(searchImg));
-        search.setVerticalTextPosition(SwingConstants.BOTTOM);
-        search.setHorizontalTextPosition(SwingConstants.CENTER);
-        search.setFont(new Font("Arial", Font.PLAIN, 16));
-        search.setFocusPainted(false);
-//        search = createButton(searchImg, "Search", 50);
-        search.setMnemonic(KeyEvent.VK_ENTER);
         //Action Event needed, either make exclusive to search or could auto do it as entering text
 
         JButton addNew = new JButton("Add New");
-        searchImg = ImageIO.read(new File("resources/add.png"));
-        searchImg = searchImg.getScaledInstance(40, -1, Image.SCALE_DEFAULT);
-        addNew.setIcon(new ImageIcon(searchImg));
-//        search.setVerticalTextPosition(SwingConstants.BOTTOM);
-//        search.setHorizontalTextPosition(SwingConstants.CENTER);
-        addNew.setFont(new Font("Arial", Font.PLAIN, 16));
-        addNew.setFocusPainted(false);
+        addNewImg = ImageIO.read(new File("resources/add.png"));
 
         JButton edit = new JButton("Edit");
+        editImg = ImageIO.read(new File("resources/edit_contact.png"));
+        saveImg = ImageIO.read(new File("resources/save.png"));
+
         JButton delete = new JButton("Delete");
+        deleteImg = ImageIO.read(new File("resources/delete.png"));
+
         back.addActionListener(this::actionPerformed);
 
         left.setLayout(new BorderLayout());
@@ -123,43 +107,50 @@ public class ContactsPanel extends JPanel {
                 int windowHeight = getHeight();
                 GridBagConstraints c2 = new GridBagConstraints();
                 int font = 16;
-                if(windowWidth <= 600 || windowHeight <= 400){
+
+                if(windowWidth <= 600){
                     font = 0;
                 }
+
                 if(windowWidth < 800){
                     int width = (int)(windowWidth*0.0625);
-//                    c2.insets = new Insets()
-                    resizeIcon(back, backImg, width, width, font, gridBag, c2);
-                    resizeIcon(search, searchImg, width, width, font, gridBag, c2);
+                    buttonProperties(back, backImg, width, width, font, false);
+                    buttonProperties(search, searchImg, width, width, font, false);
+                    if(windowWidth < 500) {
+                        buttonProperties(addNew, addNewImg, width, width, 0, true);
+                        buttonProperties(edit, editImg, width, width, 0, true);
+                        buttonProperties(delete, deleteImg, width, width, 0, true);
+                    }else{
+                        buttonProperties(addNew, addNewImg, width, width, 16, true);
+                        buttonProperties(edit, editImg, width, width, 16, true);
+                        buttonProperties(delete, deleteImg, width, width, 16, true);
+                    }
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
                 }else{
-                    resizeIcon(back, backImg, 50, 50, font, gridBag, c2);
-                    resizeIcon(search, searchImg, 50, 50, font, gridBag, c2);
+                    buttonProperties(back, backImg, 50, 50, font, false);
+                    buttonProperties(search, searchImg, 50, 50, font, false);
+                    buttonProperties(addNew, addNewImg, 50, 50, font, true);
+                    buttonProperties(edit, editImg, 50, 50, font, true);
+                    buttonProperties(delete, deleteImg, 50, 50, font, true);
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
                 }
             }
         });
     }
-    private void resizeIcon(JButton btn,Image img, int width, int height, int font, GridBagLayout gridBag, GridBagConstraints c){
+    private void buttonProperties(JButton btn, Image img, int width, int height, int font, boolean IconLeft){
         img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
         btn.setIcon(new ImageIcon(img));
-//        btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
+        if(!IconLeft){
+            btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btn.setHorizontalTextPosition(SwingConstants.CENTER);
+        }
+        btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
         btn.setFont(new Font("Arial", Font.PLAIN, font));
-        gridBag.setConstraints(btn,c);
-    }
-
-    private JButton createButton(Image img, String buttonLabel, int width){
-        JButton btn = new JButton(buttonLabel);
-        //width and height represent pixels, setting either to -1 will size by aspect ratio
-        img = img.getScaledInstance(width, -1, Image.SCALE_DEFAULT);
-        btn.setIcon(new ImageIcon(img));
-
-        btn.setVerticalTextPosition(SwingConstants.BOTTOM);
-        btn.setHorizontalTextPosition(SwingConstants.CENTER);
-        btn.setFont(new Font("Arial", Font.PLAIN, 16));
         btn.setFocusPainted(false);
-        return btn;
+//        btn.addActionListener(this);
+//        gridBag.setConstraints(btn,c);
     }
+
 
     public void actionPerformed(ActionEvent e){
         cardLayout.show(cardPane, "Home");
