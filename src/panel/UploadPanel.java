@@ -1,15 +1,17 @@
+package panel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class EditPanel extends JPanel {
+public class UploadPanel extends JPanel {
     CardLayout cardLayout;
     JPanel cardPane;
 
-    EditPanel(JPanel pane){
+    UploadPanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
-        JTextArea testMessage = new JTextArea("This is the Edit Panel");
+        JTextArea testMessage = new JTextArea("This is the Upload Panel");
         JButton back = new JButton("back");
         back.addActionListener(this::actionPerformed);
         add(testMessage);
