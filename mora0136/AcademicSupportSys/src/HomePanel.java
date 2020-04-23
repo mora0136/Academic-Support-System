@@ -31,6 +31,7 @@ public class HomePanel extends JPanel implements ActionListener {
         setLayout(gridBag);
 
         //A padding of size dimensions surrounds each component that is added with to gridBag with this constraint
+        //This is the reason why I use GridBagLayout
         c.insets = new Insets(20, 50, 20, 50);
 
         try {

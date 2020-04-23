@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/GridTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/StretchIcon.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AssDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ContactsPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HomePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HomePanel.java" afterDir="false" />
     </list>
@@ -93,7 +90,7 @@
       <workItem from="1587112368808" duration="5609000" />
       <workItem from="1587465231268" duration="10138000" />
       <workItem from="1587543610625" duration="18136000" />
-      <workItem from="1587593498053" duration="4454000" />
+      <workItem from="1587593498053" duration="10808000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -144,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587567595225</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="contacts panel structure is set up. Default screen is contacts just for tetsing purpose. Will still use Dimension action and will determine expected changes.">
+      <created>1587598419596</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1587598419596</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,7 +163,8 @@
     <MESSAGE value="Centered location has been achieved. Using GirdBagLayout on two button groups to place. WIll now look at insets to act as padding between buttons." />
     <MESSAGE value="Done. Home page is compeleted as per mockup. Still would like to look at cleaning up this code so that it is 1. more portable 2. more readable and 3. less inefficient" />
     <MESSAGE value="Was able to make a frame that has it's components scale using the Component Action event. The home screen scales correctly to preserve it's layout. This technique may not be suitable for other panels that have more elements on them. Still need to review and see if there is not a more streamlined way of doing this. Regardless I have found i method that works, just yet to see if it will scale to other classes or if I can make it more portable." />
-    <option name="LAST_COMMIT_MESSAGE" value="Was able to make a frame that has it's components scale using the Component Action event. The home screen scales correctly to preserve it's layout. This technique may not be suitable for other panels that have more elements on them. Still need to review and see if there is not a more streamlined way of doing this. Regardless I have found i method that works, just yet to see if it will scale to other classes or if I can make it more portable." />
+    <MESSAGE value="contacts panel structure is set up. Default screen is contacts just for tetsing purpose. Will still use Dimension action and will determine expected changes." />
+    <option name="LAST_COMMIT_MESSAGE" value="contacts panel structure is set up. Default screen is contacts just for tetsing purpose. Will still use Dimension action and will determine expected changes." />
   </component>
   <component name="WindowStateProjectService">
     <state x="262" y="75" key="#Project_Structure" timestamp="1587567355408">
@@ -184,43 +189,63 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
-    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587567591643">
+    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587598417113">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587567591643" />
+    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587598417113" />
     <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587112315714">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587598109119">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587604531745">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587598109119" />
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587604531745" />
     <state width="1877" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587598109119">
+    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587604531745">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587598109119" />
+    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587604531745" />
     <state width="1877" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587598109119">
+    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587604531745">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587598109119" />
+    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587604531745" />
     <state width="1877" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587598109119">
+    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587604531745">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587598109119" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587604531745" />
     <state width="1877" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
+    <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587602270181">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state width="1520" height="332" key="GridCell.Tab.1.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
+    <state width="1520" height="332" key="GridCell.Tab.1.center" timestamp="1587602270181">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state width="1520" height="332" key="GridCell.Tab.1.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
+    <state width="1520" height="332" key="GridCell.Tab.1.left" timestamp="1587602270181">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state width="1520" height="332" key="GridCell.Tab.1.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
+    <state width="1520" height="332" key="GridCell.Tab.1.right" timestamp="1587602270181">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state width="1520" height="332" key="GridCell.Tab.1.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
     <state x="599" y="342" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587466289302">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="599" y="342" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587466289302" />
+    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup" timestamp="1587599947884">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587599947884" />
     <state x="604" y="410" key="svn.upgradeDialog" timestamp="1587112327811">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
