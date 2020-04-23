@@ -87,30 +87,31 @@ public class ContactsPanel extends JPanel {
         leftTop.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         //Add contacts to leftMiddle scroll view
-//        ContactList contactList = new ContactList(rightTop);
-//        scrollMiddle.setLayout(new BoxLayout(scrollMiddle, BoxLayout.Y_AXIS));
-        JPanel content = new JPanel();
+        ContactList content = new ContactList();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        ArrayList listOfContacts;
-        listOfContacts = new ArrayList<Contact>();
-        try {
-            File contacts = new File("data/contacts.txt");
-            Scanner scan = new Scanner(contacts);
-
-            while(scan.hasNext()){
-                String[] contactInfo = scan.next().split(",");
-                System.out.println(contactInfo);
-                Contact con = new Contact(contactInfo[0], contactInfo[1], contactInfo[2], contactInfo[3]);
-                JButton btn = new JButton(con.getName()+" "+con.getSurname());
-                listOfContacts.add(con);
-                content.add(btn);
-            }
-        }catch(Exception e1){
-            System.out.println(e1);
-        };
         scrollMiddle = new JScrollPane(content);
 
-        rightTop.add(new JTextArea("temp"));
+        //Output area
+        rightTop.setLayout(new BoxLayout(rightTop, BoxLayout.Y_AXIS));
+        JLabel givenName = new JLabel("Name");
+        JTextField givenNameField = new JTextField();
+        JLabel lastName = new JLabel("Surname");
+        JTextField lastNameField = new JTextField();
+        JLabel email = new JLabel("Email");
+        JTextField emailField = new JTextField();
+        JLabel phone = new JLabel("Phone");
+        JTextField phoneField = new JTextField();
+        content.setOutputPanel(givenNameField, lastNameField, emailField, phoneField);
+        rightTop.add(givenName);
+        rightTop.add(givenNameField);
+        rightTop.add(lastName);
+        rightTop.add(lastNameField);
+        rightTop.add(email);
+        rightTop.add(emailField);
+        rightTop.add(phone);
+        rightTop.add(phoneField);
+
+
         rightBottom.setLayout(new GridLayout(1, 2));
         rightBottom.add(edit);
         rightBottom.add(delete);
@@ -189,40 +190,59 @@ public class ContactsPanel extends JPanel {
 
 class ContactList extends JPanel{
     ArrayList listOfContacts;
-    JPanel content;
-    JScrollPane sc;
-    ContactList(JPanel outputTo){
-        content = new JPanel();
+    JTextField givenNameField;
+    JTextField lastNameField;
+    JTextField emailField;
+    JTextField phoneField;
+    ContactList(){
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         listOfContacts = new ArrayList<Contact>();
         try {
             File contacts = new File("data/contacts.txt");
             Scanner scan = new Scanner(contacts);
-
+            int i = 0;
             while(scan.hasNext()){
                 String[] contactInfo = scan.next().split(",");
                 System.out.println(contactInfo);
                 Contact c = new Contact(contactInfo[0], contactInfo[1], contactInfo[2], contactInfo[3]);
-                JButton btn = new JButton(c.getName()+" "+c.getSurname());
                 listOfContacts.add(c);
-                this.add(btn);
+                add(contactButton(c, i));
+                i++;
             }
         }catch(Exception e1){
             System.out.println(e1);
         };
-//        for(int i = 0; i < contacts1.size(); i++){
-//            JButton contact = new JButton());
-//        }
-//        add(content);
     }
-
+    public void setOutputPanel(JTextField givenNameField, JTextField lastNameField, JTextField emailField, JTextField phoneField){
+        this.givenNameField = givenNameField;
+        this.lastNameField = lastNameField;
+        this.emailField = emailField;
+        this.phoneField = phoneField;
+    }
+    //Use to implement searching
     public ContactList searchForContact(String search){
-        return new ContactList(new JPanel());
+        return new ContactList();
     }
 
-    public JButton contactButton(String label){
-        return new JButton();
+    public JButton contactButton(Contact c, int index){
+        JButton btn = new JButton(c.getName()+" "+c.getSurname());
+        btn.setMaximumSize(new Dimension(1000, 500));
+        btn.setMinimumSize(new Dimension(80, 400));
+        btn.setMargin(new Insets(25, 0, 25, 0));
+        btn.setFont(new Font("Arial", Font.PLAIN, 32));
+        btn.addActionListener(this::actionPerformed);
+        btn.setActionCommand(String.valueOf(index));
+        return btn;
     }
+    public void actionPerformed(ActionEvent e){
+        System.out.println(e);
+        Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));
+        givenNameField.setText(c.getName());
+        lastNameField.setText(c.getSurname());
+        emailField.setText(c.getEmail());
+        phoneField.setText(c.getPhone());
+    }
+
 }
 
 class Contact{
