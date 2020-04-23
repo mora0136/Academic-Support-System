@@ -1,11 +1,13 @@
+package panel;
+
+import contacts.ContactList;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -188,105 +190,3 @@ public class ContactsPanel extends JPanel {
 
 //Maybe put into contact file?? wait until working
 
-class ContactList extends JPanel{
-    ArrayList listOfContacts;
-    JTextField givenNameField;
-    JTextField lastNameField;
-    JTextField emailField;
-    JTextField phoneField;
-    ContactList(){
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        listOfContacts = new ArrayList<Contact>();
-        try {
-            File contacts = new File("data/contacts.txt");
-            Scanner scan = new Scanner(contacts);
-            int i = 0;
-            while(scan.hasNext()){
-                String[] contactInfo = scan.next().split(",");
-                System.out.println(contactInfo);
-                Contact c = new Contact(contactInfo[0], contactInfo[1], contactInfo[2], contactInfo[3]);
-                listOfContacts.add(c);
-                add(contactButton(c, i));
-                i++;
-            }
-        }catch(Exception e1){
-            System.out.println(e1);
-        };
-    }
-    public void setOutputPanel(JTextField givenNameField, JTextField lastNameField, JTextField emailField, JTextField phoneField){
-        this.givenNameField = givenNameField;
-        this.lastNameField = lastNameField;
-        this.emailField = emailField;
-        this.phoneField = phoneField;
-    }
-    //Use to implement searching
-    public ContactList searchForContact(String search){
-        return new ContactList();
-    }
-
-    public JButton contactButton(Contact c, int index){
-        JButton btn = new JButton(c.getName()+" "+c.getSurname());
-        btn.setMaximumSize(new Dimension(1000, 500));
-        btn.setMinimumSize(new Dimension(80, 400));
-        btn.setMargin(new Insets(25, 0, 25, 0));
-        btn.setFont(new Font("Arial", Font.PLAIN, 32));
-        btn.addActionListener(this::actionPerformed);
-        btn.setActionCommand(String.valueOf(index));
-        return btn;
-    }
-    public void actionPerformed(ActionEvent e){
-        System.out.println(e);
-        Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));
-        givenNameField.setText(c.getName());
-        lastNameField.setText(c.getSurname());
-        emailField.setText(c.getEmail());
-        phoneField.setText(c.getPhone());
-    }
-
-}
-
-class Contact{
-
-    String givenName;
-    String surname;
-    String email;
-    String phone;
-
-    public Contact(String givenName, String surname, String email, String phone) {
-        this.givenName = givenName;
-        this.surname = surname;
-        this.email = email;
-        this.phone = phone;
-    }
-    public String getName() {
-        return givenName;
-    }
-
-    public void setName(String name) {
-        this.givenName = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-}

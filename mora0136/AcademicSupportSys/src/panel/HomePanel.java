@@ -1,3 +1,5 @@
+package panel;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
