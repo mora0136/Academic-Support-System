@@ -3,13 +3,11 @@ package contacts;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.sql.*;
 
 public class ContactList extends JPanel {
-    ArrayList listOfContacts;
+    ArrayList listOfContacts; // be aware that the int saved to the button, but this identifies index using a contactID
     JTextField givenNameField;
     JTextField lastNameField;
     JTextField emailField;
@@ -23,7 +21,6 @@ public class ContactList extends JPanel {
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);){
-
             while(rs.next()) {
                 Contact c = new Contact(rs.getString("givenName"), rs.getString("surname"), rs.getString("email"), rs.getString("phone"));
                 listOfContacts.add(c);
@@ -33,6 +30,14 @@ public class ContactList extends JPanel {
             System.out.println(e);
         }
     }
+    //Search with a term via database, repaint all buttons
+    public ContactList(String search){
+        System.out.println(search);
+    }
+    public void searchContacts(String search){
+
+    }
+
     private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:data/database.db";
@@ -45,28 +50,6 @@ public class ContactList extends JPanel {
         return conn;
     }
 
-//    public static void connect() {
-//        Connection conn = null;
-//        try {
-//            // db parameters
-//            String url = "jdbc:sqlite:data/database.db";
-//            // create a connection to the database
-//            conn = DriverManager.getConnection(url);
-//
-//            System.out.println("Connection to SQLite has been established.");
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage()+". Connection not made");
-//        } finally {
-//            try {
-//                if (conn != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException ex) {
-//                System.out.println(ex.getMessage());
-//            }
-//        }
-//    }
     public static void createNewDatabase(String fileName) {
 
         String url = "jdbc:sqlite:C:/sqlite/db/" + fileName;
@@ -78,25 +61,6 @@ public class ContactList extends JPanel {
                 System.out.println("A new database has been created.");
             }
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    public static void createNewTable() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:C://sqlite/db/tests.db";
-
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS warehouses (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	name text NOT NULL,\n"
-                + "	capacity real\n"
-                + ");";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -123,6 +87,7 @@ public class ContactList extends JPanel {
         btn.setActionCommand(String.valueOf(index));
         return btn;
     }
+
     public void actionPerformed(ActionEvent e){
         System.out.println(e);
         Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));

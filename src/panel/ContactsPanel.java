@@ -16,6 +16,7 @@ public class ContactsPanel extends JPanel {
     JPanel cardPane, left, right, leftTop, rightTop, rightBottom, panelMiddle;
     JScrollPane scrollMiddle;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg;
+    JTextField searchField;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -36,8 +37,9 @@ public class ContactsPanel extends JPanel {
 
         JButton back = new JButton("Back");
         backImg = ImageIO.read(new File("resources/back.png"));
+        back.addActionListener(this::actionPerformed);
 
-        JTextField searchField = new JTextField("Search...");
+        searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
         searchField.setForeground(Color.GRAY);
         searchField.addFocusListener(new FocusListener() {
@@ -67,8 +69,6 @@ public class ContactsPanel extends JPanel {
 
         JButton delete = new JButton("Delete");
         deleteImg = ImageIO.read(new File("resources/delete.png"));
-
-        back.addActionListener(this::actionPerformed);
 
         left.setLayout(new BorderLayout());
         right.setLayout(new BorderLayout());
@@ -177,16 +177,29 @@ public class ContactsPanel extends JPanel {
         btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
         btn.setFont(new Font("Arial", Font.PLAIN, font));
         btn.setFocusPainted(false);
-//        btn.addActionListener(this);
+        btn.addActionListener(this::actionPerformed);
 //        gridBag.setConstraints(btn,c);
     }
 
 
     public void actionPerformed(ActionEvent e){
-        cardLayout.show(cardPane, "Home");
+
+        switch(e.getActionCommand()) {
+            case "Back":
+                cardLayout.show(cardPane, "Home");
+                break;
+            case "Search":
+                ContactList content = new ContactList(searchField.getText());
+                content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+                scrollMiddle = new JScrollPane(content);
+                break;
+            case "Add New":
+                break;
+            case "Edit":
+                break;
+            case "Delete":
+                break;
+        }
     }
 
 }
-
-//Maybe put into contact file?? wait until working
-
