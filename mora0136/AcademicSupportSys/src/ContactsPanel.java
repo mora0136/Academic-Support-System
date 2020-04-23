@@ -9,6 +9,7 @@ public class ContactsPanel extends JPanel {
     CardLayout cardLayout;
     JPanel cardPane, left, right, leftTop, leftMiddle, rightTop, rightBottom, searchPanel;
     Image backImg, searchImg;
+    JButton back, search, addNew;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -27,14 +28,15 @@ public class ContactsPanel extends JPanel {
         //Set the frame to 1x2 grid(left and right Panels)
         setLayout(new GridLayout(1, 2));
 
-        JButton back = new JButton("back");
+//        JButton back = new JButton("back");
         backImg = ImageIO.read(new File("resources/back.png"));
-        backImg = backImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
-        back.setIcon(new ImageIcon(backImg));
-        back.setVerticalTextPosition(SwingConstants.BOTTOM);
-        back.setHorizontalTextPosition(SwingConstants.CENTER);
-        back.setFont(new Font("Arial", Font.PLAIN, 16));
-        back.setFocusPainted(false);
+//        backImg = backImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
+//        back.setIcon(new ImageIcon(backImg));
+//        back.setVerticalTextPosition(SwingConstants.BOTTOM);
+//        back.setHorizontalTextPosition(SwingConstants.CENTER);
+//        back.setFont(new Font("Arial", Font.PLAIN, 16));
+//        back.setFocusPainted(false);
+        back = createButton(backImg, "Back", 50);
 
         JTextField searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
@@ -61,10 +63,19 @@ public class ContactsPanel extends JPanel {
         search.setHorizontalTextPosition(SwingConstants.CENTER);
         search.setFont(new Font("Arial", Font.PLAIN, 16));
         search.setFocusPainted(false);
+//        search = createButton(searchImg, "Search", 50);
         search.setMnemonic(KeyEvent.VK_ENTER);
         //Action Event needed, either make exclusive to search or could auto do it as entering text
 
-        JButton temp = new JButton("testing btn");
+        JButton addNew = new JButton("Add New");
+        searchImg = ImageIO.read(new File("resources/add.png"));
+        searchImg = searchImg.getScaledInstance(40, -1, Image.SCALE_DEFAULT);
+        addNew.setIcon(new ImageIcon(searchImg));
+//        search.setVerticalTextPosition(SwingConstants.BOTTOM);
+//        search.setHorizontalTextPosition(SwingConstants.CENTER);
+        addNew.setFont(new Font("Arial", Font.PLAIN, 16));
+        addNew.setFocusPainted(false);
+
         JButton edit = new JButton("Edit");
         JButton delete = new JButton("Delete");
         back.addActionListener(this::actionPerformed);
@@ -98,7 +109,7 @@ public class ContactsPanel extends JPanel {
 
         left.add(leftTop, BorderLayout.NORTH);
         left.add(leftMiddle, BorderLayout.CENTER);
-        left.add(temp, BorderLayout.SOUTH);
+        left.add(addNew, BorderLayout.SOUTH);
 
         right.add(rightTop, BorderLayout.NORTH);
         right.add(rightBottom, BorderLayout.SOUTH);
@@ -137,7 +148,21 @@ public class ContactsPanel extends JPanel {
         gridBag.setConstraints(btn,c);
     }
 
+    private JButton createButton(Image img, String buttonLabel, int width){
+        JButton btn = new JButton(buttonLabel);
+        //width and height represent pixels, setting either to -1 will size by aspect ratio
+        img = img.getScaledInstance(width, -1, Image.SCALE_DEFAULT);
+        btn.setIcon(new ImageIcon(img));
+
+        btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+        btn.setHorizontalTextPosition(SwingConstants.CENTER);
+        btn.setFont(new Font("Arial", Font.PLAIN, 16));
+        btn.setFocusPainted(false);
+        return btn;
+    }
+
     public void actionPerformed(ActionEvent e){
         cardLayout.show(cardPane, "Home");
     }
+
 }
