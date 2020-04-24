@@ -138,7 +138,7 @@ public class HomePanel extends JPanel implements ActionListener {
         btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
         btn.setFont(new Font("Arial", Font.PLAIN, font));
         btn.setFocusPainted(false);
-        btn.addActionListener(this);
+        btn.addActionListener(this); //adds a duplicate action listener everytime screen is resized, needs to be changed.
         gridBag.setConstraints(btn,c);
     }
 }

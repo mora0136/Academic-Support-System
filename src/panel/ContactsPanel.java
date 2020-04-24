@@ -4,6 +4,8 @@ import contacts.ContactList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -17,6 +19,7 @@ public class ContactsPanel extends JPanel {
     JScrollPane scrollMiddle;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg;
     JTextField searchField;
+    ContactList contactList;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -29,6 +32,8 @@ public class ContactsPanel extends JPanel {
         rightTop = new JPanel();
         rightBottom = new JPanel();
 
+        contactList = new ContactList();
+
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
@@ -36,12 +41,37 @@ public class ContactsPanel extends JPanel {
         setLayout(new GridLayout(1, 2));
 
         JButton back = new JButton("Back");
-        backImg = ImageIO.read(new File("resources/back.png"));
         back.addActionListener(this::actionPerformed);
+        backImg = ImageIO.read(new File("resources/back.png"));
+//        back.addActionListener(this::actionPerformed);
+
+
+        searchImg = ImageIO.read(new File("resources/search.png"));
 
         searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
         searchField.setForeground(Color.GRAY);
+        searchField.addActionListener(this::actionPerformed);
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                search();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                search();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+//                search();
+            }
+
+            private void search(){
+                contactList.searchForContact(searchField.getText());
+            }
+        });
         searchField.addFocusListener(new FocusListener() {
             //Note that whatever was in the box previously is erased
             public void focusGained(FocusEvent e) {
@@ -56,18 +86,23 @@ public class ContactsPanel extends JPanel {
             }
         });
 
-        JButton search = new JButton("Search");
-        searchImg = ImageIO.read(new File("resources/search.png"));
+//        JButton search = new JButton("Search");
+//        search.addActionListener(this::actionPerformed);
+//        search.setMnemonic(KeyEvent.VK_ENTER); // still needs to worked on
+//        searchImg = ImageIO.read(new File("resources/search.png"));
         //Action Event needed, either make exclusive to search or could auto do it as entering text
 
         JButton addNew = new JButton("Add New");
+        addNew.addActionListener(this::actionPerformed);
         addNewImg = ImageIO.read(new File("resources/add.png"));
 
         JButton edit = new JButton("Edit");
+        edit.addActionListener(this::actionPerformed);
         editImg = ImageIO.read(new File("resources/edit_contact.png"));
         saveImg = ImageIO.read(new File("resources/save.png"));
 
         JButton delete = new JButton("Delete");
+        delete.addActionListener(this::actionPerformed);
         deleteImg = ImageIO.read(new File("resources/delete.png"));
 
         left.setLayout(new BorderLayout());
@@ -84,14 +119,13 @@ public class ContactsPanel extends JPanel {
         leftTop.add(searchField);
         c.insets = new Insets(10, 0, 10, 10);
         c.weightx = 2;
-        gridBag.setConstraints(search, c);
-        leftTop.add(search);
+//        gridBag.setConstraints(search, c);
+//        leftTop.add(search);
         leftTop.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
         //Add contacts to leftMiddle scroll view
-        ContactList content = new ContactList();
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        scrollMiddle = new JScrollPane(content);
+        contactList.setLayout(new BoxLayout(contactList, BoxLayout.Y_AXIS));
+        scrollMiddle = new JScrollPane(contactList);
 
         //Output area
         rightTop.setLayout(new BoxLayout(rightTop, BoxLayout.Y_AXIS));
@@ -103,7 +137,9 @@ public class ContactsPanel extends JPanel {
         JTextField emailField = new JTextField();
         JLabel phone = new JLabel("Phone");
         JTextField phoneField = new JTextField();
-        content.setOutputPanel(givenNameField, lastNameField, emailField, phoneField);
+        //Associate the desired output location of the information contained within contactlist.
+        //Allows for buttons press to influence other panel.
+        contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField);
         rightTop.add(givenName);
         rightTop.add(givenNameField);
         rightTop.add(lastName);
@@ -145,7 +181,7 @@ public class ContactsPanel extends JPanel {
                 if(windowWidth < 800){
                     int width = (int)(windowWidth*0.0625);
                     buttonProperties(back, backImg, width, width, font, false);
-                    buttonProperties(search, searchImg, width, width, font, false);
+//                    buttonProperties(search, searchImg, width, width, font, false);
                     if(windowWidth < 500) {
                         buttonProperties(addNew, addNewImg, width, width, 0, true);
                         buttonProperties(edit, editImg, width, width, 0, true);
@@ -158,7 +194,7 @@ public class ContactsPanel extends JPanel {
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
                 }else{
                     buttonProperties(back, backImg, 50, 50, font, false);
-                    buttonProperties(search, searchImg, 50, 50, font, false);
+//                    buttonProperties(search, searchImg, 50, 50, font, false);
                     buttonProperties(addNew, addNewImg, 50, 50, font, true);
                     buttonProperties(edit, editImg, 50, 50, font, true);
                     buttonProperties(delete, deleteImg, 50, 50, font, true);
@@ -177,21 +213,20 @@ public class ContactsPanel extends JPanel {
         btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
         btn.setFont(new Font("Arial", Font.PLAIN, font));
         btn.setFocusPainted(false);
-        btn.addActionListener(this::actionPerformed);
 //        gridBag.setConstraints(btn,c);
     }
 
 
     public void actionPerformed(ActionEvent e){
-
+        System.out.println("Action performed");
         switch(e.getActionCommand()) {
             case "Back":
                 cardLayout.show(cardPane, "Home");
                 break;
             case "Search":
-                ContactList content = new ContactList(searchField.getText());
-                content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-                scrollMiddle = new JScrollPane(content);
+                contactList.searchForContact(searchField.getText());
+//                System.out.println("hereh");
+//                scrollMiddle = new JScrollPane(content);
                 break;
             case "Add New":
                 break;
@@ -199,7 +234,9 @@ public class ContactsPanel extends JPanel {
                 break;
             case "Delete":
                 break;
+            default:
+                contactList.searchForContact(searchField.getText());
+                break;
         }
     }
-
 }
