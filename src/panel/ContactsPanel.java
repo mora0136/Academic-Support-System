@@ -17,9 +17,11 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
     CardLayout cardLayout;
     JPanel cardPane, left, right, leftTop, rightTop, rightBottom, panelMiddle;
     JScrollPane scrollMiddle;
-    Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg;
+    Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg, tempImg;
     JTextField searchField;
     ContactList contactList;
+    JTextField givenNameField, lastNameField, emailField, phoneField;
+    JButton edit;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -65,9 +67,10 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         addNew.addActionListener(this::actionPerformed);
         addNewImg = ImageIO.read(new File("resources/add.png"));
 
-        JButton edit = new JButton("Edit");
+        edit = new JButton("Edit");
         edit.addActionListener(this::actionPerformed);
         editImg = ImageIO.read(new File("resources/edit_contact.png"));
+        tempImg = editImg;
         saveImg = ImageIO.read(new File("resources/save.png"));
 
         JButton delete = new JButton("Delete");
@@ -99,16 +102,20 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         //Output area
         rightTop.setLayout(new BoxLayout(rightTop, BoxLayout.Y_AXIS));
         JLabel givenName = new JLabel("Name");
-        JTextField givenNameField = new JTextField();
+        givenNameField = new JTextField();
         JLabel lastName = new JLabel("Surname");
-        JTextField lastNameField = new JTextField();
+        lastNameField = new JTextField();
         JLabel email = new JLabel("Email");
-        JTextField emailField = new JTextField();
+        emailField = new JTextField();
         JLabel phone = new JLabel("Phone");
-        JTextField phoneField = new JTextField();
+        phoneField = new JTextField();
         //Associate the desired output location of the information contained within contactlist.
         //Allows for buttons press to influence other panel.
         contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField);
+        givenNameField.setEditable(false);
+        lastNameField.setEditable(false);
+        emailField.setEditable(false);
+        phoneField.setEditable(false);
         rightTop.add(givenName);
         rightTop.add(givenNameField);
         rightTop.add(lastName);
@@ -161,6 +168,8 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                         buttonProperties(delete, deleteImg, width, width, 16, true);
                     }
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
+                    saveImg = saveImg.getScaledInstance(Integer.min(width, width), -1, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(Integer.min(width, width), -1, Image.SCALE_DEFAULT);
                 }else{
                     buttonProperties(back, backImg, 50, 50, font, false);
 //                    buttonProperties(search, searchImg, 50, 50, font, false);
@@ -168,6 +177,8 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                     buttonProperties(edit, editImg, 50, 50, font, true);
                     buttonProperties(delete, deleteImg, 50, 50, font, true);
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
+                    saveImg = saveImg.getScaledInstance(Integer.min(50, 50), -1, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(Integer.min(50, 50), -1, Image.SCALE_DEFAULT);
                 }
             }
         });
@@ -195,6 +206,24 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
             case "Add New":
                 break;
             case "Edit":
+                givenNameField.setEditable(true);
+                lastNameField.setEditable(true);
+                emailField.setEditable(true);
+                phoneField.setEditable(true);
+                edit.setText("Save");
+//                tempImg = editImg;
+                editImg = saveImg;
+                edit.setIcon(new ImageIcon(editImg));
+                break;
+
+            case "Save":
+                givenNameField.setEditable(false);
+                lastNameField.setEditable(false);
+                emailField.setEditable(false);
+                phoneField.setEditable(false);
+                edit.setText("Edit");
+                editImg = tempImg;
+                edit.setIcon(new ImageIcon(editImg));
                 break;
             case "Delete":
                 break;
