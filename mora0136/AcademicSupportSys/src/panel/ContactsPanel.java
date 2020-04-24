@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ContactsPanel extends JPanel {
+public class ContactsPanel extends JPanel implements DocumentListener, FocusListener{
     CardLayout cardLayout;
     JPanel cardPane, left, right, leftTop, rightTop, rightBottom, panelMiddle;
     JScrollPane scrollMiddle;
@@ -52,39 +52,8 @@ public class ContactsPanel extends JPanel {
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
         searchField.setForeground(Color.GRAY);
         searchField.addActionListener(this::actionPerformed);
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                search();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                search();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-//                search();
-            }
-
-            private void search(){
-                contactList.searchForContact(searchField.getText());
-            }
-        });
-        searchField.addFocusListener(new FocusListener() {
-            //Note that whatever was in the box previously is erased
-            public void focusGained(FocusEvent e) {
-                searchField.setText("");
-                searchField.setForeground(Color.BLACK);
-            }
-            public void focusLost(FocusEvent e) {
-                if(searchField.getText().isEmpty()){
-                    searchField.setText("Search...");
-                    searchField.setForeground(Color.GRAY);
-                }
-            }
-        });
+        searchField.getDocument().addDocumentListener(this);
+        searchField.addFocusListener(this);
 
 //        JButton search = new JButton("Search");
 //        search.addActionListener(this::actionPerformed);
@@ -223,20 +192,46 @@ public class ContactsPanel extends JPanel {
             case "Back":
                 cardLayout.show(cardPane, "Home");
                 break;
-            case "Search":
-                contactList.searchForContact(searchField.getText());
-//                System.out.println("hereh");
-//                scrollMiddle = new JScrollPane(content);
-                break;
             case "Add New":
                 break;
             case "Edit":
                 break;
             case "Delete":
                 break;
-            default:
-                contactList.searchForContact(searchField.getText());
-                break;
+        }
+    }
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        search();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        search();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+//                search();
+    }
+
+    private void search(){
+//                if(searchField.getText() != "Search...") {
+        contactList.searchForContact(searchField.getText());
+//                }
+    }
+
+    //Note that whatever was in the box previously is erased
+    public void focusGained(FocusEvent e) {
+        searchField.setText("");
+        searchField.setForeground(Color.BLACK);
+    }
+    public void focusLost(FocusEvent e) {
+        if(searchField.getText().isEmpty()){
+            searchField.getDocument().removeDocumentListener(this);
+            searchField.setText("Search...");
+            searchField.setForeground(Color.GRAY);
+            searchField.getDocument().addDocumentListener(this);
         }
     }
 }
