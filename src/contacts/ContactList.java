@@ -79,7 +79,9 @@ public class ContactList extends JPanel {
         removeAll();
         revalidate();
         repaint();
-        if(search.length() == 0){
+        System.out.println(search);
+
+        if(search.length() == 0 || search == "Search..."){
             for(int i = 0; i < listOfContacts.size(); i++){
                 add(contactButton((Contact)listOfContacts.get(i)));
             }
@@ -116,10 +118,11 @@ public class ContactList extends JPanel {
     public void actionPerformed(ActionEvent e){
         System.out.println(e.getActionCommand());
         Contact c = new Contact(null, null, null, null);
-        SuffixTrieNode sn = sf.get(e.getActionCommand().split("")[0]);//this ensure it only searches for first name
+        SuffixTrieNode sn = sf.get(e.getActionCommand());//this ensure it only searches for first name
         ArrayList< SuffixIndex > startIndexes = new ArrayList<>();
         startIndexes = sn.getData().getStartIndexes();
         for(SuffixIndex s : startIndexes){
+            System.out.println(s.getContact().getName());
             c = s.getContact();
         }
 //        Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));
