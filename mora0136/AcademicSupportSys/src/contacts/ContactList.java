@@ -1,5 +1,9 @@
 package contacts;
 
+import suffixtree.SuffixIndex;
+import suffixtree.SuffixTrie;
+import suffixtree.SuffixTrieNode;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,30 +16,28 @@ public class ContactList extends JPanel {
     JTextField lastNameField;
     JTextField emailField;
     JTextField phoneField;
+    SuffixTrie sf; // stores names of contacts exclusively for searching purposes, does not contain contacts data
     public ContactList(){
         connect();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         listOfContacts = new ArrayList<Contact>();
         //Should be in selectAll
         String sql = "SELECT * FROM contacts";
+        sf = new SuffixTrie();
+
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);){
             while(rs.next()) {
                 Contact c = new Contact(rs.getString("givenName"), rs.getString("surname"), rs.getString("email"), rs.getString("phone"));
+                sf.insert(rs.getString("givenName") + " " + rs.getString("surname"), c);
                 listOfContacts.add(c);
-                add(contactButton(c, rs.getInt("contact_ID")));
+                add(contactButton(c));
             }
+//            searchForContact("");
         }catch(SQLException e){
             System.out.println(e);
         }
-    }
-    //Search with a term via database, repaint all buttons
-    public ContactList(String search){
-        System.out.println(search);
-    }
-    public void searchContacts(String search){
-
     }
 
     private Connection connect() {
@@ -73,74 +75,58 @@ public class ContactList extends JPanel {
         this.phoneField = phoneField;
     }
     //Use to implement searching
-    public ContactList searchForContact(String search){
-        return new ContactList();
+    public void searchForContact(String search){
+        removeAll();
+        revalidate();
+        repaint();
+        if(search.length() == 0){
+            for(int i = 0; i < listOfContacts.size(); i++){
+                add(contactButton((Contact)listOfContacts.get(i)));
+            }
+        }else {
+            ArrayList<SuffixIndex> startIndexes;
+            ArrayList<Contact> displayedContacts = new ArrayList<>();
+            SuffixTrieNode sn = sf.get(search);
+            if(sn != null) {
+                startIndexes = sn.getData().getStartIndexes();
+                for (SuffixIndex s : startIndexes) {
+                    if (!displayedContacts.contains(s.getContact())) {
+                        displayedContacts.add(s.getContact());
+                        add(contactButton(s.getContact()));
+                    }
+                }
+            }else{
+                JLabel noContent = new JLabel("Contact not Found");
+                noContent.setFont(new Font("Arial", Font.PLAIN, 16));
+                add(noContent);
+            }
+        }
     }
 
-    public JButton contactButton(Contact c, int index){
+    public JButton contactButton(Contact c){
         JButton btn = new JButton(c.getName()+" "+c.getSurname());
         btn.setMaximumSize(new Dimension(1000, 500));
         btn.setMinimumSize(new Dimension(80, 400));
         btn.setMargin(new Insets(25, 0, 25, 0));
         btn.setFont(new Font("Arial", Font.PLAIN, 32));
         btn.addActionListener(this::actionPerformed);
-        btn.setActionCommand(String.valueOf(index));
         return btn;
     }
 
     public void actionPerformed(ActionEvent e){
-        System.out.println(e);
-        Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));
+        System.out.println(e.getActionCommand());
+        Contact c = new Contact(null, null, null, null);
+        SuffixTrieNode sn = sf.get(e.getActionCommand().split("")[0]);//this ensure it only searches for first name
+        ArrayList< SuffixIndex > startIndexes = new ArrayList<>();
+        startIndexes = sn.getData().getStartIndexes();
+        for(SuffixIndex s : startIndexes){
+            c = s.getContact();
+        }
+//        Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));
         givenNameField.setText(c.getName());
         lastNameField.setText(c.getSurname());
         emailField.setText(c.getEmail());
         phoneField.setText(c.getPhone());
     }
 
-}
-
-class Contact{
-
-    String givenName;
-    String surname;
-    String email;
-    String phone;
-
-    public Contact(String givenName, String surname, String email, String phone) {
-        this.givenName = givenName;
-        this.surname = surname;
-        this.email = email;
-        this.phone = phone;
-    }
-    public String getName() {
-        return givenName;
-    }
-
-    public void setName(String name) {
-        this.givenName = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }
