@@ -9,18 +9,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContactList extends JPanel {
-    ArrayList listOfContacts; // be aware that the int saved to the button, but this identifies index using a contactID
+    HashMap<Integer, Contact> listOfContacts; // be aware that the int saved to the button, but this identifies index using a contactID
     JTextField givenNameField;
     JTextField lastNameField;
     JTextField emailField;
     JTextField phoneField;
     SuffixTrie sf; // stores names of contacts exclusively for searching purposes, does not contain contacts data
+    Connection connection;
     public ContactList(){
-        connect();
+//        connect();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        listOfContacts = new ArrayList<Contact>();
+        listOfContacts = new HashMap<>();
         //Should be in selectAll
         String sql = "SELECT * FROM contacts";
         sf = new SuffixTrie();
@@ -28,11 +31,12 @@ public class ContactList extends JPanel {
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);){
+            connection = conn;
             while(rs.next()) {
-                Contact c = new Contact(rs.getString("givenName"), rs.getString("surname"), rs.getString("email"), rs.getString("phone"));
+                Contact c = new Contact(rs.getInt("contact_ID"), rs.getString("givenName"), rs.getString("surname"), rs.getString("email"), rs.getString("phone"));
                 sf.insert(rs.getString("givenName") + " " + rs.getString("surname"), c);
-                listOfContacts.add(c);
-                add(contactButton(c));
+                listOfContacts.put(rs.getInt("contact_ID"), c);
+                add(contactButton(c)); // nessecary
             }
 //            searchForContact("");
         }catch(SQLException e){
@@ -82,8 +86,8 @@ public class ContactList extends JPanel {
         System.out.println(search);
 
         if(search.length() == 0 || search == "Search..."){
-            for(int i = 0; i < listOfContacts.size(); i++){
-                add(contactButton((Contact)listOfContacts.get(i)));
+            for(Map.Entry<Integer, Contact> entry: listOfContacts.entrySet()) {
+                add(contactButton(entry.getValue()));
             }
         }else {
             ArrayList<SuffixIndex> startIndexes;
@@ -112,20 +116,22 @@ public class ContactList extends JPanel {
         btn.setMargin(new Insets(25, 0, 25, 0));
         btn.setFont(new Font("Arial", Font.PLAIN, 32));
         btn.addActionListener(this::actionPerformed);
+        btn.setActionCommand(String.valueOf(c.getContact_ID()));
         return btn;
+    }
+
+    public void editContact(String givenName, String surname, String email, String Phone) throws SQLException {
+        // execute edit in database
+        String sql = "UPDATE contacts SET givenName = ?, surname = ?, email = ?, phone = ? WHERE givenName = ?";
+        PreparedStatement prepState = connection.prepareStatement(sql);
+        prepState.setString(1, "");
+        ResultSet rs    = prepState.executeQuery(sql);
+        // recreate the trienode
     }
 
     public void actionPerformed(ActionEvent e){
         System.out.println(e.getActionCommand());
-        Contact c = new Contact(null, null, null, null);
-        SuffixTrieNode sn = sf.get(e.getActionCommand());//this ensure it only searches for first name
-        ArrayList< SuffixIndex > startIndexes = new ArrayList<>();
-        startIndexes = sn.getData().getStartIndexes();
-        for(SuffixIndex s : startIndexes){
-            System.out.println(s.getContact().getName());
-            c = s.getContact();
-        }
-//        Contact c = (Contact) listOfContacts.get(Integer.parseInt(e.getActionCommand()));
+        Contact c = listOfContacts.get(Integer.parseInt(e.getActionCommand()));
         givenNameField.setText(c.getName());
         lastNameField.setText(c.getSurname());
         emailField.setText(c.getEmail());
