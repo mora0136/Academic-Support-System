@@ -1,17 +1,26 @@
 package contacts;
 
 public class Contact{
-
+    int contact_ID;
     String givenName;
     String surname;
     String email;
     String phone;
 
-    public Contact(String givenName, String surname, String email, String phone) {
+    public Contact(int contact_ID, String givenName, String surname, String email, String phone) {
+        this.contact_ID = contact_ID;
         this.givenName = givenName;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
+    }
+
+    public int getContact_ID() {
+        return contact_ID;
+    }
+
+    public void setContact_ID(int contact_ID) {
+        this.contact_ID = contact_ID;
     }
     public String getName() {
         return givenName;

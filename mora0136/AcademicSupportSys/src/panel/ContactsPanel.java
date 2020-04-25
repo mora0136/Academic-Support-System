@@ -221,6 +221,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                 lastNameField.setEditable(false);
                 emailField.setEditable(false);
                 phoneField.setEditable(false);
+
                 edit.setText("Edit");
                 editImg = tempImg;
                 edit.setIcon(new ImageIcon(editImg));
