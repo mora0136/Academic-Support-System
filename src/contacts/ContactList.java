@@ -7,6 +7,7 @@ import suffixtree.SuffixTrieNode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.sql.*;
 import java.util.HashMap;
@@ -20,25 +21,33 @@ public class ContactList extends JPanel {
     JTextField phoneField;
     SuffixTrie sf; // stores names of contacts exclusively for searching purposes, does not contain contacts data
     Connection connection;
+    int contactSelected = 0;
     public ContactList(){
 //        connect();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        listOfContacts = new HashMap<>();
+        extractContactsFromDB();
         //Should be in selectAll
+    }
+
+    public void extractContactsFromDB(){
+        removeAll();
+        revalidate();
+        repaint();
+
         String sql = "SELECT * FROM contacts";
-        sf = new SuffixTrie();
 
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);){
             connection = conn;
+            sf = new SuffixTrie();
+            listOfContacts = new HashMap<>();
             while(rs.next()) {
                 Contact c = new Contact(rs.getInt("contact_ID"), rs.getString("givenName"), rs.getString("surname"), rs.getString("email"), rs.getString("phone"));
                 sf.insert(rs.getString("givenName") + " " + rs.getString("surname"), c);
                 listOfContacts.put(rs.getInt("contact_ID"), c);
                 add(contactButton(c)); // nessecary
             }
-//            searchForContact("");
         }catch(SQLException e){
             System.out.println(e);
         }
@@ -120,17 +129,43 @@ public class ContactList extends JPanel {
         return btn;
     }
 
-    public void editContact(String givenName, String surname, String email, String Phone) throws SQLException {
+    public void editContact(String givenName, String surname, String email, String phone){
         // execute edit in database
-        String sql = "UPDATE contacts SET givenName = ?, surname = ?, email = ?, phone = ? WHERE givenName = ?";
-        PreparedStatement prepState = connection.prepareStatement(sql);
-        prepState.setString(1, "");
-        ResultSet rs    = prepState.executeQuery(sql);
-        // recreate the trienode
+//        String sql = "UPDATE contacts SET givenName = '"+givenName+"', surname = '"+surname+"', email = '"+email+"', phone = '"+phone+"' WHERE contact_ID = "+contactSelected;
+//        try(Connection conn = this.connect();
+//            Statement stmt  = conn.createStatement();
+//            ResultSet rs    = stmt.executeUpdate(sql);) {
+//            generateDataStructures(rs);
+//        }catch(SQLException e){
+//            System.out.println(e);
+//        }
+
+        String sql = "UPDATE contacts SET givenName = ? , "
+                + "surname = ?, "
+                + "email = ?, "
+                + "phone = ? "
+                + "WHERE contact_ID = ?";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, givenName);
+            pstmt.setString(2, surname);
+            pstmt.setString(3, email);
+            pstmt.setString(4, phone);
+            pstmt.setInt(5, contactSelected);
+            // update
+            pstmt.executeUpdate();
+            extractContactsFromDB();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void actionPerformed(ActionEvent e){
         System.out.println(e.getActionCommand());
+        contactSelected = Integer.parseInt(e.getActionCommand());
         Contact c = listOfContacts.get(Integer.parseInt(e.getActionCommand()));
         givenNameField.setText(c.getName());
         lastNameField.setText(c.getSurname());

@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/contacts/Contact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/Contact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/contacts/ContactList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
     </list>
@@ -97,7 +97,7 @@
       <workItem from="1587112368808" duration="5609000" />
       <workItem from="1587465231268" duration="10138000" />
       <workItem from="1587543610625" duration="18136000" />
-      <workItem from="1587593498053" duration="53570000" />
+      <workItem from="1587593498053" duration="55720000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -232,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587715547543</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Started implementing edit but then realised I could retrieve contacts better by identifying by id and not name allowing use of a hashmap that can store information to be manipulated. SuffixTrie should be used only for creating a search tree.">
+      <created>1587782655779</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1587782655779</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,7 +268,8 @@
     <MESSAGE value="Search works using SuffixTrie, YAY! Very bigger mess tho. Still needs some changes as per notes kept to streamline process." />
     <MESSAGE value="Fixed some bugs relating to content display and button creation" />
     <MESSAGE value="edit button transforms into save button and sets field enabled and disabled." />
-    <option name="LAST_COMMIT_MESSAGE" value="edit button transforms into save button and sets field enabled and disabled." />
+    <MESSAGE value="Started implementing edit but then realised I could retrieve contacts better by identifying by id and not name allowing use of a hashmap that can store information to be manipulated. SuffixTrie should be used only for creating a search tree." />
+    <option name="LAST_COMMIT_MESSAGE" value="Started implementing edit but then realised I could retrieve contacts better by identifying by id and not name allowing use of a hashmap that can store information to be manipulated. SuffixTrie should be used only for creating a search tree." />
   </component>
   <component name="WindowStateProjectService">
     <state x="262" y="75" key="#Project_Structure" timestamp="1587567355408">
@@ -291,39 +299,39 @@
     </state>
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587694056624" />
-    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587715546025">
+    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587782653597">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587715546025" />
+    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587782653597" />
     <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587642711585">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587642711585" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587782134435">
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587784498333">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587782134435" />
+    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
     <state width="1877" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587782134435">
+    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587784498333">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587782134435" />
+    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
     <state width="1877" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587782134435">
+    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587784498333">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587782134435" />
+    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
     <state width="1877" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587782134435">
+    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587784498333">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587782134435" />
+    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
     <state width="1877" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587602270181">
       <screen x="0" y="0" width="1563" height="1002" />
@@ -365,10 +373,10 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="209" y="121" key="new project wizard/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587640306777" />
-    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup" timestamp="1587715589458">
+    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup" timestamp="1587783466672">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587715589458" />
+    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587783466672" />
     <state x="604" y="410" key="svn.upgradeDialog" timestamp="1587112327811">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -221,6 +222,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                 lastNameField.setEditable(false);
                 emailField.setEditable(false);
                 phoneField.setEditable(false);
+                contactList.editContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
 
                 edit.setText("Edit");
                 editImg = tempImg;
