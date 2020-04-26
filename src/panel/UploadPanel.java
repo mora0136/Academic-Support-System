@@ -1,35 +1,41 @@
 package panel;
 
+import contacts.Contact;
 import contacts.ContactDB;
 import org.jdatepicker.JDatePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class UploadPanel extends JPanel {
+public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
     CardLayout cardLayout;
     JPanel cardPane, leftPanel, rightPanel, contextPanel, dataPanel, contactsPanel, servicesPanel, uploadPanel, filePanel, extraPanel, lowerPanel, contactsListPanel;
     JScrollPane contactListScroll, addedListScroll;
-    JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn;
+    JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn, selectAll, deselectAll;
     Image backImg, resetImg, fileImg, saveImg, uploadImg;
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
-    ContactDB contactDB, addedContacts;
+    ContactDB contactDB;
+    DefaultListModel<Contact> toAddContacts, addedContacts, tempList;
     JComboBox selectTypeComboBox;
     JTextArea descriptionTextArea;
     JTextField titleField, searchField;
     Font heading;
     JDatePanel publishDatePanel;
-    JList attachedFileList;
+    JList attachedFileList, toAddContactList, addedContactsList;
+    ButtonGroup services;
+    JCheckBox cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit;
 
     UploadPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
-        this.cardLayout = (CardLayout)pane.getLayout();
+        this.cardLayout = (CardLayout) pane.getLayout();
 
         leftPanel = new JPanel();
         rightPanel = new JPanel();
@@ -47,7 +53,7 @@ public class UploadPanel extends JPanel {
 
         setLayout(new GridLayout(1, 2));
         leftPanel.setLayout(new BorderLayout());
-        contextPanel.setLayout(new GridLayout(1,2));
+        contextPanel.setLayout(new GridLayout(1, 2));
         dataPanel.setLayout(gridBag);
         lowerPanel.setLayout(new GridLayout(1, 2));
         filePanel.setLayout(gridBag);
@@ -105,7 +111,7 @@ public class UploadPanel extends JPanel {
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(fileSelectBtn, c);
         filePanel.add(fileSelectBtn);
-        String[] keywords = {"Java", "IntelliJ", "UX", "HCI", "Interactive Computer Systems","Persona", "Grokkability"};
+        String[] keywords = {"Java", "IntelliJ", "UX", "HCI", "Interactive Computer Systems", "Persona", "Grokkability"};
         attachedFileList = new JList(keywords);
         attachedFileList.setFont(heading);
         c.weighty = 1;
@@ -159,6 +165,11 @@ public class UploadPanel extends JPanel {
         contactsPanel.add(authorsLabel);
 
         searchField = new JTextField("Search...");
+        searchField.setFont(new Font("Arial", Font.PLAIN, 32));
+        searchField.setForeground(Color.GRAY);
+        searchField.addActionListener(this::actionPerformed);
+        searchField.getDocument().addDocumentListener((DocumentListener) this);
+        searchField.addFocusListener(this);
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 4;
         gridBag.setConstraints(searchField, c);
@@ -178,20 +189,68 @@ public class UploadPanel extends JPanel {
         gridBag.setConstraints(addedLabel, c);
         contactsListPanel.add(addedLabel);
 
-//        contactList = new ContactList();
-//        contactListScroll = new JScrollPane(contactList);
-//        c.gridwidth = GridBagConstraints.RELATIVE;
-//        gridBag.setConstraints(contactListScroll, c);
-//        contactsListPanel.add(contactListScroll);
-//
-//        addedContacts = new ContactList();
-//        addedListScroll = new JScrollPane(addedContacts);
-//        c.gridwidth = GridBagConstraints.REMAINDER;
-//        gridBag.setConstraints(addedListScroll, c);
-//        contactsListPanel.add(addedListScroll);
+        //The Contact Selector
+        contactDB = new ContactDB();
+        toAddContacts = contactDB.getListModel();
+        addedContacts = new DefaultListModel<Contact>();
+        tempList = new DefaultListModel<>();
+        for(int i = 0; i<toAddContacts.getSize(); i++){
+//            System.out.println((Contact)toAddContacts.getElementAt(i));
+            tempList.addElement((Contact)toAddContacts.getElementAt(i));
+        }
+
+        toAddContactList = new JList(toAddContacts);
+        listProperties(toAddContactList);
+        toAddContactList.addListSelectionListener(this::valueChangedToAdd);
+        contactListScroll = new JScrollPane(toAddContactList);
+        c.gridwidth = GridBagConstraints.RELATIVE;
+        gridBag.setConstraints(contactListScroll, c);
+        contactsListPanel.add(contactListScroll);
+
+        addedContactsList = new JList(addedContacts);
+        listProperties(addedContactsList);
+        addedContactsList.addListSelectionListener(this::valueChangedAdded);
+        addedListScroll = new JScrollPane(addedContactsList);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        gridBag.setConstraints(addedListScroll, c);
+        contactsListPanel.add(addedListScroll);
 
         gridBag.setConstraints(contactsListPanel, c);
         contactsPanel.add(contactsListPanel);
+
+        //The services which can be uploaded to
+        servicesPanel = new JPanel();
+        servicesPanel.setLayout(new GridLayout(5, 3));
+        services = new ButtonGroup();
+        uploadLabel = new JLabel("Upload to...");
+        uploadLabel.setFont(heading);
+        servicesPanel.add(uploadLabel);
+        selectAll = new JButton("Select All");
+        servicesPanel.add(selectAll);
+        deselectAll = new JButton("Deselect All");
+        servicesPanel.add(deselectAll);
+
+        cv = new JCheckBox("Personal C.V.");
+        resGate = new JCheckBox("Research Gate");
+        orcid = new JCheckBox("ORCID");
+        inst = new JCheckBox("Institue Page");
+        publ = new JCheckBox("Publons");
+        wos = new JCheckBox("World of Research");
+        gSch = new JCheckBox("Google Scholar");
+        linIn = new JCheckBox("LinkedIn");
+        scopus = new JCheckBox("Scopus");
+        pure = new JCheckBox("Pure");
+        acad = new JCheckBox("Academia");
+        twit = new JCheckBox("Twitter");
+        services.add(cv);services.add(resGate);services.add(orcid);
+        services.add(inst);services.add(publ);services.add(wos);
+        services.add(gSch);services.add(linIn);services.add(scopus);
+        services.add(pure);services.add(acad);services.add(twit);
+
+        servicesPanel.add(cv);servicesPanel.add(resGate);servicesPanel.add(orcid);
+        servicesPanel.add(inst);servicesPanel.add(publ);servicesPanel.add(wos);
+        servicesPanel.add(gSch);servicesPanel.add(linIn);servicesPanel.add(scopus);
+        servicesPanel.add(pure);servicesPanel.add(acad);servicesPanel.add(twit);
 
         saveBtn = new JButton("Save");
         uploadPanel.add(saveBtn);
@@ -200,37 +259,38 @@ public class UploadPanel extends JPanel {
         uploadPanel.add(uploadBtn);
 
         rightPanel.add(contactsPanel, BorderLayout.NORTH);
+        rightPanel.add(servicesPanel, BorderLayout.CENTER);
         rightPanel.add(uploadPanel, BorderLayout.SOUTH);
         add(leftPanel);
         add(rightPanel);
         //Still very structure according to the contact Button
         addComponentListener(new ComponentAdapter() {
-            public void componentResized (ComponentEvent e){
+            public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int font = 16;
 
-                if(windowWidth <= 600){
+                if (windowWidth <= 600) {
                     font = 0;
                 }
 
-                if(windowWidth < 800){
-                    int width = (int)(windowWidth*0.0625);
+                if (windowWidth < 800) {
+                    int width = (int) (windowWidth * 0.0625);
 
                     //Since addNew, edit and delete buttons have an image to the left of text, the font can be displayed longer
-                    if(windowWidth < 500) {
+                    if (windowWidth < 500) {
                         buttonProperties(backBtn, backImg, width, windowHeight, 0);
                         buttonProperties(resetBtn, resetImg, width, windowHeight, 0);
                         buttonProperties(saveBtn, saveImg, width, windowHeight, 0);
                         buttonProperties(uploadBtn, uploadImg, width, windowHeight, 0);
-                    }else{
+                    } else {
                         buttonProperties(backBtn, backImg, width, windowHeight, 16);
                         buttonProperties(resetBtn, resetImg, width, windowHeight, 16);
                         buttonProperties(saveBtn, saveImg, width, windowHeight, 16);
                         buttonProperties(uploadBtn, uploadImg, width, windowHeight, 16);
                     }
 
-                }else {
+                } else {
                     buttonProperties(backBtn, backImg, 50, 50, 16);
                     buttonProperties(resetBtn, resetImg, 50, 50, 16);
                     buttonProperties(saveBtn, saveImg, 50, 50, 16);
@@ -240,16 +300,97 @@ public class UploadPanel extends JPanel {
         });
     }
 
-    private void buttonProperties(JButton btn, Image img, int width, int height, int fontSize){
+    private void listProperties(JList list){
+        list.setFont(new Font("Arial", Font.PLAIN, 32));
+        DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    private void buttonProperties(JButton btn, Image img, int width, int height, int fontSize) {
         img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
         btn.setIcon(new ImageIcon(img));
 
-        btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
+        btn.setMargin(new Insets(0, (int) (width * 0.25), 0, (int) (width * 0.25)));
         btn.setFont(new Font("Arial", Font.PLAIN, fontSize));
         btn.setFocusPainted(false);
     }
 
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         cardLayout.show(cardPane, "Home");
     }
+
+    public void valueChangedToAdd(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting() == false) {
+            if (toAddContactList.getSelectedIndex() == -1) {
+            } else {
+//                for (Object selectedValue : toAddContactList.getSelectedValue()) {
+                Contact selectedContact = (Contact)toAddContactList.getSelectedValue();
+//                System.out.println(selectedContact);
+                addedContacts.addElement(selectedContact);
+                toAddContacts.removeElement(selectedContact);
+                tempList.removeElement(selectedContact);
+            }
+        }
+    }
+
+    public void valueChangedAdded(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting() == false) {
+            if (addedContactsList.getSelectedIndex() == -1) {
+            } else {
+                Contact selectedContact = (Contact) addedContactsList.getSelectedValue();
+//                System.out.println(selectedContact);
+                toAddContacts.addElement(selectedContact);
+                tempList.addElement(selectedContact);
+                addedContacts.removeElement(selectedContact);
+            }
+        }
+    }
+
+    //Any text entry into JTextField will search for the contact desired.
+    @Override
+    public void insertUpdate(DocumentEvent e) { search();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) { search();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+    }
+
+    private void search(){
+        contactDB.searchForContact(searchField.getText());
+//        tempList = new DefaultListModel<>();
+//        for(int i = 0; i<toAddContacts.getSize(); i++){
+//            System.out.println((Contact)toAddContacts.getElementAt(i));
+//            tempList.addElement((Contact)toAddContacts.getElementAt(i));
+//        }
+//        System.out.println("TEMP LIST "+tempList);
+        toAddContacts.removeAllElements();
+        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
+//            System.out.print((contactDB.getListModel().getElementAt(i)));
+//            System.out.println(tempList.getElementAt(i));
+            if(tempList.contains(contactDB.getListModel().getElementAt(i))){
+//                System.out.println(" Yes");
+                toAddContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+            }
+        }
+    }
+
+    //Allow for the display of the "Search..." text on the text area while not in focus
+    public void focusGained(FocusEvent e) {
+        searchField.setText("");
+        searchField.setForeground(Color.BLACK);
+    }
+    public void focusLost(FocusEvent e) {
+        if(searchField.getText().isEmpty()){
+            searchField.getDocument().removeDocumentListener(this);
+            searchField.setText("Search...");
+            searchField.setForeground(Color.GRAY);
+            searchField.getDocument().addDocumentListener(this);
+        }
+    }
+
 }

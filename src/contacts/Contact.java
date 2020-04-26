@@ -1,5 +1,7 @@
 package contacts;
 
+import java.util.Objects;
+
 public class Contact{
     int contact_ID;
     String givenName;
@@ -56,5 +58,10 @@ public class Contact{
 
     public String toString(){
         return givenName + " " + surname;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return contact_ID == ((Contact)obj).getContact_ID();
     }
 }

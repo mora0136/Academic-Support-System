@@ -24,6 +24,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
     JButton edit, delete;
     JList contactList;
     int contactSelected = 0;
+    DefaultListModel<Contact> listOfContacts;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -90,8 +91,10 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         //More green text for me to see this area better
         //Allow the contact list to have a scrollable list
 //        contactList.setLayout(new BoxLayout(contactList, BoxLayout.Y_AXIS));
-        contactList = new JList(contactDB.getListModel());
+        listOfContacts = contactDB.getListModel();
+        contactList = new JList(listOfContacts);
         listProperties(contactList);
+        contactList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(contactList);
 
         //Output area when a contact is selected or a new one is to added
@@ -179,7 +182,6 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.addListSelectionListener(this::valueChanged);
     }
 
     /**
@@ -310,13 +312,23 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
 
     private void search(){
         contactDB.searchForContact(searchField.getText());
-        leftPanel.remove(scrollContactPanel);
-        contactList = new JList(contactDB.getListModel());
-        listProperties(contactList);
-        scrollContactPanel = new JScrollPane(contactList);
-        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
+        listOfContacts.removeAllElements();
+        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
+            listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+        }
+        //Older way of doing it is below, above means just editing list not container as well.
+//        listOfContacts = contactDB.getListModel();
+//        leftPanel.remove(scrollContactPanel);
+//        contactList = new JList(contactDB.getListModel());
+//
+//        System.out.println(contactDB.getListModel());
+//
+//        listProperties(contactList);
+//        contactList.addListSelectionListener(this::valueChanged);
+//        scrollContactPanel = new JScrollPane(contactList);
+//        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
+//        revalidate();
+//        repaint();
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus
