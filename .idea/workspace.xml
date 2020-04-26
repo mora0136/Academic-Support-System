@@ -2,10 +2,73 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/AbstractDateModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/ComponentColorDefaults.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/ComponentFormatDefaults.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/ComponentIconDefaults.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/ComponentTextDefaults.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/DateComponent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/DateComponentFormatter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/DateModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/DatePanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/DatePicker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/JDatePanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/JDatePicker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/SqlDateModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/UtilCalendarModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/UtilDateModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/constraints" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/constraints/DateSelectionConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/constraints/RangeConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/constraints/WeekdayConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/constraints/WeekendConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/graphics" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/graphics/JNextIcon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/graphics/JPreviousIcon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_ar.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_ca.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_cs.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_da.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_de.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_el.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_en.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_es.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_fi.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_fr.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_hu.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_it.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_iw.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_ja.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_ko.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_nl.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_no_NO.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_pl.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_pt.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_ru.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_sk.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_sl.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_sv.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_th.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_tr.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/i18n/Text_zh.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/icons" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/resources/org/jdatepicker/icons/clear.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/reset.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AcademicSupportSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AcademicSupportSystem.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/contacts/ContactList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/AssDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/EditPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/EditPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/UploadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +100,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.general" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -59,10 +122,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="console.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/c9737324-8ed5-40fc-aa47-e629d89ae472/console.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.AcademicSupportSystem" />
       <item itemvalue="Application.GridTest" />
+      <item itemvalue="Database Script.console.sql" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Database Script.console.sql" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration" cleanupOnStartRun="true">
     <configuration>C:\Users\brodi\AppData\Roaming\Subversion</configuration>
@@ -97,7 +171,8 @@
       <workItem from="1587112368808" duration="5609000" />
       <workItem from="1587465231268" duration="10138000" />
       <workItem from="1587543610625" duration="18136000" />
-      <workItem from="1587593498053" duration="55720000" />
+      <workItem from="1587593498053" duration="68729000" />
+      <workItem from="1587858838873" duration="4768000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -239,14 +314,20 @@
       <option name="project" value="LOCAL" />
       <updated>1587782655779</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Edit works. Have not checked for if incorrect values are added but will move onto adding a contact.">
+      <created>1587784613592</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1587784613592</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="First commit of file" />
     <MESSAGE value="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details." />
     <MESSAGE value="Able to move between each of the windows now" />
     <MESSAGE value="Set JFrame size to miximum and gave it a title. ALso a loose idea of how the buttons will be contained in HomePanel" />
@@ -269,13 +350,24 @@
     <MESSAGE value="Fixed some bugs relating to content display and button creation" />
     <MESSAGE value="edit button transforms into save button and sets field enabled and disabled." />
     <MESSAGE value="Started implementing edit but then realised I could retrieve contacts better by identifying by id and not name allowing use of a hashmap that can store information to be manipulated. SuffixTrie should be used only for creating a search tree." />
-    <option name="LAST_COMMIT_MESSAGE" value="Started implementing edit but then realised I could retrieve contacts better by identifying by id and not name allowing use of a hashmap that can store information to be manipulated. SuffixTrie should be used only for creating a search tree." />
+    <MESSAGE value="Edit works. Have not checked for if incorrect values are added but will move onto adding a contact." />
+    <MESSAGE value="initial framework of the upload Panel. Have added a JDatePicker from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy." />
+    <MESSAGE value="initial framework of the upload Panel. Have added a JDatePanel from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy." />
+    <option name="LAST_COMMIT_MESSAGE" value="initial framework of the upload Panel. Have added a JDatePanel from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy." />
   </component>
   <component name="WindowStateProjectService">
+    <state x="665" y="364" key="#Notifications" timestamp="1587819347301">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state x="665" y="364" key="#Notifications/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587819347301" />
     <state x="262" y="75" key="#Project_Structure" timestamp="1587567355408">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="262" y="75" key="#Project_Structure/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587567355408" />
+    <state x="3085" y="875" key="#SQL_Dialects" timestamp="1587805201383">
+      <screen x="2736" y="514" width="1920" height="1040" />
+    </state>
+    <state x="3085" y="875" key="#SQL_Dialects/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587805201383" />
     <state x="625" y="410" key="#VCS_History_Cache_Settings" timestamp="1587645597575">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -299,76 +391,88 @@
     </state>
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587694056624" />
-    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587782653597">
+    <state x="498" y="150" key="#console.sql" timestamp="1587786266368">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state x="498" y="150" key="#console.sql/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587786266368" />
+    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587863500322">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587782653597" />
-    <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587642711585">
+    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587863500322" />
+    <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
+      <screen x="0" y="0" width="1563" height="1002" />
+    </state>
+    <state x="0" y="108" key="DiffContextDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587819239283" />
+    <state x="562" y="245" key="FileChooserDialogImpl" timestamp="1587859018375">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
-    <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587642711585" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom" timestamp="1587784498333">
+    <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587859018375" />
+    <state width="1520" height="125" key="GridCell.Tab.0.bottom" timestamp="1587863387517">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
+    <state width="1520" height="125" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587863387517" />
     <state width="1877" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center" timestamp="1587784498333">
+    <state width="1520" height="125" key="GridCell.Tab.0.center" timestamp="1587863387517">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
+    <state width="1520" height="125" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587863387517" />
     <state width="1877" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left" timestamp="1587784498333">
+    <state width="1520" height="125" key="GridCell.Tab.0.left" timestamp="1587863387517">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
+    <state width="1520" height="125" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587863387517" />
     <state width="1877" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right" timestamp="1587784498333">
+    <state width="1520" height="125" key="GridCell.Tab.0.right" timestamp="1587863387517">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587784498333" />
+    <state width="1520" height="125" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587863387517" />
     <state width="1877" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587602270181">
+    <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="332" key="GridCell.Tab.1.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
-    <state width="1520" height="332" key="GridCell.Tab.1.center" timestamp="1587602270181">
+    <state width="1520" height="332" key="GridCell.Tab.1.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587819362629" />
+    <state width="1520" height="332" key="GridCell.Tab.1.center" timestamp="1587819362628">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="332" key="GridCell.Tab.1.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
-    <state width="1520" height="332" key="GridCell.Tab.1.left" timestamp="1587602270181">
+    <state width="1520" height="332" key="GridCell.Tab.1.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587819362628" />
+    <state width="1520" height="332" key="GridCell.Tab.1.left" timestamp="1587819362628">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="332" key="GridCell.Tab.1.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
-    <state width="1520" height="332" key="GridCell.Tab.1.right" timestamp="1587602270181">
+    <state width="1520" height="332" key="GridCell.Tab.1.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587819362628" />
+    <state width="1520" height="332" key="GridCell.Tab.1.right" timestamp="1587819362628">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state width="1520" height="332" key="GridCell.Tab.1.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587602270181" />
+    <state width="1520" height="332" key="GridCell.Tab.1.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587819362628" />
     <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1587638114030">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587638114030" />
-    <state x="262" y="75" key="SettingsEditor" timestamp="1587642722185">
+    <state x="262" y="75" key="SettingsEditor" timestamp="1587859534919">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state x="262" y="75" key="SettingsEditor/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587642722185" />
+    <state x="262" y="75" key="SettingsEditor/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587859534919" />
     <state x="659" y="386" width="314" height="245" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1587638255713">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="659" y="386" width="314" height="245" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587638255713" />
-    <state x="645" y="56" width="543" height="629" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1587638325879">
+    <state x="645" y="56" width="543" height="629" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1587786152807">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state x="645" y="56" width="543" height="629" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587638325879" />
+    <state x="645" y="56" width="543" height="629" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587786152807" />
     <state x="599" y="342" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587466289302">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="599" y="342" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587466289302" />
+    <state x="3242" y="486" width="1243" height="692" maximized="true" key="dock-window-1" timestamp="1587802280041">
+      <screen x="2736" y="514" width="1920" height="1040" />
+    </state>
+    <state x="3242" y="486" width="1243" height="692" maximized="true" key="dock-window-1/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587802280041" />
     <state x="209" y="121" key="new project wizard" timestamp="1587640306777">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>

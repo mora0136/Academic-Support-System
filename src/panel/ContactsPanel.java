@@ -10,43 +10,37 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ContactsPanel extends JPanel implements DocumentListener, FocusListener{
-    CardLayout cardLayout;
-    JPanel cardPane, left, right, leftTop, rightTop, rightBottom, panelMiddle;
-    JScrollPane scrollMiddle;
+    JPanel cardPane, leftPanel, rightPanel, contextPanel, displayPanel, optionPanel;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg, tempImg;
+    JTextField givenNameField, lastNameField, emailField, phoneField;
+    JScrollPane scrollContactPanel;
     JTextField searchField;
     ContactList contactList;
-    JTextField givenNameField, lastNameField, emailField, phoneField;
-    JButton edit;
+    CardLayout cardLayout;
+    JButton edit, delete;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
 
-        left = new JPanel();
-        right = new JPanel();
-        leftTop = new JPanel();
-        panelMiddle = new JPanel();
-        rightTop = new JPanel();
-        rightBottom = new JPanel();
-
+        leftPanel = new JPanel();
+        rightPanel = new JPanel();
+        contextPanel = new JPanel();
+        displayPanel = new JPanel();
+        optionPanel = new JPanel();
         contactList = new ContactList();
 
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
-        //Set the frame to 1x2 grid(left and right Panels)
+        //left and right panels to be added in
         setLayout(new GridLayout(1, 2));
 
         JButton back = new JButton("Back");
         back.addActionListener(this::actionPerformed);
         backImg = ImageIO.read(new File("resources/back.png"));
-//        back.addActionListener(this::actionPerformed);
 
 
         searchImg = ImageIO.read(new File("resources/search.png"));
@@ -58,97 +52,81 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         searchField.getDocument().addDocumentListener(this);
         searchField.addFocusListener(this);
 
-//        JButton search = new JButton("Search");
-//        search.addActionListener(this::actionPerformed);
-//        search.setMnemonic(KeyEvent.VK_ENTER); // still needs to worked on
-//        searchImg = ImageIO.read(new File("resources/search.png"));
-        //Action Event needed, either make exclusive to search or could auto do it as entering text
-
         JButton addNew = new JButton("Add New");
         addNew.addActionListener(this::actionPerformed);
         addNewImg = ImageIO.read(new File("resources/add.png"));
 
         edit = new JButton("Edit");
+        edit.setEnabled(false);
         edit.addActionListener(this::actionPerformed);
         editImg = ImageIO.read(new File("resources/edit_contact.png"));
         tempImg = editImg;
         saveImg = ImageIO.read(new File("resources/save.png"));
 
-        JButton delete = new JButton("Delete");
+        delete = new JButton("Delete");
+        delete.setEnabled(false);
         delete.addActionListener(this::actionPerformed);
         deleteImg = ImageIO.read(new File("resources/delete.png"));
 
-        left.setLayout(new BorderLayout());
-        right.setLayout(new BorderLayout());
-        leftTop.setLayout(gridBag);
+        leftPanel.setLayout(new BorderLayout());
+        rightPanel.setLayout(new BorderLayout());
+        contextPanel.setLayout(gridBag);
 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         gridBag.setConstraints(back, c);
-        leftTop.add(back);
-        c.insets = new Insets(10, 10, 10, 0);
+        contextPanel.add(back);
+        c.insets = new Insets(10, 10, 10, 10);
         c.weightx = 25;
         gridBag.setConstraints(searchField, c);
-        leftTop.add(searchField);
-        c.insets = new Insets(10, 0, 10, 10);
-        c.weightx = 2;
-//        gridBag.setConstraints(search, c);
-//        leftTop.add(search);
-        leftTop.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        contextPanel.add(searchField);
 
-        //Add contacts to leftMiddle scroll view
+        //Allow the contact list to have a scrollable list
         contactList.setLayout(new BoxLayout(contactList, BoxLayout.Y_AXIS));
-        scrollMiddle = new JScrollPane(contactList);
+        scrollContactPanel = new JScrollPane(contactList);
 
-        //Output area
-        rightTop.setLayout(new BoxLayout(rightTop, BoxLayout.Y_AXIS));
+        //Output area when a contact is selected or a new one is to added
+        displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
         JLabel givenName = new JLabel("Name");
         givenNameField = new JTextField();
+        givenNameField.setEditable(false);
+
         JLabel lastName = new JLabel("Surname");
         lastNameField = new JTextField();
+        lastNameField.setEditable(false);
+
         JLabel email = new JLabel("Email");
         emailField = new JTextField();
+        emailField.setEditable(false);
+
         JLabel phone = new JLabel("Phone");
         phoneField = new JTextField();
-        //Associate the desired output location of the information contained within contactlist.
-        //Allows for buttons press to influence other panel.
-        contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField);
-        givenNameField.setEditable(false);
-        lastNameField.setEditable(false);
-        emailField.setEditable(false);
         phoneField.setEditable(false);
-        rightTop.add(givenName);
-        rightTop.add(givenNameField);
-        rightTop.add(lastName);
-        rightTop.add(lastNameField);
-        rightTop.add(email);
-        rightTop.add(emailField);
-        rightTop.add(phone);
-        rightTop.add(phoneField);
 
+        contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField, edit, delete);
+        displayPanel.add(givenName); displayPanel.add(givenNameField);
+        displayPanel.add(lastName); displayPanel.add(lastNameField);
+        displayPanel.add(email); displayPanel.add(emailField);
+        displayPanel.add(phone); displayPanel.add(phoneField);
 
-        rightBottom.setLayout(new GridLayout(1, 2));
-        rightBottom.add(edit);
-        rightBottom.add(delete);
+        optionPanel.setLayout(new GridLayout(1, 2));
+        optionPanel.add(edit); optionPanel.add(delete);
 
-        left.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        right.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        leftPanel.add(contextPanel, BorderLayout.NORTH);
+        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
+        leftPanel.add(addNew, BorderLayout.SOUTH);
 
-        left.add(leftTop, BorderLayout.NORTH);
-        left.add(scrollMiddle, BorderLayout.CENTER);
-        left.add(addNew, BorderLayout.SOUTH);
+        rightPanel.add(displayPanel, BorderLayout.NORTH);
+        rightPanel.add(optionPanel, BorderLayout.SOUTH);
 
-        right.add(rightTop, BorderLayout.NORTH);
-        right.add(rightBottom, BorderLayout.SOUTH);
+        add(leftPanel);
+        add(rightPanel);
 
-        add(left);
-        add(right);
-
+        // Details what styles should apply to buttons at the certain size of a window
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
-                GridBagConstraints c2 = new GridBagConstraints();
                 int font = 16;
 
                 if(windowWidth <= 600){
@@ -157,47 +135,63 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
 
                 if(windowWidth < 800){
                     int width = (int)(windowWidth*0.0625);
-                    buttonProperties(back, backImg, width, width, font, false);
-//                    buttonProperties(search, searchImg, width, width, font, false);
+                    buttonProperties(back, backImg, width, windowHeight, font, false);
+
+                    //Since addNew, edit and delete buttons have an image to the left of text, the font can be displayed longer
                     if(windowWidth < 500) {
-                        buttonProperties(addNew, addNewImg, width, width, 0, true);
-                        buttonProperties(edit, editImg, width, width, 0, true);
-                        buttonProperties(delete, deleteImg, width, width, 0, true);
+                        buttonProperties(addNew, addNewImg, width, windowHeight, 0, true);
+                        buttonProperties(edit, editImg, width, windowHeight, 0, true);
+                        buttonProperties(delete, deleteImg, width, windowHeight, 0, true);
                     }else{
-                        buttonProperties(addNew, addNewImg, width, width, 16, true);
-                        buttonProperties(edit, editImg, width, width, 16, true);
-                        buttonProperties(delete, deleteImg, width, width, 16, true);
+                        buttonProperties(addNew, addNewImg, width, windowHeight, 16, true);
+                        buttonProperties(edit, editImg, width, windowHeight, 16, true);
+                        buttonProperties(delete, deleteImg, width, windowHeight, 16, true);
                     }
+
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    saveImg = saveImg.getScaledInstance(Integer.min(width, width), -1, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(Integer.min(width, width), -1, Image.SCALE_DEFAULT);
+                    saveImg = saveImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
+
                 }else{
                     buttonProperties(back, backImg, 50, 50, font, false);
-//                    buttonProperties(search, searchImg, 50, 50, font, false);
                     buttonProperties(addNew, addNewImg, 50, 50, font, true);
                     buttonProperties(edit, editImg, 50, 50, font, true);
                     buttonProperties(delete, deleteImg, 50, 50, font, true);
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    saveImg = saveImg.getScaledInstance(Integer.min(50, 50), -1, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(Integer.min(50, 50), -1, Image.SCALE_DEFAULT);
+                    saveImg = saveImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
                 }
             }
         });
     }
-    private void buttonProperties(JButton btn, Image img, int width, int height, int font, boolean IconLeft){
+
+    /**
+     * Details the standard design layout of a button inside this display
+     * @param btn The button to be edited
+     * @param img The associated image with the button
+     * @param width The desired width of the image(Image aspect ratio is retained so smallest of width and height is used)
+     * @param height The desired height of the image(Image aspect ratio is retained so smallest of width and height is used)
+     * @param fontSize The font size desired on the button(0 disabled the text from being viewable)
+     * @param IconLeft Is true if the desired position of the text is to the right of the image
+     */
+    private void buttonProperties(JButton btn, Image img, int width, int height, int fontSize, boolean IconLeft){
         img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
         btn.setIcon(new ImageIcon(img));
+
         if(!IconLeft){
             btn.setVerticalTextPosition(SwingConstants.BOTTOM);
             btn.setHorizontalTextPosition(SwingConstants.CENTER);
         }
+
         btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
-        btn.setFont(new Font("Arial", Font.PLAIN, font));
+        btn.setFont(new Font("Arial", Font.PLAIN, fontSize));
         btn.setFocusPainted(false);
-//        gridBag.setConstraints(btn,c);
     }
 
-
+    /**
+     * Details the actions required for a specific button on this panel
+     * @param e The Action Event call
+     */
     public void actionPerformed(ActionEvent e){
         System.out.println("Action performed");
         switch(e.getActionCommand()) {
@@ -205,7 +199,12 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                 cardLayout.show(cardPane, "Home");
                 break;
             case "Add New":
-                break;
+                contactList.setContactSelected(0);
+                givenNameField.setText("");
+                lastNameField.setText("");
+                emailField.setText("");
+                phoneField.setText("");
+                edit.setEnabled(true);
             case "Edit":
                 givenNameField.setEditable(true);
                 lastNameField.setEditable(true);
@@ -216,44 +215,61 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                 editImg = saveImg;
                 edit.setIcon(new ImageIcon(editImg));
                 break;
-
             case "Save":
                 givenNameField.setEditable(false);
                 lastNameField.setEditable(false);
                 emailField.setEditable(false);
                 phoneField.setEditable(false);
-                contactList.editContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
-
+                if(contactList.getContactSelected() == 0){
+                    contactList.addContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
+                    edit.setEnabled(false);
+                    delete.setEnabled(false);
+                    givenNameField.setText("");
+                    lastNameField.setText("");
+                    emailField.setText("");
+                    phoneField.setText("");
+                }else {
+                    contactList.updateContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
+                }
                 edit.setText("Edit");
                 editImg = tempImg;
                 edit.setIcon(new ImageIcon(editImg));
                 break;
             case "Delete":
+                contactList.deleteContact();
+                delete.setEnabled(false);
+                edit.setEnabled(false);
+                givenNameField.setText("");
+                lastNameField.setText("");
+                emailField.setText("");
+                phoneField.setText("");
+                givenNameField.setEditable(false);
+                lastNameField.setEditable(false);
+                emailField.setEditable(false);
+                phoneField.setEditable(false);
+//                contactList.setContactSelected(0);
                 break;
         }
     }
+
+    //Any text entry into JTextField will search for the contact desired.
     @Override
-    public void insertUpdate(DocumentEvent e) {
-        search();
+    public void insertUpdate(DocumentEvent e) { search();
     }
 
     @Override
-    public void removeUpdate(DocumentEvent e) {
-        search();
+    public void removeUpdate(DocumentEvent e) { search();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-//                search();
     }
 
     private void search(){
-//                if(searchField.getText() != "Search...") {
         contactList.searchForContact(searchField.getText());
-//                }
     }
 
-    //Note that whatever was in the box previously is erased
+    //Allow for the display of the "Search..." text on the text area while not in focus
     public void focusGained(FocusEvent e) {
         searchField.setText("");
         searchField.setForeground(Color.BLACK);
