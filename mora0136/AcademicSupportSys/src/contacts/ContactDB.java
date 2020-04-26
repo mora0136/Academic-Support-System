@@ -85,6 +85,7 @@ public class ContactDB {
             extractContactsFromDB();
         }else {
             ArrayList<SuffixIndex> startIndexes;
+            listModel = new DefaultListModel<>();
             SuffixTrieNode sn = sf.get(search);
             if(sn != null) {
                 startIndexes = sn.getData().getStartIndexes();
