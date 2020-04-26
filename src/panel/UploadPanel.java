@@ -1,5 +1,6 @@
 package panel;
 
+import contacts.ContactList;
 import org.jdatepicker.JDatePanel;
 import org.jdatepicker.JDatePicker;
 
@@ -15,13 +16,15 @@ import java.util.ArrayList;
 
 public class UploadPanel extends JPanel {
     CardLayout cardLayout;
-    JPanel cardPane, leftPanel, rightPanel, contextPanel, dataPanel, contactsPanel, servicesPanel, uploadPanel, filePanel, extraPanel, lowerPanel;
+    JPanel cardPane, leftPanel, rightPanel, contextPanel, dataPanel, contactsPanel, servicesPanel, uploadPanel, filePanel, extraPanel, lowerPanel, contactsListPanel;
+    JScrollPane contactListScroll, addedListScroll;
     JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn;
     Image backImg, resetImg, fileImg, saveImg, uploadImg;
-    JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel;
+    JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
+    ContactList contactList, addedContacts;
     JComboBox selectTypeComboBox;
     JTextArea descriptionTextArea;
-    JTextField titleField;
+    JTextField titleField, searchField;
     Font heading;
     JDatePanel publishDatePanel;
     JList attachedFileList;
@@ -68,72 +71,128 @@ public class UploadPanel extends JPanel {
         contextPanel.add(resetBtn);
 
         c.insets = new Insets(20, 20, 0, 20);
+
+        //The Title Text Section
         titleLabel = new JLabel("Title:");
         titleLabel.setFont(heading);
-        c.weightx = 0;
         c.gridwidth = GridBagConstraints.RELATIVE;
-        c.fill = GridBagConstraints.BOTH;
         gridBag.setConstraints(titleLabel, c);
         dataPanel.add(titleLabel);
+        titleField = new JTextField();
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridwidth = GridBagConstraints.REMAINDER;
-        titleField = new JTextField();
         gridBag.setConstraints(titleField, c);
         dataPanel.add(titleField);
 
-        c.weightx = 0;
+        //The Description Text Section
         descLabel = new JLabel("Description:");
         descLabel.setFont(heading);
         gridBag.setConstraints(descLabel, c);
         dataPanel.add(descLabel);
-        c.weighty = 1;
-        c.gridwidth = GridBagConstraints.REMAINDER;
         descriptionTextArea = new JTextArea();
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
         gridBag.setConstraints(descriptionTextArea, c);
         dataPanel.add(descriptionTextArea);
 
-        c.weighty = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = GridBagConstraints.RELATIVE;
-//        c.weightx = 1;
+        //The File Selection section
         fileLabel = new JLabel("File:");
         fileLabel.setFont(heading);
+        c.weighty = 0;
+        c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(fileLabel, c);
         filePanel.add(fileLabel);
-        c.gridwidth = GridBagConstraints.REMAINDER;
         fileSelectBtn = new JButton("Select A File...");
+        c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(fileSelectBtn, c);
         filePanel.add(fileSelectBtn);
-
-        c.fill = GridBagConstraints.BOTH;
-        c.weighty = 50;
-        c.fill = GridBagConstraints.BOTH;
         String[] keywords = {"Java", "IntelliJ", "UX", "HCI", "Interactive Computer Systems","Persona", "Grokkability"};
         attachedFileList = new JList(keywords);
+        c.weighty = 1;
         gridBag.setConstraints(attachedFileList, c);
         filePanel.add(attachedFileList);
 
-//        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.weighty = 1;
+        //The type DropDown Section
         typeLabel = new JLabel("Type");
         typeLabel.setFont(heading);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(typeLabel, c);
         extraPanel.add(typeLabel);
-        c.gridwidth = GridBagConstraints.REMAINDER;
         selectTypeComboBox = new JComboBox();
+        c.weightx = 10;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(selectTypeComboBox, c);
         extraPanel.add(selectTypeComboBox);
 
+        //The Date Calender Section
         dateLabel = new JLabel("Date:");
+        dateLabel.setFont(heading);
+        c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(dateLabel, c);
         extraPanel.add(dateLabel);
-        c.fill = GridBagConstraints.BOTH;
         publishDatePanel = new JDatePanel();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(publishDatePanel, c);
         extraPanel.add(publishDatePanel);
 
         lowerPanel.add(filePanel);
         lowerPanel.add(extraPanel);
+
+        leftPanel.add(contextPanel, BorderLayout.NORTH);
+        leftPanel.add(dataPanel, BorderLayout.CENTER);
+        leftPanel.add(lowerPanel, BorderLayout.SOUTH);
+
+
+        contactsPanel = new JPanel();
+        contactsListPanel = new JPanel();
+        contactsPanel.setLayout(gridBag);
+        contactsListPanel.setLayout(gridBag);
+
+        authorsLabel = new JLabel("Authors:");
+        authorsLabel.setFont(heading);
+        c.gridwidth = GridBagConstraints.RELATIVE;
+        c.weightx = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        gridBag.setConstraints(authorsLabel, c);
+        contactsPanel.add(authorsLabel);
+
+        searchField = new JTextField("Search...");
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 4;
+        gridBag.setConstraints(searchField, c);
+        contactsPanel.add(searchField);
+
+        contactsLabel = new JLabel("Contacts");
+        c.gridwidth = GridBagConstraints.RELATIVE;
+        c.anchor = GridBagConstraints.CENTER;
+//        c.weightx = 2;
+        gridBag.setConstraints(contactsLabel, c);
+        contactsListPanel.add(contactsLabel);
+
+        addedLabel = new JLabel("Added");
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.anchor = GridBagConstraints.CENTER;
+//        c.weightx = 2;
+        gridBag.setConstraints(addedLabel, c);
+        contactsListPanel.add(addedLabel);
+
+        contactList = new ContactList();
+        contactListScroll = new JScrollPane(contactList);
+        c.gridwidth = GridBagConstraints.RELATIVE;
+        gridBag.setConstraints(contactListScroll, c);
+        contactsListPanel.add(contactListScroll);
+
+        addedContacts = new ContactList();
+        addedListScroll = new JScrollPane(addedContacts);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        gridBag.setConstraints(addedListScroll, c);
+        contactsListPanel.add(addedListScroll);
+
+        gridBag.setConstraints(contactsListPanel, c);
+        contactsPanel.add(contactsListPanel);
 
         saveBtn = new JButton("Save");
         uploadPanel.add(saveBtn);
@@ -141,9 +200,7 @@ public class UploadPanel extends JPanel {
         uploadBtn = new JButton("Upload");
         uploadPanel.add(uploadBtn);
 
-        leftPanel.add(contextPanel, BorderLayout.NORTH);
-        leftPanel.add(dataPanel, BorderLayout.CENTER);
-        leftPanel.add(lowerPanel, BorderLayout.SOUTH);
+        rightPanel.add(contactsPanel, BorderLayout.NORTH);
         rightPanel.add(uploadPanel, BorderLayout.SOUTH);
         add(leftPanel);
         add(rightPanel);
