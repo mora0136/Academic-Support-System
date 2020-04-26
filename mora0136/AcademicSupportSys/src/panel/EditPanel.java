@@ -11,10 +11,8 @@ public class EditPanel extends JPanel {
     EditPanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
-        JTextArea testMessage = new JTextArea("This is the Edit Panel");
         JButton back = new JButton("back");
         back.addActionListener(this::actionPerformed);
-        add(testMessage);
         add(back);
     }
     public void actionPerformed(ActionEvent e){
