@@ -1,11 +1,13 @@
 package panel;
 
-import contacts.ContactList;
+import contacts.Contact;
+import contacts.ContactDB;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -17,10 +19,11 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
     JTextField givenNameField, lastNameField, emailField, phoneField;
     JScrollPane scrollContactPanel;
     JTextField searchField;
-    ContactList contactList;
+    ContactDB contactDB;
     CardLayout cardLayout;
     JButton edit, delete;
-    JList contact;
+    JList contactList;
+    int contactSelected = 0;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -31,7 +34,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         contextPanel = new JPanel();
         displayPanel = new JPanel();
         optionPanel = new JPanel();
-        contactList = new ContactList();
+        contactDB = new ContactDB();
 
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -82,8 +85,13 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         gridBag.setConstraints(searchField, c);
         contextPanel.add(searchField);
 
+        //More visible please
+        //Yes please more vissible
+        //More green text for me to see this area better
         //Allow the contact list to have a scrollable list
-        contactList.setLayout(new BoxLayout(contactList, BoxLayout.Y_AXIS));
+//        contactList.setLayout(new BoxLayout(contactList, BoxLayout.Y_AXIS));
+        contactList = new JList(contactDB.getListModel());
+        listProperties(contactList);
         scrollContactPanel = new JScrollPane(contactList);
 
         //Output area when a contact is selected or a new one is to added
@@ -104,7 +112,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         phoneField = new JTextField();
         phoneField.setEditable(false);
 
-        contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField, edit, delete);
+//        contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField, edit, delete);
         displayPanel.add(givenName); displayPanel.add(givenNameField);
         displayPanel.add(lastName); displayPanel.add(lastNameField);
         displayPanel.add(email); displayPanel.add(emailField);
@@ -166,6 +174,14 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         });
     }
 
+    private void listProperties(JList list){
+        list.setFont(new Font("Arial", Font.PLAIN, 32));
+        DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.addListSelectionListener(this::valueChanged);
+    }
+
     /**
      * Details the standard design layout of a button inside this display
      * @param btn The button to be edited
@@ -200,7 +216,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                 cardLayout.show(cardPane, "Home");
                 break;
             case "Add New":
-                contactList.setContactSelected(0);
+                contactSelected = 0;
                 givenNameField.setText("");
                 lastNameField.setText("");
                 emailField.setText("");
@@ -221,8 +237,8 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                 lastNameField.setEditable(false);
                 emailField.setEditable(false);
                 phoneField.setEditable(false);
-                if(contactList.getContactSelected() == 0){
-                    contactList.addContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
+                if(contactSelected == 0){
+                    contactDB.addContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
                     edit.setEnabled(false);
                     delete.setEnabled(false);
                     givenNameField.setText("");
@@ -230,14 +246,14 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                     emailField.setText("");
                     phoneField.setText("");
                 }else {
-                    contactList.updateContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
+                    contactDB.updateContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText(), contactSelected);
                 }
                 edit.setText("Edit");
                 editImg = tempImg;
                 edit.setIcon(new ImageIcon(editImg));
                 break;
             case "Delete":
-                contactList.deleteContact();
+                contactDB.deleteContact(contactSelected);
                 delete.setEnabled(false);
                 edit.setEnabled(false);
                 givenNameField.setText("");
@@ -253,6 +269,32 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
         }
     }
 
+    public void valueChanged(ListSelectionEvent e){
+        if (e.getValueIsAdjusting() == false) {
+            if (contactList.getSelectedIndex() == -1) {
+                //No selection, disable fire button.
+                givenNameField.setText("");
+                lastNameField.setText("");
+                emailField.setText("");
+                phoneField.setText("");
+
+
+            } else {
+                //Selection, enable the fire button.
+                edit.setEnabled(true);
+                delete.setEnabled(true);
+                Contact c = (Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex());
+                givenNameField.setText(c.getName());
+                lastNameField.setText(c.getSurname());
+                emailField.setText(c.getEmail());
+                phoneField.setText(c.getPhone());
+                contactSelected = c.getContact_ID();
+            }
+        }
+    }
+
+
+
     //Any text entry into JTextField will search for the contact desired.
     @Override
     public void insertUpdate(DocumentEvent e) { search();
@@ -267,7 +309,14 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
     }
 
     private void search(){
-        contactList.searchForContact(searchField.getText());
+        contactDB.searchForContact(searchField.getText());
+        leftPanel.remove(scrollContactPanel);
+        contactList = new JList(contactDB.getListModel());
+        listProperties(contactList);
+        scrollContactPanel = new JScrollPane(contactList);
+        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus
