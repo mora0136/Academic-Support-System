@@ -20,6 +20,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
     ContactList contactList;
     CardLayout cardLayout;
     JButton edit, delete;
+    JList contact;
 
     ContactsPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
