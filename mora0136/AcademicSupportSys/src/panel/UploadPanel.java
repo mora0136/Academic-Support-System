@@ -6,11 +6,13 @@ import org.jdatepicker.JDatePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -111,9 +113,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(fileSelectBtn, c);
         filePanel.add(fileSelectBtn);
-        String[] keywords = {"Java", "IntelliJ", "UX", "HCI", "Interactive Computer Systems", "Persona", "Grokkability"};
-        attachedFileList = new JList(keywords);
-        attachedFileList.setFont(heading);
+        DefaultListModel<String> tempFileList = new DefaultListModel<>();
+        attachedFileList = new JList(tempFileList);
+        attachedFileList.setFont(new Font("Arial", Font.PLAIN, 16));
+        attachedFileList.setTransferHandler(new FileListTransferHandler(attachedFileList));
+        attachedFileList.setDropMode(DropMode.INSERT);
         c.weighty = 1;
         gridBag.setConstraints(attachedFileList, c);
         filePanel.add(attachedFileList);
@@ -178,14 +182,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         contactsLabel = new JLabel("Contacts");
         c.gridwidth = GridBagConstraints.RELATIVE;
         c.anchor = GridBagConstraints.CENTER;
-//        c.weightx = 2;
         gridBag.setConstraints(contactsLabel, c);
         contactsListPanel.add(contactsLabel);
 
         addedLabel = new JLabel("Added");
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.anchor = GridBagConstraints.CENTER;
-//        c.weightx = 2;
         gridBag.setConstraints(addedLabel, c);
         contactsListPanel.add(addedLabel);
 
@@ -195,7 +197,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         addedContacts = new DefaultListModel<Contact>();
         tempList = new DefaultListModel<>();
         for(int i = 0; i<toAddContacts.getSize(); i++){
-//            System.out.println((Contact)toAddContacts.getElementAt(i));
             tempList.addElement((Contact)toAddContacts.getElementAt(i));
         }
 
@@ -242,10 +243,10 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         pure = new JCheckBox("Pure");
         acad = new JCheckBox("Academia");
         twit = new JCheckBox("Twitter");
-        services.add(cv);services.add(resGate);services.add(orcid);
-        services.add(inst);services.add(publ);services.add(wos);
-        services.add(gSch);services.add(linIn);services.add(scopus);
-        services.add(pure);services.add(acad);services.add(twit);
+//        services.add(cv);services.add(resGate);services.add(orcid);
+//        services.add(inst);services.add(publ);services.add(wos);
+//        services.add(gSch);services.add(linIn);services.add(scopus);
+//        services.add(pure);services.add(acad);services.add(twit);
 
         servicesPanel.add(cv);servicesPanel.add(resGate);servicesPanel.add(orcid);
         servicesPanel.add(inst);servicesPanel.add(publ);servicesPanel.add(wos);
@@ -362,18 +363,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
     private void search(){
         contactDB.searchForContact(searchField.getText());
-//        tempList = new DefaultListModel<>();
-//        for(int i = 0; i<toAddContacts.getSize(); i++){
-//            System.out.println((Contact)toAddContacts.getElementAt(i));
-//            tempList.addElement((Contact)toAddContacts.getElementAt(i));
-//        }
-//        System.out.println("TEMP LIST "+tempList);
         toAddContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-//            System.out.print((contactDB.getListModel().getElementAt(i)));
-//            System.out.println(tempList.getElementAt(i));
             if(tempList.contains(contactDB.getListModel().getElementAt(i))){
-//                System.out.println(" Yes");
                 toAddContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
             }
         }
@@ -394,3 +386,40 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
 }
+@SuppressWarnings("serial")
+class FileListTransferHandler extends TransferHandler {
+    private JList list;
+
+    FileListTransferHandler(JList list){
+        this.list = list;
+    }
+
+    @Override
+    public boolean canImport(TransferSupport support) {
+        if(!support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
+            return false;
+        }
+        return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+    }
+
+    @Override
+    public boolean importData(TransferSupport support) {
+        if (!canImport(support)) {
+            return false;
+        }
+
+        Transferable t = support.getTransferable();
+        try {
+            java.util.List files = (java.util.List) t.getTransferData(DataFlavor.javaFileListFlavor);
+            DefaultListModel model = (DefaultListModel) list.getModel();
+            for (int i = 0; i < files.size(); i++) {
+                model.addElement(files.get(i));
+            }
+            } catch(UnsupportedFlavorException e){
+                e.printStackTrace();
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+            return true;
+        }
+    }

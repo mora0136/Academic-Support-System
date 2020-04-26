@@ -27,11 +27,11 @@
       <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/graphics" afterDir="true" />
       <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/graphics/JNextIcon.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/java/org/jdatepicker/graphics/JPreviousIcon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DragFileDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FileAndTextTransferHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ListTransfermanager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/TabbedPaneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/contacts/Contact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/Contact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/contacts/ContactDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/AssDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/UploadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,6 +79,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DragFileDemo" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="DragFileDemo" />
+      <module name="AcademicSupportSystem" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DropDemo" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="DropDemo" />
+      <module name="AcademicSupportSystem" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GridTest" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="GridTest" />
       <module name="AcademicSupportSystem" />
@@ -92,7 +106,9 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Application.DropDemo" />
       <item itemvalue="Application.AcademicSupportSystem" />
+      <item itemvalue="Application.DragFileDemo" />
       <item itemvalue="Application.GridTest" />
       <item itemvalue="Database Script.console.sql" />
     </list>
@@ -136,7 +152,7 @@
       <workItem from="1587465231268" duration="10138000" />
       <workItem from="1587543610625" duration="18136000" />
       <workItem from="1587593498053" duration="68729000" />
-      <workItem from="1587858838873" duration="24014000" />
+      <workItem from="1587858838873" duration="33806000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -313,14 +329,20 @@
       <option name="project" value="LOCAL" />
       <updated>1587877197297</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Saerching of contacts is enabled now. Had to override the equals method inside Contact to allow for a contains on a temp list of possible search results.">
+      <created>1587893656939</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1587893656939</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Done. Home page is compeleted as per mockup. Still would like to look at cleaning up this code so that it is 1. more portable 2. more readable and 3. less inefficient" />
     <MESSAGE value="Was able to make a frame that has it's components scale using the Component Action event. The home screen scales correctly to preserve it's layout. This technique may not be suitable for other panels that have more elements on them. Still need to review and see if there is not a more streamlined way of doing this. Regardless I have found i method that works, just yet to see if it will scale to other classes or if I can make it more portable." />
     <MESSAGE value="contacts panel structure is set up. Default screen is contacts just for tetsing purpose. Will still use Dimension action and will determine expected changes." />
     <MESSAGE value="Back and search fields/buttons have been added per mockup. No functionaility but move onto contact list. This needs a modular approach so it can expand and reduce as list of contacts change due to adding/deleting and searching." />
@@ -345,7 +367,8 @@
     <MESSAGE value="Roll back to here if contactList no longer works. NOTE no java folder" />
     <MESSAGE value="Changed ContactList to a ContactDB to better reflect its usage. Thsi was because the contacts are now displayed using a JList. This is made inside the current Panel and so the ContactDB only queries the database and creates a ModelList which each panel refers to as the contact. This is a much better approach and is more streamlined with everything being contained inside the panels in which they are being used." />
     <MESSAGE value="Changed ContactList to a ContactDB to better reflect its usage. Thsi was because the contacts are now displayed using a JList. This is made inside the current Panel and so the ContactDB only queries the database and creates a ModelList which each panel refers to as the contact. This is a much better approach and is more streamlined with everything being contained inside the panels in which they are being used. Still no JAVA folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed ContactList to a ContactDB to better reflect its usage. Thsi was because the contacts are now displayed using a JList. This is made inside the current Panel and so the ContactDB only queries the database and creates a ModelList which each panel refers to as the contact. This is a much better approach and is more streamlined with everything being contained inside the panels in which they are being used. Still no JAVA folder" />
+    <MESSAGE value="Saerching of contacts is enabled now. Had to override the equals method inside Contact to allow for a contains on a temp list of possible search results." />
+    <option name="LAST_COMMIT_MESSAGE" value="Saerching of contacts is enabled now. Had to override the equals method inside Contact to allow for a contains on a temp list of possible search results." />
   </component>
   <component name="WindowStateProjectService">
     <state x="665" y="364" key="#Notifications" timestamp="1587819347301">
@@ -364,20 +387,20 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="625" y="410" key="#VCS_History_Cache_Settings/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587645597575" />
-    <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587641675334">
+    <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587905595204">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587113265301" />
-    <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587641675334" />
-    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser" timestamp="1587892989277">
+    <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587905595204" />
+    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser" timestamp="1587898728796">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
-    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587892989277" />
-    <state x="512" y="291" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587546613917">
+    <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587898728796" />
+    <state x="512" y="291" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587905588409">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="512" y="291" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587113246513" />
-    <state x="512" y="291" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587546613917" />
+    <state x="512" y="291" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587905588409" />
     <state x="123" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1587877041172">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -387,11 +410,11 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="498" y="150" key="#console.sql/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587786266368" />
-    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587877194122">
+    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587893654504">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587877194122" />
+    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587893654504" />
     <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -401,29 +424,29 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587859018375" />
-    <state width="1520" height="183" key="GridCell.Tab.0.bottom" timestamp="1587893433369">
+    <state width="1520" height="183" key="GridCell.Tab.0.bottom" timestamp="1587906518925">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587893433369" />
+    <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587906518925" />
     <state width="1877" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="183" key="GridCell.Tab.0.center" timestamp="1587893433369">
+    <state width="1520" height="183" key="GridCell.Tab.0.center" timestamp="1587906518925">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587893433369" />
+    <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587906518925" />
     <state width="1877" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="183" key="GridCell.Tab.0.left" timestamp="1587893433369">
+    <state width="1520" height="183" key="GridCell.Tab.0.left" timestamp="1587906518924">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587893433369" />
+    <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587906518924" />
     <state width="1877" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="183" key="GridCell.Tab.0.right" timestamp="1587893433369">
+    <state width="1520" height="183" key="GridCell.Tab.0.right" timestamp="1587906518925">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587893433369" />
+    <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587906518925" />
     <state width="1877" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />
