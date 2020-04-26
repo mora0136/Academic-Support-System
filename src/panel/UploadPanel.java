@@ -1,8 +1,7 @@
 package panel;
 
-import contacts.ContactList;
+import contacts.ContactDB;
 import org.jdatepicker.JDatePanel;
-import org.jdatepicker.JDatePicker;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class UploadPanel extends JPanel {
     CardLayout cardLayout;
@@ -21,7 +19,7 @@ public class UploadPanel extends JPanel {
     JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn;
     Image backImg, resetImg, fileImg, saveImg, uploadImg;
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
-    ContactList contactList, addedContacts;
+    ContactDB contactDB, addedContacts;
     JComboBox selectTypeComboBox;
     JTextArea descriptionTextArea;
     JTextField titleField, searchField;
@@ -180,17 +178,17 @@ public class UploadPanel extends JPanel {
         gridBag.setConstraints(addedLabel, c);
         contactsListPanel.add(addedLabel);
 
-        contactList = new ContactList();
-        contactListScroll = new JScrollPane(contactList);
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        gridBag.setConstraints(contactListScroll, c);
-        contactsListPanel.add(contactListScroll);
-
-        addedContacts = new ContactList();
-        addedListScroll = new JScrollPane(addedContacts);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        gridBag.setConstraints(addedListScroll, c);
-        contactsListPanel.add(addedListScroll);
+//        contactList = new ContactList();
+//        contactListScroll = new JScrollPane(contactList);
+//        c.gridwidth = GridBagConstraints.RELATIVE;
+//        gridBag.setConstraints(contactListScroll, c);
+//        contactsListPanel.add(contactListScroll);
+//
+//        addedContacts = new ContactList();
+//        addedListScroll = new JScrollPane(addedContacts);
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        gridBag.setConstraints(addedListScroll, c);
+//        contactsListPanel.add(addedListScroll);
 
         gridBag.setConstraints(contactsListPanel, c);
         contactsPanel.add(contactsListPanel);
