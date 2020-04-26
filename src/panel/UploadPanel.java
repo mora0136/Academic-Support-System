@@ -109,6 +109,7 @@ public class UploadPanel extends JPanel {
         filePanel.add(fileSelectBtn);
         String[] keywords = {"Java", "IntelliJ", "UX", "HCI", "Interactive Computer Systems","Persona", "Grokkability"};
         attachedFileList = new JList(keywords);
+        attachedFileList.setFont(heading);
         c.weighty = 1;
         gridBag.setConstraints(attachedFileList, c);
         filePanel.add(attachedFileList);

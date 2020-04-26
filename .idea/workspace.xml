@@ -132,7 +132,7 @@
       <workItem from="1587465231268" duration="10138000" />
       <workItem from="1587543610625" duration="18136000" />
       <workItem from="1587593498053" duration="68729000" />
-      <workItem from="1587858838873" duration="9103000" />
+      <workItem from="1587858838873" duration="10478000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -288,14 +288,20 @@
       <option name="project" value="LOCAL" />
       <updated>1587863712731</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="rightside layout being implemented more. Contacts do not display properly but are showing which is a good sign.">
+      <created>1587868156158</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1587868156158</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Able to move between each of the windows now" />
     <MESSAGE value="Set JFrame size to miximum and gave it a title. ALso a loose idea of how the buttons will be contained in HomePanel" />
     <MESSAGE value="createButton for all the menu buttons is functional. Having issues with layout of the button, can't get padding between buttons to work and still am not  happy with layout manager currently using. That is a box layout align x for each row then a button group with box layout aligned y axis. This is what has had best result so far" />
     <MESSAGE value="Centered location has been achieved. Using GirdBagLayout on two button groups to place. WIll now look at insets to act as padding between buttons." />
@@ -320,7 +326,8 @@
     <MESSAGE value="initial framework of the upload Panel. Have added a JDatePicker from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy." />
     <MESSAGE value="initial framework of the upload Panel. Have added a JDatePanel from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy." />
     <MESSAGE value="initial framework of the upload Panel. Have added a JDatePanel from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy. java folder is not committing so code wont work on checkout." />
-    <option name="LAST_COMMIT_MESSAGE" value="initial framework of the upload Panel. Have added a JDatePanel from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy. java folder is not committing so code wont work on checkout." />
+    <MESSAGE value="rightside layout being implemented more. Contacts do not display properly but are showing which is a good sign." />
+    <option name="LAST_COMMIT_MESSAGE" value="rightside layout being implemented more. Contacts do not display properly but are showing which is a good sign." />
   </component>
   <component name="WindowStateProjectService">
     <state x="665" y="364" key="#Notifications" timestamp="1587819347301">
@@ -362,11 +369,11 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="498" y="150" key="#console.sql/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587786266368" />
-    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587863684186">
+    <state x="0" y="113" key="CommitChangelistDialog2" timestamp="1587868154871">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
-    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587863684186" />
+    <state x="0" y="113" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587868154871" />
     <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -376,29 +383,29 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587859018375" />
-    <state width="1520" height="125" key="GridCell.Tab.0.bottom" timestamp="1587867823083">
+    <state width="1520" height="125" key="GridCell.Tab.0.bottom" timestamp="1587871554781">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="125" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587867823083" />
+    <state width="1520" height="125" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587871554781" />
     <state width="1877" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="125" key="GridCell.Tab.0.center" timestamp="1587867823083">
+    <state width="1520" height="125" key="GridCell.Tab.0.center" timestamp="1587871554781">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="125" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587867823083" />
+    <state width="1520" height="125" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587871554781" />
     <state width="1877" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="125" key="GridCell.Tab.0.left" timestamp="1587867823083">
+    <state width="1520" height="125" key="GridCell.Tab.0.left" timestamp="1587871554781">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
-    <state width="1520" height="125" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587867823083" />
+    <state width="1520" height="125" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587871554781" />
     <state width="1877" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
-    <state width="1520" height="125" key="GridCell.Tab.0.right" timestamp="1587867823083">
+    <state width="1520" height="125" key="GridCell.Tab.0.right" timestamp="1587871554781">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
-    <state width="1520" height="125" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587867823083" />
+    <state width="1520" height="125" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587871554781" />
     <state width="1877" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1587567060375" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />
