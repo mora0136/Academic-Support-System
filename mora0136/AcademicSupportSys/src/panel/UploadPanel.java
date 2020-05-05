@@ -24,18 +24,18 @@ import java.util.Calendar;
 
 public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
     CardLayout cardLayout;
-    JPanel cardPane, leftPanel, rightPanel, contextPanel, dataPanel, contactsPanel, servicesPanel, uploadPanel, filePanel, extraPanel, lowerPanel, contactsListPanel, titlePanel, descPanel;
+    JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel, saveUploadPanel, filePanel, typeDatePanel, fileTypeDatePanel, contactsListPanel, titlePanel, descPanel;
     JScrollPane contactListScroll, addedListScroll;
     JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn, selectAll, deselectAll;
     Image backImg, resetImg, fileImg, saveImg, uploadImg;
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
     ContactDB contactDB;
-    DefaultListModel<Contact> toAddContacts, addedContacts, tempList;
+    DefaultListModel<Contact> displayedContacts, addedContacts, notAddedContacts;
     JComboBox selectTypeComboBox;
     JTextArea descriptionTextArea;
     JTextField titleField, searchField;
     JDatePanel publishDatePanel;
-    JList attachedFileList, toAddContactList, addedContactsList, templateStatement;
+    JList attachedFileList, notAddedContactList, addedContactsList, templateStatement;
     JCheckBox cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit;
     JFileChooser fc;
     int uploadID = 0;
@@ -44,47 +44,49 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         this.cardPane = pane;
         this.cardLayout = (CardLayout) pane.getLayout();
 
-
+        //The following defines the panels being used on the left Panel
         leftPanel = new JPanel();
-        rightPanel = new JPanel();
-        contextPanel = new JPanel();
-        uploadPanel = new JPanel();
-        dataPanel = new JPanel();
-        filePanel = new JPanel();
-        extraPanel = new JPanel();
-        lowerPanel = new JPanel();
-        titlePanel = new JPanel();
-        descPanel = new JPanel();
+        backResetPanel = new JPanel(); //Contains the back and reset buttons
+        saveUploadPanel = new JPanel(); //Contains the upload and save buttons
+        uploadDetailsLeftPanel = new JPanel(); //Contains the LowerPanel, titlePanel and descPanel
+        filePanel = new JPanel(); //Contains the File label, btn and list
+        typeDatePanel = new JPanel(); //Contains the Type and Date
+        fileTypeDatePanel = new JPanel(); //Contains the filePanel and typeDatePanel
+        titlePanel = new JPanel(); //Contains the Title label and field
+        descPanel = new JPanel(); //Contains the description label, area and list
 
+        //griBag layout and constraint that will be used to manipulate panels and components
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
-        setLayout(new GridLayout(1, 2));
+        //Define the layouts for each Panel
+        setLayout(new GridLayout(1, 2)); //Defines the left right sides of the display
         leftPanel.setLayout(new BorderLayout());
-        contextPanel.setLayout(new GridLayout(1, 2));
-        dataPanel.setLayout(gridBag);
-        lowerPanel.setLayout(new GridLayout(1, 2));
+        backResetPanel.setLayout(new GridLayout(1, 2));
+        uploadDetailsLeftPanel.setLayout(gridBag);
+        fileTypeDatePanel.setLayout(new GridLayout(1, 2));
         filePanel.setLayout(gridBag);
-        extraPanel.setLayout(gridBag);
+        typeDatePanel.setLayout(gridBag);
         titlePanel.setLayout(gridBag);
         descPanel.setLayout(gridBag);
+        saveUploadPanel.setLayout(new GridLayout(1, 2));
 
-        rightPanel.setLayout(new BorderLayout());
-        uploadPanel.setLayout(new GridLayout(1, 2));
-
+        //Common images that need to be loaded in for buttons etc.
         backImg = ImageIO.read(new File("resources/back.png"));
         resetImg = ImageIO.read(new File("resources/reset.png"));
         saveImg = ImageIO.read(new File("resources/save.png"));
         uploadImg = ImageIO.read(new File("resources/upload.png"));
 
+        //Define the back button
         backBtn = new JButton("Back");
         backBtn.addActionListener(this::actionPerformed);
-        contextPanel.add(backBtn);
-
+        backResetPanel.add(backBtn);
+        //Define the Reset Button
         resetBtn = new JButton("Reset");
         resetBtn.addActionListener(this::actionPerformed);
-        contextPanel.add(resetBtn);
+        backResetPanel.add(resetBtn);
 
+        //A generic inset that will apply until next changed
         c.insets = new Insets(0, 20, 0, 20);
 
         //The Title Text Section
@@ -100,6 +102,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
 
         //The Description Text Section
+        //Defining the Label
         descLabel = new JLabel("Description:");
         c.gridheight = 1;
         c.weightx = 1;
@@ -107,7 +110,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(descLabel, c);
         descPanel.add(descLabel);
-
+        //Defining the template statements
         String[] str = new String[]{"Hello", "testing", "wowsy"};
         templateStatement = new JList(str);
         templateStatement.setPreferredSize(new Dimension(1, 1));
@@ -118,7 +121,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.insets = new Insets(0, 20, 5, 5);
         gridBag.setConstraints(templateStatement, c);
         descPanel.add(templateStatement);
-
+        //Defining the textArea
         descriptionTextArea = new JTextArea();
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setPreferredSize(new Dimension(1, 1));
@@ -129,20 +132,21 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         descPanel.add(descriptionTextArea);
 
         //The File Selection section
+        //Define the File Label
         fileLabel = new JLabel("File:");
         c.weighty = 0.1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(fileLabel, c);
         filePanel.add(fileLabel);
+        //Define the File select btn
         fileSelectBtn = new JButton("Select A File...");
         fc = new JFileChooser();
         fileSelectBtn.addActionListener(this::fileSelectedAction);
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(fileSelectBtn, c);
         filePanel.add(fileSelectBtn);
-
-        //List to display files and drag pane
+        //Define a list to display files and drag pane
         DefaultListModel<File> tempFileList = new DefaultListModel<>();
         attachedFileList = new JList(tempFileList);
         attachedFileList.setCellRenderer(new FileRenderer());
@@ -154,59 +158,73 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(attachedFileList, c);
         filePanel.add(attachedFileList);
 
-        //The type DropDown Section
+        //The type DropDown Section(e.g Article, Book, Journal)
+        //Define the type Label
         typeLabel = new JLabel("Type");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weighty = 0.25;
         c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(typeLabel, c);
-        extraPanel.add(typeLabel);
+        typeDatePanel.add(typeLabel);
+        //Define the comboBox containg the possible types
         String[] types = new String[]{"Article", "Journal", "Paper", "Book", "Research"};
         selectTypeComboBox = new JComboBox(types);
         c.weightx = 10;
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(selectTypeComboBox, c);
-        extraPanel.add(selectTypeComboBox);
+        typeDatePanel.add(selectTypeComboBox);
 
         //The Date Calender Section
+        //Define the Date Label
         dateLabel = new JLabel("Date:");
         c.weighty = 0.25;
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(dateLabel, c);
-        extraPanel.add(dateLabel);
-//        Calendar cal = new GregorianCalendar();
-//        java.sql.Date date = new java.sql.Date(cal.getTimeInMillis());
+        typeDatePanel.add(dateLabel);
+        //Define the Date Panel which is an external feature found from:https://github.com/JDatePicker/JDatePicker
         publishDatePanel = new JDatePanel();
         c.fill = GridBagConstraints.BOTH;
         c.weighty = 0.5;
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(publishDatePanel, c);
-        extraPanel.add(publishDatePanel);
+        typeDatePanel.add(publishDatePanel);
 
-        lowerPanel.add(filePanel);
-        lowerPanel.add(extraPanel);
+        //Add the File and type and Date to one panel, organised in a 1row*2column grid
+        fileTypeDatePanel.add(filePanel);
+        fileTypeDatePanel.add(typeDatePanel);
 
+        //Add each panel with specific proportions to a panel to contain the centre of the leftPanel
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.BOTH;
         c.weighty = 0.1;
         gridBag.setConstraints(titlePanel, c);
-        dataPanel.add(titlePanel);
+        uploadDetailsLeftPanel.add(titlePanel);
         c.weighty = 0.5;
         gridBag.setConstraints(descPanel, c);
-        dataPanel.add(descPanel);
+        uploadDetailsLeftPanel.add(descPanel);
         c.weighty = 0.4;
-        gridBag.setConstraints(lowerPanel, c);
-        dataPanel.add(lowerPanel);
+        gridBag.setConstraints(fileTypeDatePanel, c);
+        uploadDetailsLeftPanel.add(fileTypeDatePanel);
 
-        leftPanel.add(contextPanel, BorderLayout.NORTH);
-        leftPanel.add(dataPanel, BorderLayout.CENTER);
+        leftPanel.add(backResetPanel, BorderLayout.NORTH);
+        leftPanel.add(uploadDetailsLeftPanel, BorderLayout.CENTER);
 
 
-        contactsPanel = new JPanel();
-        contactsListPanel = new JPanel();
+        //The following defines the Panels to be used on the right side
+        rightPanel = new JPanel();
+        contactsPanel = new JPanel(); //Contains the Contact Label and search Field
+        contactsListPanel = new JPanel(); //Contains the two labels and lists containg added and not added contacts
+        servicesPanel = new JPanel(); //Contains the Label, buttons and checkBoxes for what service to upload to
+        JPanel contactsServicesPanel = new JPanel(); //Contains the contacts and services to take up the centre of right panel
+
+        rightPanel.setLayout(new BorderLayout());
         contactsPanel.setLayout(gridBag);
         contactsListPanel.setLayout(gridBag);
+        servicesPanel.setLayout(new GridLayout(5, 3));
+        contactsServicesPanel.setLayout(new GridLayout(2, 1));
 
+        //The Contacts Panel
+        //Defining the Author Label
         authorsLabel = new JLabel("Authors:");
         c.insets = new Insets(10, 10, 0, 10);
         c.gridwidth = GridBagConstraints.RELATIVE;
@@ -215,7 +233,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.fill = GridBagConstraints.HORIZONTAL;
         gridBag.setConstraints(authorsLabel, c);
         contactsPanel.add(authorsLabel);
-
+        //Defining the searchField
         searchField = new JTextField("Search...");
         searchField.setForeground(Color.GRAY);
         searchField.addActionListener(this::actionPerformed);
@@ -226,6 +244,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(searchField, c);
         contactsPanel.add(searchField);
 
+        //The contactsListPanel
+        //Defining the ContactsLabel
         contactsLabel = new JLabel("Contacts");
         c.insets = new Insets(0, 5, 0, 5);
         c.gridwidth = GridBagConstraints.RELATIVE;
@@ -233,31 +253,31 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.weightx = 0.5;
         gridBag.setConstraints(contactsLabel, c);
         contactsListPanel.add(contactsLabel);
-
+        //Defining the added Label
         addedLabel = new JLabel("Added");
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.anchor = GridBagConstraints.CENTER;
         gridBag.setConstraints(addedLabel, c);
         contactsListPanel.add(addedLabel);
-
-        //The Contact Selector
+        //The Contact Selector lists
+        //instantiate each relevant object
         contactDB = new ContactDB();
-        toAddContacts = contactDB.getListModel();
-        addedContacts = new DefaultListModel<Contact>();
-        tempList = new DefaultListModel<>();
-        for(int i = 0; i<toAddContacts.getSize(); i++){
-            tempList.addElement((Contact)toAddContacts.getElementAt(i));
+        displayedContacts = contactDB.getListModel(); //The displayed list which changes according to the search results
+        addedContacts = new DefaultListModel<>(); //The contacts that have been added to the upload
+        notAddedContacts = new DefaultListModel<>(); //Stores a list in the background of the full list of contacts that could be added, this can be used to search for
+        for(int i = 0; i< displayedContacts.getSize(); i++){ // simply copying the values to the other
+            notAddedContacts.addElement(displayedContacts.getElementAt(i));
         }
-
-        toAddContactList = new JList(toAddContacts);
-        toAddContactList.addListSelectionListener(this::valueChangedToAdd);
-        contactListScroll = new JScrollPane(toAddContactList);
+        //Defining the not added contact List and adding a Scroll Pane
+        notAddedContactList = new JList(displayedContacts);
+        notAddedContactList.addListSelectionListener(this::valueChangedToAdd);
+        contactListScroll = new JScrollPane(notAddedContactList);
         c.gridwidth = GridBagConstraints.RELATIVE;
         c.weighty = 0.8;
         c.fill = GridBagConstraints.BOTH;
         gridBag.setConstraints(contactListScroll, c);
         contactsListPanel.add(contactListScroll);
-
+        //Defining the added Contact List and adding a scroll pane
         addedContactsList = new JList(addedContacts);
         addedContactsList.addListSelectionListener(this::valueChangedAdded);
         addedListScroll = new JScrollPane(addedContactsList);
@@ -268,16 +288,14 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(contactsListPanel, c);
         contactsPanel.add(contactsListPanel);
 
-        //The services which can be uploaded to
-        servicesPanel = new JPanel();
-        servicesPanel.setLayout(new GridLayout(5, 3));
+        //The components that are contained in servicesPanel
         uploadLabel = new JLabel("Upload to...");
         servicesPanel.add(uploadLabel);
         selectAll = new JButton("Select All");
         servicesPanel.add(selectAll);
         deselectAll = new JButton("Deselect All");
         servicesPanel.add(deselectAll);
-
+        //The CheckBoxes that are added to the services Panel
         cv = new JCheckBox("Personal C.V.");
         resGate = new JCheckBox("Research Gate");
         orcid = new JCheckBox("ORCID");
@@ -295,26 +313,29 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         servicesPanel.add(gSch);servicesPanel.add(linIn);servicesPanel.add(scopus);
         servicesPanel.add(pure);servicesPanel.add(acad);servicesPanel.add(twit);
 
+        //Adding to the contactsServicesPanel
+        contactsServicesPanel.add(contactsPanel);
+        contactsServicesPanel.add(servicesPanel);
+
+        //The saveUploadPanel
+        //Defining Save btn
         saveBtn = new JButton("Save");
         saveBtn.addActionListener(this::actionPerformed);
-        uploadPanel.add(saveBtn);
-
+        saveUploadPanel.add(saveBtn);
+        //Defining Upload btn
         uploadBtn = new JButton("Upload");
         uploadBtn.addActionListener(this::actionPerformed);
-        uploadPanel.add(uploadBtn);
+        saveUploadPanel.add(uploadBtn);
 
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(2, 1));
-        topPanel.add(contactsPanel);
-        topPanel.add(servicesPanel);
+        //Adding to the rightPanel
+        rightPanel.add(contactsServicesPanel, BorderLayout.CENTER);
+        rightPanel.add(saveUploadPanel, BorderLayout.SOUTH);
 
-//        rightPanel.add(contactsPanel, BorderLayout.NORTH);
-        rightPanel.add(topPanel, BorderLayout.CENTER);
-        rightPanel.add(uploadPanel, BorderLayout.SOUTH);
+        //Adding to the window
         add(leftPanel);
         add(rightPanel);
-//        setTo(6);
-        //Still very structure according to the contact Button
+
+        //The following defines what should happen to a component when the window is resized.
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
@@ -338,10 +359,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 buttonProperties(resetBtn, resetImg, width, height, headerFont);
                 buttonProperties(saveBtn, saveImg, width, height, headerFont);
                 buttonProperties(uploadBtn, uploadImg, width, height, headerFont);
+
                 listProperties(attachedFileList, listFont);
-                listProperties(toAddContactList, listFont);
+                listProperties(notAddedContactList, listFont);
                 listProperties(addedContactsList, listFont);
                 listProperties(templateStatement, bodyFont);
+
                 headingProperties(titleLabel, headerFont);
                 headingProperties(descLabel, headerFont);
                 headingProperties(fileLabel, headerFont);
@@ -351,6 +374,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 headingProperties(authorsLabel, headerFont);
                 headingProperties(contactsLabel, headerFont-4);
                 headingProperties(addedLabel, headerFont-4);
+
                 checkBoxProperties(cv, checkBoxFont);
                 checkBoxProperties(resGate, checkBoxFont);
                 checkBoxProperties(orcid, checkBoxFont);
@@ -363,6 +387,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 checkBoxProperties(pure, checkBoxFont);
                 checkBoxProperties(acad, checkBoxFont);
                 checkBoxProperties(twit, checkBoxFont);
+
                 textFieldProperties(titleField, headerFont);
                 textAreaProperties(descriptionTextArea, bodyFont);
                 textFieldProperties(searchField, headerFont);
@@ -373,6 +398,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             }
         });
     }
+
 
     private void headingProperties(JLabel label, int fontSize){
         label.setFont(new Font("Arial", Font.BOLD, fontSize));
@@ -407,6 +433,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         box.setFont(new Font("Arial", Font.PLAIN, fontSize));
     }
 
+    /**
+     * Sets all components in the window to their default values
+     */
     private void resetAll(){
         selectTypeComboBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
@@ -414,9 +443,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         searchField.setText("");
         publishDatePanel.getModel().setValue(null); //maybe?
         attachedFileList.setModel(new DefaultListModel());
-        toAddContacts.removeAllElements();
+        displayedContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-            toAddContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+            displayedContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
         }
         addedContacts.removeAllElements();
         cv.setSelected(false);resGate.setSelected(false);orcid.setSelected(false);
@@ -425,57 +454,64 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         pure.setSelected(false);acad.setSelected(false);twit.setSelected(false);
     }
 
+    /**
+     * Sets all the components in the window to a state as ssaved in the database for the corresponding uplaod_ID
+     * @param uploadID The uploadID of the upload to be viewed/set
+     */
     private void setToExistingUpload(int uploadID){
         this.uploadID = uploadID;
-        String sql = "SELECT * FROM uploads WHERE upload_ID = "+ uploadID;
-        try(Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(sql)){
+        String sql = "SELECT * FROM uploads " +
+                     "WHERE upload_ID = "+ uploadID;
 
-            selectTypeComboBox.setSelectedItem(rs.getString("Type")); // needs to be changed to appropriate
+        String sqlSelectAuthors = "SELECT * FROM upload_Authors " +
+                                  "JOIN contacts ON upload_Authors.contact_ID = contacts.contact_ID " +
+                                  "WHERE upload_ID = "+ uploadID;
+
+        String sqlSelectFiles = "SELECT * FROM upload_Files " +
+                                "WHERE upload_ID = "+ uploadID;
+
+        //Try to make a connection to the database
+        try(Connection conn = this.connect();
+            Statement stmt  = conn.createStatement();){
+
+            //Retrieve the information found in the Uploads tables
+            ResultSet rs = stmt.executeQuery(sql);
+            selectTypeComboBox.setSelectedItem(rs.getString("Type"));
             descriptionTextArea.setText(rs.getString("Description"));
             titleField.setText(rs.getString("Title"));
             searchField.setText("");
+
+            //Setting the date, since java.util.Date and java.sql.Date is finicky, just utilised it as a string
             String sqlDate = rs.getString("Date");
             java.util.Date date = new SimpleDateFormat("yyyy-mm-dd").parse(sqlDate);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             DateModel<Calendar> dateModel = (DateModel<Calendar>) publishDatePanel.getModel();
             dateModel.setValue(calendar);
+
+            //Setting the services
             cv.setSelected(rs.getBoolean("cv"));resGate.setSelected(rs.getBoolean("resGate"));orcid.setSelected(rs.getBoolean("orcid"));
             inst.setSelected(rs.getBoolean("inst"));publ.setSelected(rs.getBoolean("publ"));wos.setSelected(rs.getBoolean("wos"));
             gSch.setSelected(rs.getBoolean("gSch"));linIn.setSelected(rs.getBoolean("linIn"));scopus.setSelected(rs.getBoolean("scopus"));
             pure.setSelected(rs.getBoolean("pure"));acad.setSelected(rs.getBoolean("acad"));twit.setSelected(rs.getBoolean("twit"));
-        }catch(SQLException | ParseException e){
 
-        }
-
-        String sqlSelectAuthors = "SELECT * FROM upload_Authors JOIN contacts ON upload_Authors.contact_ID = contacts.contact_ID WHERE upload_ID = "+ uploadID;
-        try(Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(sqlSelectAuthors)){
+            //Retrieve the information found in the upload_Authors table
+            rs = stmt.executeQuery(sqlSelectAuthors);
             while(rs.next()) {
                 Contact c = new Contact(rs.getInt("contact_ID"), rs.getString("givenName"),
                         rs.getString("surname"), rs.getString("email"),
                         rs.getString("phone"));
                 addedContacts.addElement(c);
-                toAddContacts.removeElement(c);
+                displayedContacts.removeElement(c);
             }
-
-        }catch(SQLException e){
-
-        }
-
-        String sqlSelectFiles = "SELECT * FROM upload_Files WHERE upload_ID = "+ uploadID;
-        DefaultListModel news = (DefaultListModel) attachedFileList.getModel();
-        try(Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(sqlSelectFiles)){
+            //Retrieve the information found in the upload_Files table.
+            DefaultListModel news = (DefaultListModel) attachedFileList.getModel();
+            rs = stmt.executeQuery(sqlSelectFiles);
             while(rs.next()) {
                 news.addElement(new File(rs.getString("File")));
             }
 
-        }catch(SQLException e){
+        }catch(SQLException | ParseException e){
 
         }
     }
@@ -487,16 +523,19 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }else if(e.getSource() == resetBtn){
             resetAll();
         }else if(e.getSource() == uploadBtn || e.getSource() == saveBtn){
-            //connect to database
-            //save to database
+            /*
+            Upload and save essentially have the same information they need to convey, the only difference being that by
+            uploading, the isUpload field will be set to true, and can no longer be selected to edit. However there are
+            different SQL statements required if the current upload is new or an existing one. This is identified in the
+            first if statement.
+             */
             String sqlUpload, sqlAuthors, sqlFiles;
-            if(uploadID != 0) {
+            if(uploadID != 0) { //If an uploadID is specified, then it already exists in db and thus only need to update
                 sqlUpload = "UPDATE uploads SET Title = ?,Description = ?, type = ?, Date = ?, cv = ?, resGate = ?, orcid = ?, inst = ?, publ = ?, wos = ?, gSch = ?, linIn = ?, scopus = ?, pure = ?, acad = ?, twit = ?, isUploaded = ? WHERE upload_ID = ?";
                 sqlAuthors = "UPDATE upload_Authors SET contact_ID = ?, nameUsed = ? WHERE upload_ID = ?";
                 sqlFiles = "UPDATE upload_Files SET File = ? WHERE upload_ID = ?";
 
-            }else {
-                //Then do a fresh insertion, creating new uploadID
+            }else {//A fresh insertion, creating new uploadID that will be used to associate with authors and files
                 sqlUpload = "INSERT INTO uploads(Title,Description, type, Date, cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit, isUploaded) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 sqlAuthors = "INSERT INTO upload_Authors(contact_ID, nameUsed, upload_ID) VALUES(?,?,?)";
                 sqlFiles = "INSERT INTO upload_Files(File, upload_ID) VALUES(?,?)";
@@ -512,24 +551,24 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                     pstmt.setBoolean(8, inst.isSelected());pstmt.setBoolean(9, publ.isSelected());pstmt.setBoolean(10, wos.isSelected());
                     pstmt.setBoolean(11, gSch.isSelected());pstmt.setBoolean(12, linIn.isSelected());pstmt.setBoolean(13, scopus.isSelected());
                     pstmt.setBoolean(14, pure.isSelected());pstmt.setBoolean(15, acad.isSelected());pstmt.setBoolean(16, twit.isSelected());
+                    //isUpload column defines if it has been uploaded or saved, so if the upload btn is pressed, then true
                     if(e.getSource() == uploadBtn) {
                         pstmt.setBoolean(17, true);
                     }else{
                         pstmt.setBoolean(17, false);
                     }
-
+                    //If the upload already exists then the update requires a primary key, uploadID
                     if(uploadID!=0){
                         pstmt.setInt(18, uploadID);
                     }
 
-                    pstmt.executeUpdate();
-                    ResultSet rs = pstmt.getGeneratedKeys();
-                    System.out.println("Current uploadID: "+ uploadID);
-                    if (rs.next() && uploadID == 0) {
-                        System.out.println("in db: "+ rs.getInt(1));
-                        uploadID = rs.getInt(1);
+                    pstmt.executeUpdate(); //Execute the statment
+                    ResultSet rs = pstmt.getGeneratedKeys(); //generated keys has the row that was entered
+                    if (rs.next() && uploadID == 0) { //if we are working with an upload that didn't exist before
+                        uploadID = rs.getInt("upload_ID"); //Allows for authors and files to be associated with upload
                     }
 
+                    //add in each contact into upload_Authors, associating it with the upload.
                     for (int i = 0; i < addedContacts.getSize(); i++) {
                         PreparedStatement pstmtAuthors = conn.prepareStatement(sqlAuthors);
                         pstmtAuthors.setInt(1, addedContacts.getElementAt(i).getContact_ID());
@@ -537,14 +576,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                         pstmtAuthors.setInt(3, uploadID);
                         pstmtAuthors.executeUpdate();
                     }
+                    //add in each file into upload_Files, associating it with the upload.
                     for (int i = 0; i < attachedFileList.getModel().getSize(); i++) {
                         PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
                         pstmtFiles.setString(1, attachedFileList.getModel().getElementAt(i).toString());
                         pstmtFiles.setInt(2, uploadID);
                         pstmtFiles.executeUpdate();
                     }
-
-
                 } catch (SQLException et) {
                     System.out.println(et.getMessage());
                 }
@@ -552,6 +590,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }
 
     }
+    /**
+     *Initiate a connection the database being used
+     */
     private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:data/database.db";
@@ -564,34 +605,40 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         return conn;
     }
 
+    /**
+     * Defines what to do when a Contact is clicked on in the list of potential contacts to add
+     * @param e The event
+     */
     public void valueChangedToAdd(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
-            if (toAddContactList.getSelectedIndex() == -1) {
+            if (notAddedContactList.getSelectedIndex() == -1) {
             } else {
-//                for (Object selectedValue : toAddContactList.getSelectedValue()) {
-                Contact selectedContact = (Contact)toAddContactList.getSelectedValue();
-//                System.out.println(selectedContact);
+                Contact selectedContact = (Contact) notAddedContactList.getSelectedValue();
                 addedContacts.addElement(selectedContact);
-                toAddContacts.removeElement(selectedContact);
-                tempList.removeElement(selectedContact);
+                displayedContacts.removeElement(selectedContact);
+                notAddedContacts.removeElement(selectedContact);
             }
         }
     }
 
+    /**
+     * Defines what to do when a contact is clicked on in the added contacts
+     * @param e The event
+     */
     public void valueChangedAdded(ListSelectionEvent e) {
         if (e.getValueIsAdjusting() == false) {
             if (addedContactsList.getSelectedIndex() == -1) {
             } else {
                 Contact selectedContact = (Contact) addedContactsList.getSelectedValue();
 //                System.out.println(selectedContact);
-                toAddContacts.addElement(selectedContact);
-                tempList.addElement(selectedContact);
+                displayedContacts.addElement(selectedContact);
+                notAddedContacts.addElement(selectedContact);
                 addedContacts.removeElement(selectedContact);
             }
         }
     }
 
-    //Any text entry into JTextField will search for the contact desired.
+    //Defines what should be done any time text is entered into the SearchField
     @Override
     public void insertUpdate(DocumentEvent e) { search();
     }
@@ -606,19 +653,20 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
     private void search(){
         contactDB.searchForContact(searchField.getText());
-        toAddContacts.removeAllElements();
+        displayedContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-            if(tempList.contains(contactDB.getListModel().getElementAt(i))){
-                toAddContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+            if(notAddedContacts.contains(contactDB.getListModel().getElementAt(i))){
+                displayedContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
             }
         }
     }
 
-    //Allow for the display of the "Search..." text on the text area while not in focus
+    //Clear whatever was in the textField previously
     public void focusGained(FocusEvent e) {
         searchField.setText("");
         searchField.setForeground(Color.BLACK);
     }
+    //Allow for the display of the "Search..." text on the text area while not in focus and empty
     public void focusLost(FocusEvent e) {
         if(searchField.getText().isEmpty()){
             searchField.getDocument().removeDocumentListener(this);
@@ -641,7 +689,10 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
 }
-@SuppressWarnings("serial")
+
+/**
+ * Allows for the Drag and Drop mechanics to work.
+ */
 class FileListTransferHandler extends TransferHandler {
     private JList list;
 
@@ -679,6 +730,9 @@ class FileListTransferHandler extends TransferHandler {
         }
     }
 
+/**
+ * Defines how to display a File for each cell in the JList
+ */
 class FileRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
