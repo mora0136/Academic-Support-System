@@ -23,7 +23,7 @@ public class ContactDB {
 
     public void extractContactsFromDB(){
 
-        String sql = "SELECT * FROM contacts";
+        String sql = "SELECT * FROM contacts ORDER BY givenName";
 
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();

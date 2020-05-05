@@ -1,7 +1,5 @@
 package contacts;
 
-import java.util.Objects;
-
 public class Contact{
     int contact_ID;
     String givenName;

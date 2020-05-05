@@ -93,7 +93,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
 //        contactList.setLayout(new BoxLayout(contactList, BoxLayout.Y_AXIS));
         listOfContacts = contactDB.getListModel();
         contactList = new JList(listOfContacts);
-        listProperties(contactList);
+//        listProperties(contactList, 32);
         contactList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(contactList);
 
@@ -154,10 +154,12 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                         buttonProperties(addNew, addNewImg, width, windowHeight, 0, true);
                         buttonProperties(edit, editImg, width, windowHeight, 0, true);
                         buttonProperties(delete, deleteImg, width, windowHeight, 0, true);
+                        listProperties(contactList, 16);
                     }else{
                         buttonProperties(addNew, addNewImg, width, windowHeight, 16, true);
                         buttonProperties(edit, editImg, width, windowHeight, 16, true);
                         buttonProperties(delete, deleteImg, width, windowHeight, 16, true);
+                        listProperties(contactList, 24);
                     }
 
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
@@ -172,13 +174,14 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
                     searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
                     saveImg = saveImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
                     tempImg = tempImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
+                    listProperties(contactList, 32);
                 }
             }
         });
     }
 
-    private void listProperties(JList list){
-        list.setFont(new Font("Arial", Font.PLAIN, 32));
+    private void listProperties(JList list, int fontSize){
+        list.setFont(new Font("Arial", Font.PLAIN, fontSize));
         DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
