@@ -45,7 +45,7 @@ public class HomePanel extends JPanel implements ActionListener {
         buttonGroupTop.add(edit = new JButton("Edit"));
         buttonGroupTop.add(history = new JButton("History"));
         buttonGroupBottom.add(contacts = new JButton("Contacts"));
-        buttonGroupBottom.add(setting = new JButton("Setting"));
+        buttonGroupBottom.add(setting = new JButton("TwoPanel"));
 
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(buttonGroupTop, c);
@@ -121,8 +121,8 @@ public class HomePanel extends JPanel implements ActionListener {
             case "Contacts":
                 cardLayout.show(cardPane, "Contacts");
                 break;
-            case "Setting":
-                cardLayout.show(cardPane, "Setting");
+            case "TwoPanel":
+                cardLayout.show(cardPane, "TwoPanel");
                 break;
             default:
                 System.out.print("error action not recognised");
