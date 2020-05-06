@@ -19,6 +19,7 @@ public class AssDriver {
         HistoryPanel history = new HistoryPanel(cardPane);
         SettingPanel setting = new SettingPanel(cardPane);
         ContactsPanel contacts = new ContactsPanel(cardPane);
+        TwoPanel two = new TwoPanel(cardPane);
 
         cardPane.add(home, "Home");
         cardPane.add(upload, "Upload");
@@ -26,6 +27,7 @@ public class AssDriver {
         cardPane.add(history, "History");
         cardPane.add(setting, "Setting");
         cardPane.add(contacts, "Contacts");
+        cardPane.add(two, "TwoPanel");
         frame.add(cardPane);
         cardLayout.show(cardPane, "Upload"); //Testing
 //        frame.setMinimumSize(new Dimension(853, 480));

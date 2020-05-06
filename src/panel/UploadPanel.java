@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -31,6 +32,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
     ContactDB contactDB;
     DefaultListModel<Contact> displayedContacts, addedContacts, notAddedContacts;
+    DefaultListModel<String> templates;
     JComboBox selectTypeComboBox;
     JTextArea descriptionTextArea;
     JTextField titleField, searchField;
@@ -39,6 +41,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JCheckBox cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit;
     JFileChooser fc;
     int uploadID = 0;
+    int mainFont = 32;
 
     UploadPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -59,7 +62,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
-        //Define the layouts for each Panel
         setLayout(new GridLayout(1, 2)); //Defines the left right sides of the display
         leftPanel.setLayout(new BorderLayout());
         backResetPanel.setLayout(new GridLayout(1, 2));
@@ -111,9 +113,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(descLabel, c);
         descPanel.add(descLabel);
         //Defining the template statements
-        String[] str = new String[]{"Hello", "testing", "wowsy"};
-        templateStatement = new JList(str);
+        String[] str = new String[]{"AddNew Template"};
+        templates = new DefaultListModel();
+        templates.addElement("testing word");
+        templates.addElement("AddNew Template");
+        templateStatement = new JList(templates);
         templateStatement.setPreferredSize(new Dimension(1, 1));
+        templateStatement.addListSelectionListener(this::valueChangedTemplate);
         c.gridwidth = 1;
         c.weightx = 0.2;
         c.weighty = 1;
@@ -127,9 +133,18 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         descriptionTextArea.setPreferredSize(new Dimension(1, 1));
         c.weightx = 0.8;
         c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         c.insets = new Insets(0, 5, 5, 20);
         gridBag.setConstraints(descriptionTextArea, c);
         descPanel.add(descriptionTextArea);
+//        JTextField addTemplateField = new JTextField();
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        c.gridwidth = GridBagConstraints.RELATIVE;
+//        gridBag.setConstraints(addTemplateField, c);
+//        descPanel.add(addTemplateField);
+//        JButton addTemplateBtn = new JButton("Add New Template");
+//        gridBag.setConstraints(addTemplateBtn, c);
+//        descPanel.add(addTemplateBtn);
 
         //The File Selection section
         //Define the File Label
@@ -335,15 +350,17 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         add(leftPanel);
         add(rightPanel);
 
+//        setToExistingUpload(14);
+
         //The following defines what should happen to a component when the window is resized.
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
-                int headerFont = 32;
-                int listFont = 24;
-                int bodyFont = 16;
-                int checkBoxFont = 24;
+                int headerFont = mainFont;
+                int listFont = (int)(mainFont*(0.75));
+                int bodyFont = (int)(mainFont*(0.5));
+                int checkBoxFont = (int)(mainFont*(0.75));
                 int width = 50;
                 int height = 50;
 
@@ -436,12 +453,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     /**
      * Sets all components in the window to their default values
      */
-    private void resetAll(){
+    public void resetAll(){
         selectTypeComboBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
         titleField.setText("");
         searchField.setText("");
-        publishDatePanel.getModel().setValue(null); //maybe?
+        publishDatePanel.getModel().setValue(null); //maybe
         attachedFileList.setModel(new DefaultListModel());
         displayedContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
@@ -455,10 +472,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
     /**
-     * Sets all the components in the window to a state as ssaved in the database for the corresponding uplaod_ID
+     * Sets all the components in the window to a state as saved in the database for the corresponding uplaod_ID
      * @param uploadID The uploadID of the upload to be viewed/set
      */
-    private void setToExistingUpload(int uploadID){
+    public void setToExistingUpload(int uploadID){
+        resetAll();
         this.uploadID = uploadID;
         String sql = "SELECT * FROM uploads " +
                      "WHERE upload_ID = "+ uploadID;
@@ -498,12 +516,15 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             //Retrieve the information found in the upload_Authors table
             rs = stmt.executeQuery(sqlSelectAuthors);
             while(rs.next()) {
+                System.out.println("We are making contacts");
                 Contact c = new Contact(rs.getInt("contact_ID"), rs.getString("givenName"),
                         rs.getString("surname"), rs.getString("email"),
                         rs.getString("phone"));
+                System.out.println(c);
                 addedContacts.addElement(c);
                 displayedContacts.removeElement(c);
             }
+            System.out.println("We are getting files");
             //Retrieve the information found in the upload_Files table.
             DefaultListModel news = (DefaultListModel) attachedFileList.getModel();
             rs = stmt.executeQuery(sqlSelectFiles);
@@ -512,7 +533,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             }
 
         }catch(SQLException | ParseException e){
-
+            System.out.println(e);
         }
     }
 
@@ -565,7 +586,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                     pstmt.executeUpdate(); //Execute the statment
                     ResultSet rs = pstmt.getGeneratedKeys(); //generated keys has the row that was entered
                     if (rs.next() && uploadID == 0) { //if we are working with an upload that didn't exist before
-                        uploadID = rs.getInt("upload_ID"); //Allows for authors and files to be associated with upload
+                        uploadID = rs.getInt(1); //Allows for authors and files to be associated with upload
                     }
 
                     //add in each contact into upload_Authors, associating it with the upload.
@@ -603,6 +624,73 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             System.out.println(e.getMessage());
         }
         return conn;
+    }
+
+    public void valueChangedTemplate(ListSelectionEvent e) {
+        if(templateStatement.isSelectionEmpty()){
+            descriptionTextArea.requestFocusInWindow();
+        }else {
+            if(templateStatement.getSelectedIndex() == templateStatement.getModel().getSize()-1){
+                JPanel editTemplatePanel = new JPanel();
+                editTemplatePanel.setLayout(new BorderLayout());
+                JButton add = new JButton("Add/Edit");
+                JButton delete = new JButton("Delete");
+                JTextField text = new JTextField();
+                DefaultListModel edit = new DefaultListModel();
+                for(int i = 0; i < templates.getSize()-1; i++){
+                    edit.addElement(templates.getElementAt(i));
+                }
+                JList editTemplate = new JList(edit);
+
+                editTemplate.addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        if(editTemplate.isSelectionEmpty()){
+                            text.setText("");
+                        }else{
+                            text.setText(editTemplate.getSelectedValue().toString());
+                        }
+                    }
+                });
+                add.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        edit.addElement(text.getText());
+                        if(!editTemplate.isSelectionEmpty()) {
+                            edit.removeElement(editTemplate.getSelectedValue());
+                        }
+                        text.setText("");
+                    }
+                });
+
+                delete.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        edit.removeElement(editTemplate.getSelectedValue());
+                        text.setText("");
+                    }
+                });
+                JPanel addTextPanel = new JPanel();
+                addTextPanel.setLayout(new BorderLayout());
+                addTextPanel.add(text, BorderLayout.CENTER);
+                addTextPanel.add(add, BorderLayout.EAST);
+                editTemplatePanel.add(editTemplate, BorderLayout.CENTER);
+                editTemplatePanel.add(delete, BorderLayout.EAST);
+                editTemplatePanel.add(addTextPanel, BorderLayout.SOUTH);
+                editTemplatePanel.setPreferredSize(new Dimension(500,500));
+
+                JOptionPane.showConfirmDialog(null, editTemplatePanel, "Edit Templates", JOptionPane.PLAIN_MESSAGE);
+                templates.removeAllElements();
+                for(int i = 0; i < edit.getSize(); i++){
+                    templates.addElement((String) edit.getElementAt(i));
+                }
+                templates.addElement("AddNew Template");
+            }else {
+                String keyword = (String) templateStatement.getSelectedValue();
+                descriptionTextArea.append(keyword);
+                templateStatement.clearSelection();
+            }
+        }
     }
 
     /**

@@ -1,31 +1,31 @@
 package panel;
 
+import contacts.Contact;
 import contacts.ContactDB;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
 
-public class EditPanel extends JPanel implements DocumentListener, FocusListener {
+public class TwoPanel extends JPanel{
     JPanel cardPane, leftPanel, rightPanel, contextPanel, displayPanel, optionPanel;
-    Image backImg, searchImg, editImg, deleteImg;
+    Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg, tempImg;
     JScrollPane scrollContactPanel;
     JTextField searchField;
     ContactDB contactDB;
     CardLayout cardLayout;
     JButton edit, delete;
-    JList editList;
-    DefaultListModel<Upload> editable;
-    UploadEditPanel display;
+    JList contactList;
+    int contactSelected = 0;
+    DefaultListModel<Contact> listOfContacts;
 
-    EditPanel(JPanel pane) throws IOException {
+    TwoPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
 
@@ -46,19 +46,23 @@ public class EditPanel extends JPanel implements DocumentListener, FocusListener
         back.addActionListener(this::actionPerformed);
         backImg = ImageIO.read(new File("resources/back.png"));
 
+
         searchImg = ImageIO.read(new File("resources/search.png"));
 
         searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
         searchField.setForeground(Color.GRAY);
-        searchField.addActionListener(this::actionPerformed);
-        searchField.getDocument().addDocumentListener(this);
-        searchField.addFocusListener(this);
+
+        JButton addNew = new JButton("Add New");
+        addNew.addActionListener(this::actionPerformed);
+        addNewImg = ImageIO.read(new File("resources/add.png"));
 
         edit = new JButton("Edit");
         edit.setEnabled(false);
         edit.addActionListener(this::actionPerformed);
         editImg = ImageIO.read(new File("resources/edit_contact.png"));
+        tempImg = editImg;
+        saveImg = ImageIO.read(new File("resources/save.png"));
 
         delete = new JButton("Delete");
         delete.setEnabled(false);
@@ -78,37 +82,17 @@ public class EditPanel extends JPanel implements DocumentListener, FocusListener
         gridBag.setConstraints(searchField, c);
         contextPanel.add(searchField);
 
-        //Get some type of list from upload where isUploaded is false
-        String sql = "SELECT * FROM uploads WHERE isUploaded = false";
-        editable = new DefaultListModel<>();
-        try(Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();) {
-
-            //Retrieve the information found in the Uploads tables
-            ResultSet rs = stmt.executeQuery(sql);
-            while(rs.next()){
-                editable.addElement(new Upload(rs.getInt("upload_ID"), rs.getString("Title")));
-            }
-        }catch(SQLException ev){
-
-        }
-        editList = new JList(editable);
-//        listProperties(contactList, 32);
-        editList.addListSelectionListener(this::valueChanged);
-        scrollContactPanel = new JScrollPane(editList);
-
         //Output area when a contact is selected or a new one is to added
+        displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
 
         optionPanel.setLayout(new GridLayout(1, 2));
         optionPanel.add(edit); optionPanel.add(delete);
 
         leftPanel.add(contextPanel, BorderLayout.NORTH);
-        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
-        displayPanel.setLayout(new GridLayout(1,1));
-        display = new UploadEditPanel(cardPane);
-        displayPanel.add(display);
-        JScrollPane displayScroll = new JScrollPane(displayPanel);
-        rightPanel.add(displayScroll, BorderLayout.CENTER);
+//        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
+        leftPanel.add(addNew, BorderLayout.SOUTH);
+
+        rightPanel.add(displayPanel, BorderLayout.NORTH);
         rightPanel.add(optionPanel, BorderLayout.SOUTH);
 
         add(leftPanel);
@@ -131,38 +115,33 @@ public class EditPanel extends JPanel implements DocumentListener, FocusListener
 
                     //Since addNew, edit and delete buttons have an image to the left of text, the font can be displayed longer
                     if(windowWidth < 500) {
+                        buttonProperties(addNew, addNewImg, width, windowHeight, 0, true);
                         buttonProperties(edit, editImg, width, windowHeight, 0, true);
                         buttonProperties(delete, deleteImg, width, windowHeight, 0, true);
-                        listProperties(editList, 16);
+//                        listProperties(contactList, 16);
                     }else{
+                        buttonProperties(addNew, addNewImg, width, windowHeight, 16, true);
                         buttonProperties(edit, editImg, width, windowHeight, 16, true);
                         buttonProperties(delete, deleteImg, width, windowHeight, 16, true);
-                        listProperties(editList, 24);
+//                        listProperties(contactList, 24);
                     }
 
-                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
+//                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
+                    saveImg = saveImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
 
                 }else{
                     buttonProperties(back, backImg, 50, 50, font, false);
+                    buttonProperties(addNew, addNewImg, 50, 50, font, true);
                     buttonProperties(edit, editImg, 50, 50, font, true);
                     buttonProperties(delete, deleteImg, 50, 50, font, true);
-                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    listProperties(editList, 32);
+//                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
+                    saveImg = saveImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
+//                    listProperties(contactList, 32);
                 }
             }
         });
-    }
-
-    private Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:data/database.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
     }
 
     private void listProperties(JList list, int fontSize){
@@ -205,89 +184,37 @@ public class EditPanel extends JPanel implements DocumentListener, FocusListener
             case "Back":
                 cardLayout.show(cardPane, "Home");
                 break;
+            case "Add New":
+                edit.setEnabled(true);
             case "Edit":
-                //Send to uploadPanel with setTo(uploadID)
-                UploadPanel toEdit = null;
-                try{
-                    toEdit = new UploadPanel(cardPane);
-                } catch(IOException e1){
-                    System.out.println(e1);
-                }
-                toEdit.setToExistingUpload(editable.getElementAt(editList.getSelectedIndex()).getUploadID());
-                cardPane.add(toEdit, "Editting");
-                cardLayout.show(cardPane, "Editting");
+                edit.setText("Save");
+                editImg = saveImg;
+                edit.setIcon(new ImageIcon(editImg));
+                break;
+            case "Save":
+                edit.setText("Edit");
+                editImg = tempImg;
+                edit.setIcon(new ImageIcon(editImg));
                 break;
             case "Delete":
-                //Delete from database
-                String sqlUploads = "DELETE FROM uploads WHERE upload_ID = ?";
-                String sqlAuthors = "DELETE FROM upload_Authors WHERE upload_ID = ?";
-                String sqlFiles = "DELETE FROM upload_Files WHERE upload_ID = ?";
-
-                try (Connection conn = this.connect()) {
-                    PreparedStatement pstmtUpload = conn.prepareStatement(sqlUploads);
-                    pstmtUpload.setInt(1, editable.getElementAt(editList.getSelectedIndex()).getUploadID());
-                    pstmtUpload.executeUpdate();
-                    PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthors);
-                    pstmtAuthor.setInt(1, editable.getElementAt(editList.getSelectedIndex()).getUploadID());
-                    pstmtAuthor.executeUpdate();
-                    PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
-                    pstmtFiles.setInt(1, editable.getElementAt(editList.getSelectedIndex()).getUploadID());
-                    pstmtFiles.executeUpdate();
-
-                } catch (SQLException ev) {
-                    System.out.println(ev.getMessage());
-                }
-
-                editable.removeElementAt(editList.getSelectedIndex());
-                editList.setSelectedIndex(-1);
+                contactDB.deleteContact(contactSelected);
+                delete.setEnabled(false);
+                edit.setEnabled(false);
                 break;
         }
     }
 
     public void valueChanged(ListSelectionEvent e){
         if (e.getValueIsAdjusting() == false) {
-            if (editList.getSelectedIndex() == -1) {
+            if (contactList.getSelectedIndex() == -1) {
                 //No selection, disable fire button.
-                display.resetAll();
+
+
             } else {
                 //Selection, enable the fire button.
-                display.setToExistingUpload(editable.getElementAt(editList.getSelectedIndex()).getUploadID());
                 edit.setEnabled(true);
                 delete.setEnabled(true);
             }
-        }
-    }
-
-
-
-    //Any text entry into JTextField will search for the contact desired.
-    @Override
-    public void insertUpdate(DocumentEvent e) { search();
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) { search();
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-    }
-
-    private void search(){
-        //Search for the Title
-    }
-
-    //Allow for the display of the "Search..." text on the text area while not in focus
-    public void focusGained(FocusEvent e) {
-        searchField.setText("");
-        searchField.setForeground(Color.BLACK);
-    }
-    public void focusLost(FocusEvent e) {
-        if(searchField.getText().isEmpty()){
-            searchField.getDocument().removeDocumentListener(this);
-            searchField.setText("Search...");
-            searchField.setForeground(Color.GRAY);
-            searchField.getDocument().addDocumentListener(this);
         }
     }
 }

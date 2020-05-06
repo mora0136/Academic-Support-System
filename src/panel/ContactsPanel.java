@@ -13,7 +13,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class ContactsPanel extends JPanel implements DocumentListener, FocusListener{
+public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener{
     JPanel cardPane, leftPanel, rightPanel, contextPanel, displayPanel, optionPanel;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg, tempImg;
     JTextField givenNameField, lastNameField, emailField, phoneField;
@@ -27,6 +27,7 @@ public class ContactsPanel extends JPanel implements DocumentListener, FocusList
     DefaultListModel<Contact> listOfContacts;
 
     ContactsPanel(JPanel pane) throws IOException {
+        super(pane);
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
 
