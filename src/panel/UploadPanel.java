@@ -40,7 +40,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JList attachedFileList, notAddedContactList, addedContactsList, templateStatement;
     JCheckBox cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit;
     JFileChooser fc;
-    int uploadID = 0;
+    int uploadID = 0; //Always 0 unless upload has been selected from edit
     int mainFont = 32;
 
     UploadPanel(JPanel pane) throws IOException {
@@ -137,14 +137,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.insets = new Insets(0, 5, 5, 20);
         gridBag.setConstraints(descriptionTextArea, c);
         descPanel.add(descriptionTextArea);
-//        JTextField addTemplateField = new JTextField();
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.gridwidth = GridBagConstraints.RELATIVE;
-//        gridBag.setConstraints(addTemplateField, c);
-//        descPanel.add(addTemplateField);
-//        JButton addTemplateBtn = new JButton("Add New Template");
-//        gridBag.setConstraints(addTemplateBtn, c);
-//        descPanel.add(addTemplateBtn);
 
         //The File Selection section
         //Define the File Label
@@ -540,7 +532,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == backBtn){
-            cardLayout.show(cardPane, "Home");
+            //Introduce a are sure
+            if(uploadID == 0) {
+                cardLayout.show(cardPane, "Home");
+            }else{
+                cardLayout.show(cardPane, "Edit");
+            }
         }else if(e.getSource() == resetBtn){
             resetAll();
         }else if(e.getSource() == uploadBtn || e.getSource() == saveBtn){
