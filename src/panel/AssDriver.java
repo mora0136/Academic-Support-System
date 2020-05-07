@@ -27,7 +27,7 @@ public class AssDriver {
         cardPane.add(setting, "Setting");
         cardPane.add(contacts, "Contacts");
         frame.add(cardPane);
-        cardLayout.show(cardPane, "Upload"); //Testing
+        cardLayout.show(cardPane, "History"); //Testing
 //        frame.setMinimumSize(new Dimension(853, 480));
         frame.setSize(1280, 720);
         frame.setExtendedState( frame.getExtendedState()|JFrame.MAXIMIZED_BOTH );
