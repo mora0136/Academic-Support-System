@@ -1,11 +1,9 @@
 package panel;
 
-import contacts.Contact;
 import contacts.ContactDB;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -13,17 +11,13 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class TwoPanel extends JPanel{
+abstract class TwoPanel extends JPanel{
     JPanel cardPane, leftPanel, rightPanel, contextPanel, displayPanel, optionPanel;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg, tempImg;
-    JScrollPane scrollContactPanel;
     JTextField searchField;
     ContactDB contactDB;
     CardLayout cardLayout;
     JButton edit, delete;
-    JList contactList;
-    int contactSelected = 0;
-    DefaultListModel<Contact> listOfContacts;
 
     TwoPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -43,7 +37,7 @@ public class TwoPanel extends JPanel{
         setLayout(new GridLayout(1, 2));
 
         JButton back = new JButton("Back");
-        back.addActionListener(this::actionPerformed);
+        back.addActionListener(this::actionPerformedBack);
         backImg = ImageIO.read(new File("resources/back.png"));
 
 
@@ -54,19 +48,19 @@ public class TwoPanel extends JPanel{
         searchField.setForeground(Color.GRAY);
 
         JButton addNew = new JButton("Add New");
-        addNew.addActionListener(this::actionPerformed);
+        addNew.addActionListener(this::actionPerformedNew);
         addNewImg = ImageIO.read(new File("resources/add.png"));
 
         edit = new JButton("Edit");
         edit.setEnabled(false);
-        edit.addActionListener(this::actionPerformed);
+        edit.addActionListener(this::actionPerformedEdit);
         editImg = ImageIO.read(new File("resources/edit_contact.png"));
         tempImg = editImg;
         saveImg = ImageIO.read(new File("resources/save.png"));
 
         delete = new JButton("Delete");
         delete.setEnabled(false);
-        delete.addActionListener(this::actionPerformed);
+        delete.addActionListener(this::actionPerformedDelete);
         deleteImg = ImageIO.read(new File("resources/delete.png"));
 
         leftPanel.setLayout(new BorderLayout());
@@ -89,10 +83,8 @@ public class TwoPanel extends JPanel{
         optionPanel.add(edit); optionPanel.add(delete);
 
         leftPanel.add(contextPanel, BorderLayout.NORTH);
-//        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
         leftPanel.add(addNew, BorderLayout.SOUTH);
 
-        rightPanel.add(displayPanel, BorderLayout.NORTH);
         rightPanel.add(optionPanel, BorderLayout.SOUTH);
 
         add(leftPanel);
@@ -144,7 +136,7 @@ public class TwoPanel extends JPanel{
         });
     }
 
-    private void listProperties(JList list, int fontSize){
+    public void listProperties(JList list, int fontSize){
         list.setFont(new Font("Arial", Font.PLAIN, fontSize));
         DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -160,7 +152,7 @@ public class TwoPanel extends JPanel{
      * @param fontSize The font size desired on the button(0 disabled the text from being viewable)
      * @param IconLeft Is true if the desired position of the text is to the right of the image
      */
-    private void buttonProperties(JButton btn, Image img, int width, int height, int fontSize, boolean IconLeft){
+    public void buttonProperties(JButton btn, Image img, int width, int height, int fontSize, boolean IconLeft){
         img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
         btn.setIcon(new ImageIcon(img));
 
@@ -178,43 +170,31 @@ public class TwoPanel extends JPanel{
      * Details the actions required for a specific button on this panel
      * @param e The Action Event call
      */
-    public void actionPerformed(ActionEvent e){
-        System.out.println("Action performed");
-        switch(e.getActionCommand()) {
-            case "Back":
-                cardLayout.show(cardPane, "Home");
-                break;
-            case "Add New":
-                edit.setEnabled(true);
-            case "Edit":
-                edit.setText("Save");
-                editImg = saveImg;
-                edit.setIcon(new ImageIcon(editImg));
-                break;
-            case "Save":
-                edit.setText("Edit");
-                editImg = tempImg;
-                edit.setIcon(new ImageIcon(editImg));
-                break;
-            case "Delete":
-                contactDB.deleteContact(contactSelected);
-                delete.setEnabled(false);
-                edit.setEnabled(false);
-                break;
-        }
+    public void actionPerformedBack(ActionEvent e){
+        cardLayout.show(cardPane, "Home");
     }
 
-    public void valueChanged(ListSelectionEvent e){
-        if (e.getValueIsAdjusting() == false) {
-            if (contactList.getSelectedIndex() == -1) {
-                //No selection, disable fire button.
+    public void actionPerformedNew(ActionEvent e){
+        edit.setEnabled(true);
+        edit.setText("Save");
+        editImg = saveImg;
+        edit.setIcon(new ImageIcon(editImg));
+    }
 
+    public void actionPerformedEdit(ActionEvent e){
+        edit.setText("Save");
+        editImg = saveImg;
+        edit.setIcon(new ImageIcon(editImg));
+    }
 
-            } else {
-                //Selection, enable the fire button.
-                edit.setEnabled(true);
-                delete.setEnabled(true);
-            }
-        }
+    public void actionPerformedSave(ActionEvent e){
+        edit.setText("Edit");
+        editImg = tempImg;
+        edit.setIcon(new ImageIcon(editImg));
+    }
+
+    public void actionPerformedDelete(ActionEvent e){
+        delete.setEnabled(false);
+        edit.setEnabled(false);
     }
 }

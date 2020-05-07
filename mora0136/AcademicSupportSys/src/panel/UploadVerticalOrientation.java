@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class UploadEditPanel extends UploadPanel {
-    UploadEditPanel(JPanel pane) throws IOException {
+public class UploadVerticalOrientation extends UploadPanel {
+    UploadVerticalOrientation(JPanel pane) throws IOException {
         super(pane);
         setLayout(new GridLayout(2, 1));
         leftPanel.remove(backResetPanel);
