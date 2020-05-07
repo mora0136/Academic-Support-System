@@ -209,19 +209,6 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
             listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
         }
-        //Older way of doing it is below, above means just editing list not container as well.
-//        listOfContacts = contactDB.getListModel();
-//        leftPanel.remove(scrollContactPanel);
-//        contactList = new JList(contactDB.getListModel());
-//
-//        System.out.println(contactDB.getListModel());
-//
-//        listProperties(contactList);
-//        contactList.addListSelectionListener(this::valueChanged);
-//        scrollContactPanel = new JScrollPane(contactList);
-//        leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
-//        revalidate();
-//        repaint();
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus

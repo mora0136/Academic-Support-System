@@ -17,7 +17,9 @@ abstract class TwoPanel extends JPanel{
     JTextField searchField;
     ContactDB contactDB;
     CardLayout cardLayout;
-    JButton edit, delete;
+    JButton edit, delete, addNew, back;
+    GridBagLayout gridBag;
+    GridBagConstraints c;
 
     TwoPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -30,13 +32,13 @@ abstract class TwoPanel extends JPanel{
         optionPanel = new JPanel();
         contactDB = new ContactDB();
 
-        GridBagLayout gridBag = new GridBagLayout();
-        GridBagConstraints c = new GridBagConstraints();
+        gridBag = new GridBagLayout();
+        c = new GridBagConstraints();
 
         //left and right panels to be added in
         setLayout(new GridLayout(1, 2));
 
-        JButton back = new JButton("Back");
+        back = new JButton("Back");
         back.addActionListener(this::actionPerformedBack);
         backImg = ImageIO.read(new File("resources/back.png"));
 
@@ -47,7 +49,7 @@ abstract class TwoPanel extends JPanel{
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
         searchField.setForeground(Color.GRAY);
 
-        JButton addNew = new JButton("Add New");
+        addNew = new JButton("Add New");
         addNew.addActionListener(this::actionPerformedNew);
         addNewImg = ImageIO.read(new File("resources/add.png"));
 
@@ -110,15 +112,11 @@ abstract class TwoPanel extends JPanel{
                         buttonProperties(addNew, addNewImg, width, windowHeight, 0, true);
                         buttonProperties(edit, editImg, width, windowHeight, 0, true);
                         buttonProperties(delete, deleteImg, width, windowHeight, 0, true);
-//                        listProperties(contactList, 16);
                     }else{
                         buttonProperties(addNew, addNewImg, width, windowHeight, 16, true);
                         buttonProperties(edit, editImg, width, windowHeight, 16, true);
                         buttonProperties(delete, deleteImg, width, windowHeight, 16, true);
-//                        listProperties(contactList, 24);
                     }
-
-//                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
                     saveImg = saveImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
                     tempImg = tempImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
 
@@ -159,6 +157,9 @@ abstract class TwoPanel extends JPanel{
         if(!IconLeft){
             btn.setVerticalTextPosition(SwingConstants.BOTTOM);
             btn.setHorizontalTextPosition(SwingConstants.CENTER);
+        }else{
+            btn.setVerticalTextPosition(SwingConstants.CENTER);
+            btn.setHorizontalTextPosition(SwingConstants.RIGHT);
         }
 
         btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
