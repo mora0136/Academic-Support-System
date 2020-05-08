@@ -27,9 +27,9 @@ public class LogTableModel extends AbstractTableModel {
         Log l = list.get(rowIndex);
         switch(columnIndex){
             case 0:
-                return l.getTime();
-            case 1:
                 return l.getType();
+            case 1:
+                return l.getAction();
             case 2:
                 return l.getDescription();
             case 3: //This column is not displayed, is strictly here to be able to return the log data.

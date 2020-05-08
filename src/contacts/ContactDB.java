@@ -6,8 +6,8 @@ import suffixtree.SuffixTrieNode;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ContactDB {
     SuffixTrie sf; // stores names of contacts exclusively for searching purposes, does not contain contacts data
@@ -23,7 +23,7 @@ public class ContactDB {
 
     public void extractContactsFromDB(){
 
-        String sql = "SELECT * FROM contacts ORDER BY givenName";
+        String sql = "SELECT * FROM contacts WHERE isDeleted = false ORDER BY givenName";
 
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
@@ -143,19 +143,22 @@ public class ContactDB {
      * @param email New contact email
      * @param phone New contact phone
      */
-    public void addContact(String givenName, String surname, String email, String phone){
+    public int addContact(String givenName, String surname, String email, String phone){
         String sql = "INSERT INTO contacts(givenName,surname, email, phone) VALUES(?,?,?,?)";
 
         try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, givenName);
             pstmt.setString(2, surname);
             pstmt.setString(3, email);
             pstmt.setString(4, phone);
             pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
             extractContactsFromDB();
+            return rs.getInt(1);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return -1;
         }
     }
 
@@ -165,13 +168,14 @@ public class ContactDB {
      * never be presented to the user
      */
     public void deleteContact(int contact_ID){
-        String sql = "DELETE FROM contacts WHERE contact_ID = ?";
+        String sql = "UPDATE contacts SET isDeleted = ? WHERE contact_ID = ?";
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            pstmt.setInt(1, contact_ID);
+            pstmt.setBoolean(1, true);
+            pstmt.setInt(2, contact_ID);
             // execute the delete statement
             pstmt.executeUpdate();
             extractContactsFromDB();
@@ -179,6 +183,25 @@ public class ContactDB {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Contact getContactDetails(int contactID){
+        String sql = "SELECT * FROM contacts WHERE contact_ID = ?";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, contactID);
+            ResultSet rs = pstmt.executeQuery();
+
+            return new Contact(rs.getInt("contact_ID"), rs.getString("givenName"),
+                    rs.getString("surname"), rs.getString("email"),
+                    rs.getString("phone"));
+
+
+        }catch(SQLException e){
+            return null;
+        }
+
     }
 
 }

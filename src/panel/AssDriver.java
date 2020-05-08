@@ -3,9 +3,10 @@ package panel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AssDriver {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         JFrame frame = new JFrame("Academic Support System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
