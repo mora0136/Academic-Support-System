@@ -131,19 +131,26 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 emailField.setEditable(false);
                 phoneField.setEditable(false);
                 if (contactSelected == 0) {
-                    contactDB.addContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
+                    contactSelected = contactDB.addContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
                     edit.setEnabled(false);
                     delete.setEnabled(false);
                     givenNameField.setText("");
                     lastNameField.setText("");
                     emailField.setText("");
                     phoneField.setText("");
+                    LogDB.logNewContact(contactSelected);
                 } else {
                     contactDB.updateContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText(), contactSelected);
+                    LogDB.logSavedContact(contactSelected);
+
                 }
                 edit.setText("Edit");
                 editImg = tempImg;
                 edit.setIcon(new ImageIcon(editImg));
+                listOfContacts.removeAllElements();
+                for(int i = 0; i<contactDB.getListModel().getSize(); i++){
+                    listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+                }
                 break;
         }
     }
@@ -162,6 +169,11 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         lastNameField.setEditable(false);
         emailField.setEditable(false);
         phoneField.setEditable(false);
+        LogDB.logDeletedContact(contactSelected);
+        listOfContacts.removeAllElements();
+        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
+            listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+        }
     }
 
     public void valueChanged(ListSelectionEvent e){

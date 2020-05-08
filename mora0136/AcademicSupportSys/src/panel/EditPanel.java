@@ -22,7 +22,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         searchField.addFocusListener(this);
 
         //Get some type of list from upload where isUploaded is false
-        String sql = "SELECT * FROM uploads WHERE isUploaded = false";
+        String sql = "SELECT * FROM uploads WHERE isUploaded = false AND isDeleted = false";
         editable = new DefaultListModel<>();
         try(Connection conn = this.connect();
             Statement stmt  = conn.createStatement();) {
@@ -101,25 +101,31 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         cardLayout.show(cardPane, "Editting");
     }
 
+    //Consider moving/marking info rather then deleting?
     public void actionPerformedDelete(ActionEvent e){
-        String sqlUploads = "DELETE FROM uploads WHERE upload_ID = ?";
-        String sqlAuthors = "DELETE FROM upload_Authors WHERE upload_ID = ?";
-        String sqlFiles = "DELETE FROM upload_Files WHERE upload_ID = ?";
+        String sqlUploads = "UPDATE uploads SET isDeleted = ? WHERE upload_ID = ?";
+//        String sqlAuthors = "DELETE FROM upload_Authors WHERE upload_ID = ?";
+//        String sqlFiles = "DELETE FROM upload_Files WHERE upload_ID = ?";
+
+        int uploadID = editable.getElementAt(editList.getSelectedIndex()).getUploadID();
 
         try (Connection conn = this.connect()) {
             PreparedStatement pstmtUpload = conn.prepareStatement(sqlUploads);
-            pstmtUpload.setInt(1, editable.getElementAt(editList.getSelectedIndex()).getUploadID());
+            pstmtUpload.setBoolean(1, true);
+            pstmtUpload.setInt(2, uploadID);
             pstmtUpload.executeUpdate();
-            PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthors);
-            pstmtAuthor.setInt(1, editable.getElementAt(editList.getSelectedIndex()).getUploadID());
-            pstmtAuthor.executeUpdate();
-            PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
-            pstmtFiles.setInt(1, editable.getElementAt(editList.getSelectedIndex()).getUploadID());
-            pstmtFiles.executeUpdate();
+//            PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthors);
+//            pstmtAuthor.setInt(1, uploadID);
+//            pstmtAuthor.executeUpdate();
+//            PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
+//            pstmtFiles.setInt(1, uploadID);
+//            pstmtFiles.executeUpdate();
 
         } catch (SQLException ev) {
             System.out.println(ev.getMessage());
         }
+
+        LogDB.logDeletedUpload(uploadID);
 
         editable.removeElementAt(editList.getSelectedIndex());
         editList.setSelectedIndex(-1);

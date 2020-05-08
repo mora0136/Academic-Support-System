@@ -11,7 +11,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class HistoryPanel extends TwoPanel {
     JButton reset;
@@ -25,7 +26,7 @@ public class HistoryPanel extends TwoPanel {
     int mainFont = 32;
 
 
-    HistoryPanel(JPanel pane) throws IOException {
+    HistoryPanel(JPanel pane) throws IOException, SQLException {
         super(pane);
 
         contextPanel.remove(searchField);
@@ -130,12 +131,37 @@ public class HistoryPanel extends TwoPanel {
 
 
         //The display area of all logs
-        ArrayList<Log> list = new ArrayList();
-        for(int i = 10; i<20; i++){
-            list.add(new Log(i, "12:0"+i, "Upload", "All have the same description"));
+//        ArrayList<Log> list = new ArrayList();
+//        for(int i = 10; i<20; i++){
+//            list.add(new Log(i, "12:0"+i, "Upload", "All have the same description"));
+//        }
+
+        LocalDate dateFrom = LocalDate.of(2020, 5, 7);
+        LocalDate dateTo = LocalDate.now();
+
+        displayPanel.setLayout(gridBag);
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.insets = new Insets(20, 20, 20, 20);
+        c.weightx = 1;
+        c.weighty = 0;
+
+
+        for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
+//            System.out.println(dateTo);
+            java.util.List<Log> l = LogDB.getLogsForDay(dateTo.minusDays(1), dateTo);
+//            System.out.println(l);
+            if(!l.isEmpty()) {
+                System.out.println(dateTo);
+                JPanel log = new LogPanel(dateTo, l);
+                gridBag.setConstraints(log, c);
+                displayPanel.add(log);
+            }
+
         }
-        displayPanel.add(new LogPanel("Tuesday", list));
-        rightPanel.add(displayPanel, BorderLayout.CENTER);
+        JScrollPane n = new JScrollPane(displayPanel);
+
+        rightPanel.add(n, BorderLayout.CENTER);
 
         addComponentListener(new ComponentAdapter() {
             @Override

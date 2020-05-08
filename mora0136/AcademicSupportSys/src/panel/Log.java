@@ -1,16 +1,44 @@
 package panel;
 
+import contacts.Contact;
+import contacts.ContactDB;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
 public class Log {
     int logID;
-    String time;
+    LocalDate date;
     String type;
+    String action;
     String description;
 
-    Log(int logID, String time, String type, String description){
+    Log(int logID, LocalDate time, String type, String action, String description){
         this.logID = logID;
-        this.time = time;
         this.type = type;
+        this.date = time;
+        this.action = type;
         this.description = description;
+    }
+
+    Log(ResultSet rs) throws SQLException {
+        this.logID = rs.getInt("log_ID");
+        this.date = rs.getDate("date").toLocalDate();
+        this.type = rs.getString("type");
+        this.action = rs.getString("action");
+
+        //Find associated data for its particular type
+        if(this.action == "Upload"){
+            int uploadID = rs.getInt("associate_ID");
+            description = "Replace with SQL UploadDB Code";
+        }else {
+            int contactID = rs.getInt("associate_ID");
+            ContactDB db = new ContactDB();
+            Contact c = db.getContactDetails(contactID);
+            description = c.toString();
+            System.out.println("Description");
+        }
     }
     public int getLogID() {
         return logID;
@@ -20,20 +48,27 @@ public class Log {
         this.logID = logID;
     }
 
-    public String getTime() {
-        return time;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public String getDescription() {

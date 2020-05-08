@@ -601,6 +601,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                         pstmtFiles.setInt(2, uploadID);
                         pstmtFiles.executeUpdate();
                     }
+                    if(e.getSource() == uploadBtn) {
+                        LogDB.logUploadedUpload(uploadID);
+                    }else{
+                        LogDB.logSavedUpload(uploadID);
+                    }
+
                 } catch (SQLException et) {
                     System.out.println(et.getMessage());
                 }
