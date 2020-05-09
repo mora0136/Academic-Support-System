@@ -217,6 +217,10 @@ public class JDatePicker extends JComponent implements DatePicker {
     /* (non-Javadoc)
      * @see org.jdatepicker.JDatePicker#getJDateInstantPanel()
      */
+
+    public JButton getButton(){
+        return button;
+    }
     public DatePanel getJDateInstantPanel() {
         return datePanel;
     }
@@ -306,6 +310,11 @@ public class JDatePicker extends JComponent implements DatePicker {
 
     public void setTextfieldColumns(int columns) {
         formattedTextField.setColumns(columns);
+    }
+
+    //addition made by Brodie
+    public JFormattedTextField getFormattedTextField(){
+        return formattedTextField;
     }
 
     @Override

@@ -29,8 +29,10 @@ public class AssDriver {
         cardPane.add(contacts, "Contacts");
         frame.add(cardPane);
         cardLayout.show(cardPane, "History"); //Testing
-//        frame.setMinimumSize(new Dimension(853, 480));
-        frame.setSize(1280, 720);
+        //Systems with high DPI and are scaling will not utilise the proper minimum size()
+        //target system is 1920x1080 displays, a typical academic workstation
+        frame.setMinimumSize(new Dimension(622, 350)); // minimum size 16:9
+        frame.setSize(1280, 720); //Default to 16:9 HD
         frame.setExtendedState( frame.getExtendedState()|JFrame.MAXIMIZED_BOTH );
         frame.setVisible(true);
     }

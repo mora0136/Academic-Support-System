@@ -43,7 +43,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     int uploadID = 0; //Always 0 unless upload has been selected from edit
     int mainFont = 32;
 
-    UploadPanel(JPanel pane) throws IOException {
+    UploadPanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout) pane.getLayout();
 
@@ -74,10 +74,15 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         saveUploadPanel.setLayout(new GridLayout(1, 2));
 
         //Common images that need to be loaded in for buttons etc.
-        backImg = ImageIO.read(new File("resources/back.png"));
-        resetImg = ImageIO.read(new File("resources/reset.png"));
-        saveImg = ImageIO.read(new File("resources/save.png"));
-        uploadImg = ImageIO.read(new File("resources/upload.png"));
+        try {
+            backImg = ImageIO.read(new File("resources/back.png"));
+            resetImg = ImageIO.read(new File("resources/reset.png"));
+            saveImg = ImageIO.read(new File("resources/save.png"));
+            uploadImg = ImageIO.read(new File("resources/upload.png"));
+        }catch(IOException e){
+            System.out.println("Error lodaing images");
+            System.out.println(e);
+        }
 
         //Define the back button
         backBtn = new JButton("Back");

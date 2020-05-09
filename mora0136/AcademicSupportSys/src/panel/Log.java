@@ -1,6 +1,5 @@
 package panel;
 
-import contacts.Contact;
 import contacts.ContactDB;
 
 import java.sql.ResultSet;
@@ -14,13 +13,24 @@ public class Log {
     String action;
     String description;
 
-    Log(int logID, LocalDate time, String type, String action, String description){
-        this.logID = logID;
-        this.type = type;
-        this.date = time;
-        this.action = type;
-        this.description = description;
+    public Object getActionType() {
+        return actionType;
     }
+
+    public void setActionType(Object at) {
+        this.actionType = at;
+    }
+
+    Object actionType; //Either Upload or Contact
+
+    //Deprecated
+//    Log(int logID, LocalDate time, String type, String action, String description){
+//        this.logID = logID;
+//        this.type = type;
+//        this.date = time;
+//        this.action = type;
+//        this.description = description;
+//    }
 
     Log(ResultSet rs) throws SQLException {
         this.logID = rs.getInt("log_ID");
@@ -29,14 +39,15 @@ public class Log {
         this.action = rs.getString("action");
 
         //Find associated data for its particular type
-        if(this.action == "Upload"){
+        if(this.type.equals("Upload")){
             int uploadID = rs.getInt("associate_ID");
+            actionType = new Upload(uploadID, "Temp");
             description = "Replace with SQL UploadDB Code";
         }else {
             int contactID = rs.getInt("associate_ID");
             ContactDB db = new ContactDB();
-            Contact c = db.getContactDetails(contactID);
-            description = c.toString();
+            actionType = db.getContactDetails(contactID);
+            description = actionType.toString();
             System.out.println("Description");
         }
     }

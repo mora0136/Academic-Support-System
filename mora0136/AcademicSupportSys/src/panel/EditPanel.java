@@ -90,12 +90,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
     }
 
     public void actionPerformedEdit(ActionEvent e){
-        UploadPanel toEdit = null;
-        try{
-            toEdit = new UploadPanel(cardPane);
-        } catch(IOException e1){
-            System.out.println(e1);
-        }
+        UploadPanel toEdit = new UploadPanel(cardPane);
         toEdit.setToExistingUpload(editable.getElementAt(editList.getSelectedIndex()).getUploadID());
         cardPane.add(toEdit, "Editting");
         cardLayout.show(cardPane, "Editting");
