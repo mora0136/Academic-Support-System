@@ -151,8 +151,10 @@ abstract class TwoPanel extends JPanel{
      * @param IconLeft Is true if the desired position of the text is to the right of the image
      */
     public void buttonProperties(JButton btn, Image img, int width, int height, int fontSize, boolean IconLeft){
-        img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
-        btn.setIcon(new ImageIcon(img));
+        if(img != null) {
+            img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
+            btn.setIcon(new ImageIcon(img));
+        }
 
         if(!IconLeft){
             btn.setVerticalTextPosition(SwingConstants.BOTTOM);

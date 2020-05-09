@@ -1,5 +1,7 @@
 package panel;
 
+import contacts.Contact;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
@@ -9,9 +11,9 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-public class LogPanel extends JPanel {
+public class LogPanel extends JPanel{
     JLabel day;
-    JTable logs;
+    JTable logTable;
 
     LogPanel(LocalDate date, List log){
         GridBagLayout gb = new GridBagLayout();
@@ -24,22 +26,38 @@ public class LogPanel extends JPanel {
         }else {
             day = new JLabel(date.format(DateTimeFormatter.ofPattern("EEEE, dd LLLL")));
         }
-//        c.fill = GridBagConstraints.BOTH;
-//        c.gridwidth = GridBagConstraints.REMAINDER;
-//        gb.setConstraints(day, c);
         day.setFont(new Font("Arial", Font.PLAIN, 32));
         add(day, BorderLayout.NORTH);
 
-        logs = new JTable(new LogTableModel(log));
-//        c.fill = GridBagConstraints.BOTH;
-//        c.insets = new Insets(5, 20, 5, 20);
-//        gb.setConstraints(logs, c);
-        logs.getSelectionModel().addListSelectionListener(this::valueChanged);
-        logs.setFont(new Font("Arial", Font.PLAIN, 24));
-        logs.setRowHeight(30); // very temp please change to more structured approach
-        add(logs, BorderLayout.CENTER);
+        logTable = new JTable(new LogTableModel(log));
+        logTable.getSelectionModel().addListSelectionListener(this::valueChanged);
+        logTable.setFont(new Font("Arial", Font.PLAIN, 24));
+        logTable.setRowHeight(30); // very temp please change to more structured approach
+        TableColumnAdjuster tca = new TableColumnAdjuster(logTable);
+        tca.adjustColumns();
+        add(logTable, BorderLayout.CENTER);
     }
     public void valueChanged(ListSelectionEvent e){
-        System.out.println(logs.getModel().getValueAt(logs.getSelectedRow(), 3));
+        LogTableModel tableModel = (LogTableModel) logTable.getModel();
+        Log l;
+        switch((String)tableModel.getValueAt(logTable.getSelectedRow(), 0)){
+            case "Upload":
+                System.out.println("upload selected");
+                UploadPanelDisabled upload = null;
+                upload = new UploadPanelDisabled();
+                l = (Log)tableModel.getValueAt(logTable.getSelectedRow(), 3);
+                Upload u = (Upload)l.getActionType();
+                upload.setToExistingUpload(u.getUploadID());
+                upload.setPreferredSize(new Dimension(1280, 720));
+                JOptionPane.showConfirmDialog(null, upload, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
+                break;
+            case "Contact":
+                //Display the shown contact in a non editable panel
+                l = (Log)tableModel.getValueAt(logTable.getSelectedRow(), 3);
+                Contact c = (Contact)l.getActionType();
+                ContactDisplayPanel dp = new ContactDisplayPanel(c);
+                JOptionPane.showConfirmDialog(null, dp, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
+                break;
+        }
     }
 }

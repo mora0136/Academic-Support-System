@@ -4,40 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class UploadVerticalOrientation extends UploadPanel {
+public class UploadVerticalOrientation extends UploadPanelDisabled {
     UploadVerticalOrientation(JPanel pane) throws IOException {
-        super(pane);
+        super();
         setLayout(new GridLayout(2, 1));
-        leftPanel.remove(backResetPanel);
-        rightPanel.remove(saveUploadPanel);
-        descPanel.remove(templateStatement);
-        contactsPanel.remove(searchField);
-        contactsPanel.remove(authorsLabel);
-        for(Component com : titlePanel.getComponents()){
-            com.setEnabled(false);
-        }
-        for(Component com : descPanel.getComponents()){
-            com.setEnabled(false);
-        }
-        for(Component com : filePanel.getComponents()){
-            com.setEnabled(false);
-        }
-        for(Component com : typeDatePanel.getComponents()){
-            com.setEnabled(false);
-        }
-        for(Component com : contactsPanel.getComponents()){
-            com.setEnabled(false);
-        }
-        for(Component com : addedContactsList.getComponents()){
-            com.setEnabled(false);
-        }
-        for(Component com : servicesPanel.getComponents()){
-            com.setEnabled(false);
-        }
-        notAddedContactList.setEnabled(false);
-        addedContactsList.setEnabled(false);
-        mainFont = 42;
-
     }
-
 }

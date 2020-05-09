@@ -12,12 +12,12 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener{
-    JTextField givenNameField, lastNameField, emailField, phoneField;
     JScrollPane scrollContactPanel;
-    ContactDB contactDB;
+//    ContactDB contactDB;
     JList contactList;
     int contactSelected = 0;
     DefaultListModel<Contact> listOfContacts;
+    ContactDisplayPanel contactInfoPanel;
 
     ContactsPanel(JPanel pane) throws IOException {
         super(pane);
@@ -31,33 +31,13 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         contactList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(contactList);
 
-        //Output area when a contact is selected or a new one is to added
-        displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
-        JLabel givenName = new JLabel("Name");
-        givenNameField = new JTextField();
-        givenNameField.setEditable(false);
-
-        JLabel lastName = new JLabel("Surname");
-        lastNameField = new JTextField();
-        lastNameField.setEditable(false);
-
-        JLabel email = new JLabel("Email");
-        emailField = new JTextField();
-        emailField.setEditable(false);
-
-        JLabel phone = new JLabel("Phone");
-        phoneField = new JTextField();
-        phoneField.setEditable(false);
-
-//        contactList.setOutputPanel(givenNameField, lastNameField, emailField, phoneField, edit, delete);
-        displayPanel.add(givenName); displayPanel.add(givenNameField);
-        displayPanel.add(lastName); displayPanel.add(lastNameField);
-        displayPanel.add(email); displayPanel.add(emailField);
-        displayPanel.add(phone); displayPanel.add(phoneField);
+//Where output was
+        contactInfoPanel = new ContactDisplayPanel();
 
         leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
 
-        rightPanel.add(displayPanel, BorderLayout.NORTH);
+        //Display panel is there if I still need it
+        rightPanel.add(contactInfoPanel, BorderLayout.NORTH);
 //        rightPanel.add(optionPanel, BorderLayout.SOUTH);
 
 //        add(leftPanel);
@@ -100,15 +80,8 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
 
     public void actionPerformedNew(ActionEvent e){
         contactSelected = 0;
-        givenNameField.setText("");
-        lastNameField.setText("");
-        emailField.setText("");
-        phoneField.setText("");
+        contactInfoPanel.setEditable(true);
         edit.setEnabled(true);
-        givenNameField.setEditable(true);
-        lastNameField.setEditable(true);
-        emailField.setEditable(true);
-        phoneField.setEditable(true);
         edit.setText("Save");
         editImg = saveImg;
         edit.setIcon(new ImageIcon(editImg));
@@ -117,36 +90,30 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     public void actionPerformedEdit(ActionEvent e){
         switch(e.getActionCommand()) {
             case "Edit":
-                givenNameField.setEditable(true);
-                lastNameField.setEditable(true);
-                emailField.setEditable(true);
-                phoneField.setEditable(true);
+                contactInfoPanel.setEditable(true);
                 edit.setText("Save");
                 editImg = saveImg;
                 edit.setIcon(new ImageIcon(editImg));
                 break;
             case "Save":
-                givenNameField.setEditable(false);
-                lastNameField.setEditable(false);
-                emailField.setEditable(false);
-                phoneField.setEditable(false);
+                contactInfoPanel.setEditable(false);
+                String [] newText = contactInfoPanel.getTextFields();
                 if (contactSelected == 0) {
-                    contactSelected = contactDB.addContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText());
+                    contactSelected = contactDB.addContact(newText[0], newText[1], newText[2], newText[3]);
                     edit.setEnabled(false);
                     delete.setEnabled(false);
-                    givenNameField.setText("");
-                    lastNameField.setText("");
-                    emailField.setText("");
-                    phoneField.setText("");
+//                    contactInfoPanel.setTextEmpty();
                     LogDB.logNewContact(contactSelected);
                 } else {
-                    contactDB.updateContact(givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText(), contactSelected);
+                    contactDB.updateContact(newText[0], newText[1], newText[2], newText[3], contactSelected);
                     LogDB.logSavedContact(contactSelected);
 
                 }
                 edit.setText("Edit");
                 editImg = tempImg;
                 edit.setIcon(new ImageIcon(editImg));
+
+                //Refresh the list of contacts as a change has occurred
                 listOfContacts.removeAllElements();
                 for(int i = 0; i<contactDB.getListModel().getSize(); i++){
                     listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
@@ -161,14 +128,8 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         contactDB.deleteContact(contactSelected);
         delete.setEnabled(false);
         edit.setEnabled(false);
-        givenNameField.setText("");
-        lastNameField.setText("");
-        emailField.setText("");
-        phoneField.setText("");
-        givenNameField.setEditable(false);
-        lastNameField.setEditable(false);
-        emailField.setEditable(false);
-        phoneField.setEditable(false);
+        contactInfoPanel.setTextEmpty();
+        contactInfoPanel.setEditable(false);
         LogDB.logDeletedContact(contactSelected);
         listOfContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
@@ -180,10 +141,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         if (e.getValueIsAdjusting() == false) {
             if (contactList.getSelectedIndex() == -1) {
                 //No selection, disable fire button.
-                givenNameField.setText("");
-                lastNameField.setText("");
-                emailField.setText("");
-                phoneField.setText("");
+                contactInfoPanel.setTextEmpty();
 
 
             } else {
@@ -191,10 +149,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 edit.setEnabled(true);
                 delete.setEnabled(true);
                 Contact c = (Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex());
-                givenNameField.setText(c.getName());
-                lastNameField.setText(c.getSurname());
-                emailField.setText(c.getEmail());
-                phoneField.setText(c.getPhone());
+                contactInfoPanel.setContact(c);
                 contactSelected = c.getContact_ID();
             }
         }
