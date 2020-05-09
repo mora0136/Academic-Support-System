@@ -20,6 +20,7 @@ abstract class TwoPanel extends JPanel{
     JButton edit, delete, addNew, back;
     GridBagLayout gridBag;
     GridBagConstraints c;
+    final int mainFont = 32;
 
     TwoPanel(JPanel pane) throws IOException {
         this.cardPane = pane;
@@ -97,76 +98,28 @@ abstract class TwoPanel extends JPanel{
             public void componentResized(ComponentEvent e){
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
-                int font = 16;
+                int headerFont = mainFont;
+                int listFont = (int)(mainFont*(0.75));
+                int bodyFont = (int)(mainFont*(0.5));
+                int checkBoxFont = (int)(mainFont*(0.75));
+                int width = 50;
+                int height = 50;
 
-                if(windowWidth <= 600){
-                    font = 0;
+                if (windowWidth < 1300 || windowHeight < 600) {
+                    width = (int) (windowHeight * 0.0625);
+                    headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    listFont = (int)(Double.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
+                    bodyFont = (int)(Double.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
+                    checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
-
-                if(windowWidth < 800){
-                    int width = (int)(windowWidth*0.0625);
-                    buttonProperties(back, backImg, width, windowHeight, font, false);
-
-                    //Since addNew, edit and delete buttons have an image to the left of text, the font can be displayed longer
-                    if(windowWidth < 500) {
-                        buttonProperties(addNew, addNewImg, width, windowHeight, 0, true);
-                        buttonProperties(edit, editImg, width, windowHeight, 0, true);
-                        buttonProperties(delete, deleteImg, width, windowHeight, 0, true);
-                    }else{
-                        buttonProperties(addNew, addNewImg, width, windowHeight, 16, true);
-                        buttonProperties(edit, editImg, width, windowHeight, 16, true);
-                        buttonProperties(delete, deleteImg, width, windowHeight, 16, true);
-                    }
-                    saveImg = saveImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
-
-                }else{
-                    buttonProperties(back, backImg, 50, 50, font, false);
-                    buttonProperties(addNew, addNewImg, 50, 50, font, true);
-                    buttonProperties(edit, editImg, 50, 50, font, true);
-                    buttonProperties(delete, deleteImg, 50, 50, font, true);
-//                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    saveImg = saveImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
-//                    listProperties(contactList, 32);
-                }
+                    ComProps.buttonProperties(back, backImg, width, height, headerFont, false);
+                    ComProps.buttonProperties(addNew, addNewImg, width, height, headerFont, true);
+                    ComProps.buttonProperties(edit, editImg, width, height, headerFont, true);
+                    ComProps.buttonProperties(delete, deleteImg, width, height, headerFont, true);
+                    saveImg = saveImg.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+                    tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_DEFAULT);
             }
         });
-    }
-
-    public void listProperties(JList list, int fontSize){
-        list.setFont(new Font("Arial", Font.PLAIN, fontSize));
-        DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    }
-
-    /**
-     * Details the standard design layout of a button inside this display
-     * @param btn The button to be edited
-     * @param img The associated image with the button
-     * @param width The desired width of the image(Image aspect ratio is retained so smallest of width and height is used)
-     * @param height The desired height of the image(Image aspect ratio is retained so smallest of width and height is used)
-     * @param fontSize The font size desired on the button(0 disabled the text from being viewable)
-     * @param IconLeft Is true if the desired position of the text is to the right of the image
-     */
-    public void buttonProperties(JButton btn, Image img, int width, int height, int fontSize, boolean IconLeft){
-        if(img != null) {
-            img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
-            btn.setIcon(new ImageIcon(img));
-        }
-
-        if(!IconLeft){
-            btn.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btn.setHorizontalTextPosition(SwingConstants.CENTER);
-        }else{
-            btn.setVerticalTextPosition(SwingConstants.CENTER);
-            btn.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
-        btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
-        btn.setFont(new Font("Arial", Font.PLAIN, fontSize));
-        btn.setFocusPainted(false);
     }
 
     /**

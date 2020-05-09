@@ -1,4 +1,4 @@
-package panel;
+package log;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

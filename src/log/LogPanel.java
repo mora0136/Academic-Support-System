@@ -1,6 +1,9 @@
-package panel;
+package log;
 
 import contacts.Contact;
+import contacts.ContactDisplayPanel;
+import panel.Upload;
+import panel.UploadPanelDisabled;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,7 +18,7 @@ public class LogPanel extends JPanel{
     JLabel day;
     JTable logTable;
 
-    LogPanel(LocalDate date, List log){
+    public LogPanel(LocalDate date, List log){
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         setLayout(new BorderLayout());

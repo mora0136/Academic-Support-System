@@ -1,15 +1,13 @@
 package panel;
 
 public class Upload {
-    public int getUploadID() {
-        return uploadID;
-    }
-
-    public void setUploadID(int uploadID) {
-        this.uploadID = uploadID;
-    }
-
     int uploadID;
+    String title;
+
+    public Upload(int uploadID, String title){
+        this.uploadID = uploadID;
+        this.title = title;
+    }
 
     public String getTitle() {
         return title;
@@ -19,15 +17,15 @@ public class Upload {
         this.title = title;
     }
 
-    String title;
-    Upload(int uploadID, String title){
+    public int getUploadID() {
+        return uploadID;
+    }
+
+    public void setUploadID(int uploadID) {
         this.uploadID = uploadID;
-        this.title = title;
     }
 
     public String toString(){
         return title;
     }
-
-
 }

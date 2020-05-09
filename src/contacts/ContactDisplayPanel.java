@@ -1,6 +1,4 @@
-package panel;
-
-import contacts.Contact;
+package contacts;
 
 import javax.swing.*;
 
@@ -8,11 +6,11 @@ public class ContactDisplayPanel extends JPanel{
     JTextField givenNameField, lastNameField, emailField, phoneField;
     Contact c;
 
-    ContactDisplayPanel(Contact c){
+    public ContactDisplayPanel(Contact c){
         this();
         setContact(c);
     }
-    ContactDisplayPanel(){
+    public ContactDisplayPanel(){
         //Output area when a contact is selected or a new one is to added
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JLabel givenName = new JLabel("Name");

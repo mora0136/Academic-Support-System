@@ -2,6 +2,7 @@ package panel;
 
 import contacts.Contact;
 import contacts.ContactDB;
+import log.LogDB;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePanel;
 
@@ -30,7 +31,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn, selectAll, deselectAll;
     Image backImg, resetImg, fileImg, saveImg, uploadImg;
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
-    ContactDB contactDB;
     DefaultListModel<Contact> displayedContacts, addedContacts, notAddedContacts;
     DefaultListModel<String> templates;
     JComboBox selectTypeComboBox;
@@ -42,8 +42,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JFileChooser fc;
     int uploadID = 0; //Always 0 unless upload has been selected from edit
     int mainFont = 32;
+    ContactDB contactDB; //Should be changed to static
 
-    UploadPanel(JPanel pane){
+    public UploadPanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout) pane.getLayout();
 
@@ -80,7 +81,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             saveImg = ImageIO.read(new File("resources/save.png"));
             uploadImg = ImageIO.read(new File("resources/upload.png"));
         }catch(IOException e){
-            System.out.println("Error lodaing images");
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Image files failed to load. No images will be available", "", JOptionPane.WARNING_MESSAGE);
+            backImg = null;
+            resetImg = null;
+            saveImg = null;
+            uploadImg = null;
             System.out.println(e);
         }
 
@@ -369,82 +374,48 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                     checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
 
-                buttonProperties(backBtn, backImg, width, height, headerFont);
-                buttonProperties(resetBtn, resetImg, width, height, headerFont);
-                buttonProperties(saveBtn, saveImg, width, height, headerFont);
-                buttonProperties(uploadBtn, uploadImg, width, height, headerFont);
+                ComProps.buttonProperties(backBtn, backImg, width, height, headerFont, true);
+                ComProps.buttonProperties(resetBtn, resetImg, width, height, headerFont, true);
+                ComProps.buttonProperties(saveBtn, saveImg, width, height, headerFont, true);
+                ComProps.buttonProperties(uploadBtn, uploadImg, width, height, headerFont, true);
 
-                listProperties(attachedFileList, listFont);
-                listProperties(notAddedContactList, listFont);
-                listProperties(addedContactsList, listFont);
-                listProperties(templateStatement, bodyFont);
+                ComProps.listProperties(attachedFileList, listFont);
+                ComProps.listProperties(notAddedContactList, listFont);
+                ComProps.listProperties(addedContactsList, listFont);
+                ComProps.listProperties(templateStatement, bodyFont);
 
-                headingProperties(titleLabel, headerFont);
-                headingProperties(descLabel, headerFont);
-                headingProperties(fileLabel, headerFont);
-                headingProperties(typeLabel, headerFont);
-                headingProperties(dateLabel, headerFont);
-                headingProperties(uploadLabel, headerFont);
-                headingProperties(authorsLabel, headerFont);
-                headingProperties(contactsLabel, headerFont-4);
-                headingProperties(addedLabel, headerFont-4);
+                ComProps.headingProperties(titleLabel, headerFont);
+                ComProps.headingProperties(descLabel, headerFont);
+                ComProps.headingProperties(fileLabel, headerFont);
+                ComProps.headingProperties(typeLabel, headerFont);
+                ComProps.headingProperties(dateLabel, headerFont);
+                ComProps.headingProperties(uploadLabel, headerFont);
+                ComProps.headingProperties(authorsLabel, headerFont);
+                ComProps.headingProperties(contactsLabel, headerFont-4);
+                ComProps.headingProperties(addedLabel, headerFont-4);
 
-                checkBoxProperties(cv, checkBoxFont);
-                checkBoxProperties(resGate, checkBoxFont);
-                checkBoxProperties(orcid, checkBoxFont);
-                checkBoxProperties(inst, checkBoxFont);
-                checkBoxProperties(publ, checkBoxFont);
-                checkBoxProperties(wos, checkBoxFont);
-                checkBoxProperties(gSch, checkBoxFont);
-                checkBoxProperties(linIn, checkBoxFont);
-                checkBoxProperties(scopus, checkBoxFont);
-                checkBoxProperties(pure, checkBoxFont);
-                checkBoxProperties(acad, checkBoxFont);
-                checkBoxProperties(twit, checkBoxFont);
+                ComProps.checkBoxProperties(cv, checkBoxFont);
+                ComProps.checkBoxProperties(resGate, checkBoxFont);
+                ComProps.checkBoxProperties(orcid, checkBoxFont);
+                ComProps.checkBoxProperties(inst, checkBoxFont);
+                ComProps.checkBoxProperties(publ, checkBoxFont);
+                ComProps.checkBoxProperties(wos, checkBoxFont);
+                ComProps.checkBoxProperties(gSch, checkBoxFont);
+                ComProps.checkBoxProperties(linIn, checkBoxFont);
+                ComProps.checkBoxProperties(scopus, checkBoxFont);
+                ComProps.checkBoxProperties(pure, checkBoxFont);
+                ComProps.checkBoxProperties(acad, checkBoxFont);
+                ComProps.checkBoxProperties(twit, checkBoxFont);
 
-                textFieldProperties(titleField, headerFont);
-                textAreaProperties(descriptionTextArea, bodyFont);
-                textFieldProperties(searchField, headerFont);
+                ComProps.textFieldProperties(titleField, headerFont);
+                ComProps.textAreaProperties(descriptionTextArea, bodyFont);
+                ComProps.textFieldProperties(searchField, headerFont);
 
                 fileSelectBtn.setFont(new Font("Arial", Font.PLAIN, bodyFont));
                 selectAll.setFont(new Font("Arial", Font.PLAIN, headerFont));
                 deselectAll.setFont(new Font("Arial", Font.PLAIN, headerFont));
             }
         });
-    }
-
-
-    private void headingProperties(JLabel label, int fontSize){
-        label.setFont(new Font("Arial", Font.BOLD, fontSize));
-    }
-
-    private void textFieldProperties(JTextField field, int fontSize){
-        field.setFont(new Font("Arial", Font.PLAIN, fontSize));
-    }
-
-    private void textAreaProperties(JTextArea area, int fontSize){
-        area.setFont(new Font("Arial", Font.PLAIN, fontSize));
-    }
-
-
-    private void listProperties(JList list, int fontSize){
-        list.setFont(new Font("Arial", Font.PLAIN, fontSize));
-        DefaultListCellRenderer renderer = (DefaultListCellRenderer) list.getCellRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    }
-
-    private void buttonProperties(JButton btn, Image img, int width, int height, int fontSize) {
-        img = img.getScaledInstance(Integer.min(width, height), -1, Image.SCALE_DEFAULT);
-        btn.setIcon(new ImageIcon(img));
-
-        btn.setMargin(new Insets(0, (int) (width * 0.25), 0, (int) (width * 0.25)));
-        btn.setFont(new Font("Arial", Font.PLAIN, fontSize));
-        btn.setFocusPainted(false);
-    }
-
-    private void checkBoxProperties(JCheckBox box, int fontSize){
-        box.setFont(new Font("Arial", Font.PLAIN, fontSize));
     }
 
     /**

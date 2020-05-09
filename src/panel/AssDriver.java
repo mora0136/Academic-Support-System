@@ -25,10 +25,9 @@ public class AssDriver {
         cardPane.add(upload, "Upload");
         cardPane.add(edit, "Edit");
         cardPane.add(history, "History");
-        cardPane.add(setting, "Setting");
+        cardPane.add(setting, "Settings");
         cardPane.add(contacts, "Contacts");
         frame.add(cardPane);
-        cardLayout.show(cardPane, "History"); //Testing
         //Systems with high DPI and are scaling will not utilise the proper minimum size()
         //target system is 1920x1080 displays, a typical academic workstation
         frame.setMinimumSize(new Dimension(622, 350)); // minimum size 16:9

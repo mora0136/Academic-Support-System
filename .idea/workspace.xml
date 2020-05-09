@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="dates are really bad in java. I h8 it.">
-      <change afterPath="$PROJECT_DIR$/src/panel/ContactDisplayPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/panel/TableColumnAdjuster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" afterDir="false" />
+    <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/log" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/src/panel/ComProps.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/java/org/jdatepicker/JDatePicker.java" beforeDir="false" afterPath="$PROJECT_DIR$/java/org/jdatepicker/JDatePicker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DragFileDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FileAndTextTransferHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GridTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ListTransfermanager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StretchIcon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TabbedPaneController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/AssDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/ContactDisplayPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactDisplayPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/EditPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/EditPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/HistoryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/HistoryPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/LogDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/LogPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/Log.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/LogTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/TableColumnAdjuster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/TableColumnAdjuster.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/TwoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/TwoPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/Upload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/Upload.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/UploadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/UploadVerticalOrientation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadVerticalOrientation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -164,7 +172,7 @@
       <workItem from="1588768040148" duration="7080000" />
       <workItem from="1588815846358" duration="15877000" />
       <workItem from="1588938979821" duration="19882000" />
-      <workItem from="1588977918300" duration="18763000" />
+      <workItem from="1588977918300" duration="24868000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -397,15 +405,20 @@
       <option name="project" value="LOCAL" />
       <updated>1588959901810</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Filtering abilities inside the history panel. This commit is pre a major clean up code structure">
+      <created>1589023290711</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1589023290711</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="not sure what has changed since last one but clocking in for the night" />
-    <MESSAGE value="file not needed" />
     <MESSAGE value="updating repo workspace environment" />
     <MESSAGE value="Search works.Very bigger mess. Still needs some changes as per notes kept." />
     <MESSAGE value="Search works using SuffixTrie, YAY! Very bigger mess tho. Still needs some changes as per notes kept to streamline process." />
@@ -429,7 +442,9 @@
     <MESSAGE value="Trying to commit java" />
     <MESSAGE value="playing around with logs and historyPanel." />
     <MESSAGE value="dates are really bad in java. I h8 it." />
-    <option name="LAST_COMMIT_MESSAGE" value="dates are really bad in java. I h8 it." />
+    <MESSAGE value="Filtering abilities inside the history panel. This commit is pre a major clean up code structure" />
+    <MESSAGE value="Major clean up of nearly all files. Removed what was determined to be redundant commented out code. Streamlined the windows size components in twoPanels, copying the implementation inside uploadPanel. Have made new package of log. Relegated common properties to ComProps. Still need UploadPanel to be reduced in size by creating a UploadDB." />
+    <option name="LAST_COMMIT_MESSAGE" value="Major clean up of nearly all files. Removed what was determined to be redundant commented out code. Streamlined the windows size components in twoPanels, copying the implementation inside uploadPanel. Have made new package of log. Relegated common properties to ComProps. Still need UploadPanel to be reduced in size by creating a UploadDB." />
   </component>
   <component name="WindowStateProjectService">
     <state x="665" y="364" key="#Notifications" timestamp="1588670532830">
@@ -481,6 +496,10 @@
     <state x="517" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587114976204" />
     <state x="123" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587877041172" />
     <state x="2887" y="514" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588955497399" />
+    <state x="3426" y="780" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1589024123139">
+      <screen x="2736" y="514" width="1920" height="1040" />
+    </state>
+    <state x="3426" y="780" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589024123139" />
     <state x="498" y="150" key="#console.sql" timestamp="1587786266368">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -489,12 +508,12 @@
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="2925" y="686" key="#console_2.sql/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588949303462" />
-    <state x="3213" y="658" key="CommitChangelistDialog2" timestamp="1588992572230">
+    <state x="3213" y="658" key="CommitChangelistDialog2" timestamp="1589029338769">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
     <state x="357" y="73" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858911390" />
-    <state x="3213" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588992572230" />
+    <state x="3213" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589029338769" />
     <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -504,33 +523,33 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588667804511" />
-    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1588998149284">
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1589028279902">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588998149284" />
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279902" />
     <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121837" />
-    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1588998149283">
+    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1589028279902">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588998149283" />
+    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279902" />
     <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
-    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1588998149283">
+    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1589028279901">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
     <state width="1520" height="191" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924550" />
-    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588998149283" />
+    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279901" />
     <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121835" />
-    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1588998149283">
+    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1589028279902">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588998149283" />
+    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279902" />
     <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />

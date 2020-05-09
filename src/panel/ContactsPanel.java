@@ -2,6 +2,8 @@ package panel;
 
 import contacts.Contact;
 import contacts.ContactDB;
+import contacts.ContactDisplayPanel;
+import log.LogDB;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -13,7 +15,6 @@ import java.io.IOException;
 
 public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener{
     JScrollPane scrollContactPanel;
-//    ContactDB contactDB;
     JList contactList;
     int contactSelected = 0;
     DefaultListModel<Contact> listOfContacts;
@@ -31,49 +32,33 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         contactList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(contactList);
 
-//Where output was
         contactInfoPanel = new ContactDisplayPanel();
 
         leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
 
-        //Display panel is there if I still need it
         rightPanel.add(contactInfoPanel, BorderLayout.NORTH);
-//        rightPanel.add(optionPanel, BorderLayout.SOUTH);
-
-//        add(leftPanel);
-//        add(rightPanel);
 
         // Details what styles should apply to buttons at the certain size of a window
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
-                int font = 16;
+                int headerFont = mainFont;
+                int listFont = (int)(mainFont*(0.75));
+                int bodyFont = (int)(mainFont*(0.5));
+                int checkBoxFont = (int)(mainFont*(0.75));
+                int width = 50;
+                int height = 50;
 
-                if(windowWidth <= 600){
-                    font = 0;
+                if (windowWidth < 1100 || windowHeight < 450) {
+                    width = (int) (windowHeight * (1100/80));
+                    headerFont = (int)(Double.min(windowWidth /(1100/headerFont), windowHeight/(450/headerFont)));
+                    listFont = (int)(Double.min(windowWidth/(1100/listFont), windowHeight/(450/listFont)));
+                    bodyFont = (int)(Double.min(windowWidth/(1100/bodyFont), windowHeight/(450/bodyFont)));
+                    checkBoxFont = (int)(Double.min(windowWidth/(1100/checkBoxFont), windowHeight/(450/checkBoxFont)));
                 }
-
-                if(windowWidth < 800){
-                    int width = (int)(windowWidth*0.0625);
-
-                    //Since addNew, edit and delete buttons have an image to the left of text, the font can be displayed longer
-                    if(windowWidth < 500) {
-                        listProperties(contactList, 16);
-                    }else{
-                        listProperties(contactList, 24);
-                    }
-
-                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    saveImg = saveImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(Integer.min(width, windowHeight), -1, Image.SCALE_DEFAULT);
-
-                }else{
-                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    saveImg = saveImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(50, -1, Image.SCALE_DEFAULT);
-                    listProperties(contactList, 32);
-                }
+                searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
+                ComProps.listProperties(contactList, headerFont);
             }
         });
     }
@@ -143,7 +128,6 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 //No selection, disable fire button.
                 contactInfoPanel.setTextEmpty();
 
-
             } else {
                 //Selection, enable the fire button.
                 edit.setEnabled(true);
@@ -154,8 +138,6 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             }
         }
     }
-
-
 
     //Any text entry into JTextField will search for the contact desired.
     @Override
