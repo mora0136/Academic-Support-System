@@ -1,4 +1,4 @@
-package panel;
+package log;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;

@@ -1,6 +1,7 @@
-package panel;
+package log;
 
 import contacts.ContactDB;
+import panel.Upload;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +33,7 @@ public class Log {
 //        this.description = description;
 //    }
 
-    Log(ResultSet rs) throws SQLException {
+    public Log(ResultSet rs) throws SQLException {
         this.logID = rs.getInt("log_ID");
         this.date = rs.getDate("date").toLocalDate();
         this.type = rs.getString("type");

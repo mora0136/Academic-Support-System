@@ -1,4 +1,4 @@
-package panel;
+package log;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ public class LogDB {
     //return of zero means a successful log was created
 
     //Logging upload interactions
-    static int logSavedUpload(int uploadID){
+    public static int logSavedUpload(int uploadID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -25,7 +25,7 @@ public class LogDB {
         }
     }
 
-    static int logUploadedUpload(int uploadID){
+    public static int logUploadedUpload(int uploadID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -40,7 +40,7 @@ public class LogDB {
             return -1;
         }
     }
-    static int logDeletedUpload(int uploadID){
+    public static int logDeletedUpload(int uploadID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -57,7 +57,7 @@ public class LogDB {
     }
 
     //Logging contact interactions
-    static int logSavedContact(int contactID){
+    public static int logSavedContact(int contactID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -73,7 +73,7 @@ public class LogDB {
         }
     }
 
-    static int logDeletedContact(int contactID){
+    public static int logDeletedContact(int contactID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -89,7 +89,7 @@ public class LogDB {
         }
     }
 
-    static int logNewContact(int contactID){
+    public static int logNewContact(int contactID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -105,7 +105,7 @@ public class LogDB {
         }
     }
 
-    static List<Log> getLogsForDay(LocalDate dateFrom, LocalDate dateTo){
+    public static List<Log> getLogsForDay(LocalDate dateFrom, LocalDate dateTo){
 
         String sql = "SELECT * FROM log WHERE date >= ? AND date <= ?";
         try (Connection conn = connect();
@@ -126,7 +126,7 @@ public class LogDB {
         }
     }
 
-    static List<Log> getLogsForDayWithTypeFilter(LocalDate dateFrom, LocalDate dateTo, String type){
+    public static List<Log> getLogsForDayWithTypeFilter(LocalDate dateFrom, LocalDate dateTo, String type){
         String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND type = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -147,7 +147,7 @@ public class LogDB {
         }
     }
 
-    static List<Log> getLogsForDayWithActionFilter(LocalDate dateFrom, LocalDate dateTo, String action){
+    public static List<Log> getLogsForDayWithActionFilter(LocalDate dateFrom, LocalDate dateTo, String action){
         String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND action = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -167,7 +167,7 @@ public class LogDB {
             return null;
         }
     }
-    static List<Log> getLogsForDayWithTypeActionFilter(LocalDate dateFrom, LocalDate dateTo, String type, String action){
+    public static List<Log> getLogsForDayWithTypeActionFilter(LocalDate dateFrom, LocalDate dateTo, String type, String action){
         String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND type = ? AND action = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

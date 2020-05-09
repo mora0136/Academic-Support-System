@@ -1,5 +1,7 @@
 package panel;
 
+import log.LogDB;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -13,7 +15,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
     JScrollPane scrollContactPanel;
     JList editList;
     DefaultListModel<Upload> editable;
-    UploadVerticalOrientation display;
+    UploadVerticalOrientation displayUpload;
 
     EditPanel(JPanel pane) throws IOException {
         super(pane);
@@ -42,10 +44,8 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         //Output area when a contact is selected or a new one is to added
         leftPanel.add(contextPanel, BorderLayout.NORTH);
         leftPanel.add(scrollContactPanel, BorderLayout.CENTER);
-        displayPanel.setLayout(new GridLayout(1,1));
-        display = new UploadVerticalOrientation(cardPane);
-        displayPanel.add(display);
-        JScrollPane displayScroll = new JScrollPane(displayPanel);
+        displayUpload = new UploadVerticalOrientation();
+        JScrollPane displayScroll = new JScrollPane(displayUpload);
         rightPanel.add(displayScroll, BorderLayout.CENTER);
 
         // Details what styles should apply to buttons at the certain size of a window
@@ -53,26 +53,22 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
             public void componentResized(ComponentEvent e){
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
-                int font = 16;
+                int headerFont = mainFont;
+                int listFont = (int)(mainFont*(0.75));
+                int bodyFont = (int)(mainFont*(0.5));
+                int checkBoxFont = (int)(mainFont*(0.75));
+                int width = 50;
+                int height = 50;
 
-                if(windowWidth <= 600){
-                    font = 0;
+                if (windowWidth < 1300 || windowHeight < 600) {
+                    width = (int) (windowHeight * 0.0625);
+                    headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    listFont = (int)(Double.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
+                    bodyFont = (int)(Double.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
+                    checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
-
-                if(windowWidth < 800){
-                    int width = (int)(windowWidth*0.0625);
-                    if(windowWidth < 500) {
-                        listProperties(editList, 16);
-                    }else{
-                        listProperties(editList, 24);
-                    }
-
-                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-
-                }else{
-                    searchField.setFont(new Font("Arial", Font.PLAIN, Integer.max(font*2, 16)));
-                    listProperties(editList, 32);
-                }
+                    searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
+                    ComProps.listProperties(editList, headerFont);
             }
         });
     }
@@ -99,8 +95,6 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
     //Consider moving/marking info rather then deleting?
     public void actionPerformedDelete(ActionEvent e){
         String sqlUploads = "UPDATE uploads SET isDeleted = ? WHERE upload_ID = ?";
-//        String sqlAuthors = "DELETE FROM upload_Authors WHERE upload_ID = ?";
-//        String sqlFiles = "DELETE FROM upload_Files WHERE upload_ID = ?";
 
         int uploadID = editable.getElementAt(editList.getSelectedIndex()).getUploadID();
 
@@ -109,12 +103,6 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
             pstmtUpload.setBoolean(1, true);
             pstmtUpload.setInt(2, uploadID);
             pstmtUpload.executeUpdate();
-//            PreparedStatement pstmtAuthor = conn.prepareStatement(sqlAuthors);
-//            pstmtAuthor.setInt(1, uploadID);
-//            pstmtAuthor.executeUpdate();
-//            PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
-//            pstmtFiles.setInt(1, uploadID);
-//            pstmtFiles.executeUpdate();
 
         } catch (SQLException ev) {
             System.out.println(ev.getMessage());
@@ -130,10 +118,10 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         if (e.getValueIsAdjusting() == false) {
             if (editList.getSelectedIndex() == -1) {
                 //No selection, disable fire button.
-                display.resetAll();
+                displayUpload.resetAll();
             } else {
                 //Selection, enable the fire button.
-                display.setToExistingUpload(editable.getElementAt(editList.getSelectedIndex()).getUploadID());
+                displayUpload.setToExistingUpload(editable.getElementAt(editList.getSelectedIndex()).getUploadID());
                 edit.setEnabled(true);
                 delete.setEnabled(true);
             }

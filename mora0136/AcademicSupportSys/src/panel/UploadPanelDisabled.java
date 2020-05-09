@@ -3,8 +3,8 @@ package panel;
 import javax.swing.*;
 import java.awt.*;
 
-class UploadPanelDisabled extends UploadPanel{
-    UploadPanelDisabled(){
+public class UploadPanelDisabled extends UploadPanel{
+    public UploadPanelDisabled(){
         super(new JPanel(new CardLayout()));
         leftPanel.remove(backResetPanel);
         rightPanel.remove(saveUploadPanel);

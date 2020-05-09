@@ -1,5 +1,8 @@
 package panel;
 
+import log.Log;
+import log.LogDB;
+import log.LogPanel;
 import org.jdatepicker.JDatePicker;
 
 import javax.imageio.ImageIO;
@@ -159,36 +162,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
 
         rightPanel.add(sortPanel, BorderLayout.NORTH);
 
-
-        //The display area of all logs
-//        ArrayList<Log> list = new ArrayList();
-//        for(int i = 10; i<20; i++){
-//            list.add(new Log(i, "12:0"+i, "Upload", "All have the same description"));
-//        }
-
-//        LocalDate dateFrom = LocalDate.of(2020, 4, 7);
-//        LocalDate dateTo = LocalDate.now();
-//
-//        displayPanel.setLayout(gridBag);
-//        c.fill = GridBagConstraints.BOTH;
-//        c.gridwidth = GridBagConstraints.REMAINDER;
-//        c.insets = new Insets(20, 20, 20, 20);
-//        c.weightx = 1;
-//        c.weighty = 0;
-//
-//
-//        for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
-////            System.out.println(dateTo);
-//            java.util.List<Log> l = LogDB.getLogsForDay(dateTo.minusDays(1), dateTo);
-////            System.out.println(l);
-//            if(!l.isEmpty()) {
-//                JPanel log = new LogPanel(dateTo, l);
-//                gridBag.setConstraints(log, c);
-//                displayPanel.add(log);
-//            }
-//
-//        }
-
         displayPanel.setLayout(gridBag);
         displayLogs();
         logScroll = new JScrollPane(displayPanel);
@@ -216,19 +189,19 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                     checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
 
-                buttonProperties(back, backImg, width, height, headerFont, true);
-                buttonProperties(reset, resetImg, width, height, headerFont, true);
-                buttonProperties(fromButton, null, width, height, listFont, false);
-                buttonProperties(toButton, null, width, height, listFont, false);
-                headingProperties(filterLabel, headerFont+6);
-                headingProperties(dateLabel, headerFont);
-                headingProperties(fromLabel, headerFont);
-                headingProperties(toLabel, headerFont);
-                headingProperties(typeLabel, headerFont);
-                headingProperties(actionLabel, headerFont);
-                headingProperties(titleLabel, headerFont);
-                headingProperties(sortlabel, listFont);
-                textFieldProperties(titleField, listFont);
+                ComProps.buttonProperties(back, backImg, width, height, headerFont, true);
+                ComProps.buttonProperties(reset, resetImg, width, height, headerFont, true);
+                ComProps.buttonProperties(fromButton, null, width, height, listFont, false);
+                ComProps.buttonProperties(toButton, null, width, height, listFont, false);
+                ComProps.headingProperties(filterLabel, headerFont+6);
+                ComProps.headingProperties(dateLabel, headerFont);
+                ComProps.headingProperties(fromLabel, headerFont);
+                ComProps.headingProperties(toLabel, headerFont);
+                ComProps.headingProperties(typeLabel, headerFont);
+                ComProps.headingProperties(actionLabel, headerFont);
+                ComProps.headingProperties(titleLabel, headerFont);
+                ComProps.headingProperties(sortlabel, listFont);
+                ComProps.textFieldProperties(titleField, listFont);
                 fromText.setFont(new Font("Arial", Font.PLAIN, listFont));
                 toText.setFont(new Font("Arial", Font.PLAIN, listFont));
                 typeBox.setFont(new Font("Arial", Font.PLAIN, listFont));
@@ -238,32 +211,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             }
         });
 
-    }
-
-//    public void valueChanged(ListSelectionEvent e){
-//        switch((String)results.getModel().getValueAt(results.getSelectedRow(), 2)){
-//            case "Upload":
-//                System.out.println("upload selected");
-//                break;
-//            case "Contact":
-//                System.out.println("Contact selected");
-//                break;
-//        }
-//        System.out.println(results.getModel().getValueAt(results.getSelectedRow(), 3));
-//    }
-
-
-
-    private void headingProperties(JLabel label, int fontSize){
-        label.setFont(new Font("Arial", Font.BOLD, fontSize));
-    }
-
-    private void textFieldProperties(JTextField field, int fontSize){
-        field.setFont(new Font("Arial", Font.PLAIN, fontSize));
-    }
-
-    private void textAreaProperties(JTextArea area, int fontSize){
-        area.setFont(new Font("Arial", Font.PLAIN, fontSize));
     }
 
     //Apply Filter Button action
