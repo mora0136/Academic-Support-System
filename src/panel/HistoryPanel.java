@@ -157,6 +157,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         sortlabel = new JLabel("Sort By:");
         sortPanel.add(sortlabel);
         sortBox = new JComboBox(new String[]{"Date<ASC>", "Date<DESC>"});
+        sortBox.addActionListener(this::actionPerformedSort);
         sortPanel.add(sortBox);
         sortPanel.setAlignmentY(JPanel.RIGHT_ALIGNMENT);
 
@@ -243,6 +244,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 }
             }else{
                 l = LogDB.getLogsForDay(dateTo.minusDays(1), dateTo);
+//                l.sort(Comparator.comparing(Log::getDate));
             }
             if(!l.isEmpty()) {
                 JPanel log = new LogPanel(dateTo, l);
@@ -255,6 +257,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         revalidate();
     }
 
+    //Once a type is selected, instantiate the appropriate action selection options.
     public void actionPerformedType(ActionEvent e){
         if(typeBox.getSelectedIndex() != -1){
             actionBox.setEnabled(true);
@@ -304,6 +307,10 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             }
 
         }
+    }
+
+    //No implementation, is kind of hard to do with current setup.
+    public void actionPerformedSort(ActionEvent e){
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus

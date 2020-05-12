@@ -1,6 +1,7 @@
 package panel;
 
 import log.LogDB;
+import upload.Upload;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -33,6 +34,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
                 editable.addElement(new Upload(rs.getInt("upload_ID"), rs.getString("Title")));
+//                editable.addElement(new Upload());
             }
         }catch(SQLException ev){
 

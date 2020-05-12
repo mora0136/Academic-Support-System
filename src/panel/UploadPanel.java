@@ -2,9 +2,9 @@ package panel;
 
 import contacts.Contact;
 import contacts.ContactDB;
-import log.LogDB;
-import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePanel;
+import upload.Upload;
+import upload.UploadDB;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,10 +19,10 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
     CardLayout cardLayout;
@@ -43,6 +43,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     int uploadID = 0; //Always 0 unless upload has been selected from edit
     int mainFont = 32;
     ContactDB contactDB; //Should be changed to static
+    Upload currentUpload = new Upload();
 
     public UploadPanel(JPanel pane){
         this.cardPane = pane;
@@ -199,7 +200,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(dateLabel, c);
         typeDatePanel.add(dateLabel);
         //Define the Date Panel which is an external feature found from:https://github.com/JDatePicker/JDatePicker
-        publishDatePanel = new JDatePanel();
+        publishDatePanel = new JDatePanel(new java.util.Date());
         c.fill = GridBagConstraints.BOTH;
         c.weighty = 0.5;
         c.gridwidth = GridBagConstraints.REMAINDER;
@@ -446,63 +447,29 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     public void setToExistingUpload(int uploadID){
         resetAll();
         this.uploadID = uploadID;
-        String sql = "SELECT * FROM uploads " +
-                     "WHERE upload_ID = "+ uploadID;
+        currentUpload = UploadDB.getUpload(uploadID);
+        titleField.setText(currentUpload.getTitle());
+        descriptionTextArea.setText(currentUpload.getDescription());
+        selectTypeComboBox.setSelectedItem(currentUpload.getType());
 
-        String sqlSelectAuthors = "SELECT * FROM upload_Authors " +
-                                  "JOIN contacts ON upload_Authors.contact_ID = contacts.contact_ID " +
-                                  "WHERE upload_ID = "+ uploadID;
-
-        String sqlSelectFiles = "SELECT * FROM upload_Files " +
-                                "WHERE upload_ID = "+ uploadID;
-
-        //Try to make a connection to the database
-        try(Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();){
-
-            //Retrieve the information found in the Uploads tables
-            ResultSet rs = stmt.executeQuery(sql);
-            selectTypeComboBox.setSelectedItem(rs.getString("Type"));
-            descriptionTextArea.setText(rs.getString("Description"));
-            titleField.setText(rs.getString("Title"));
-            searchField.setText("");
-
-            //Setting the date, since java.util.Date and java.sql.Date is finicky, just utilised it as a string
-            String sqlDate = rs.getString("Date");
-            java.util.Date date = new SimpleDateFormat("yyyy-mm-dd").parse(sqlDate);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            DateModel<Calendar> dateModel = (DateModel<Calendar>) publishDatePanel.getModel();
-            dateModel.setValue(calendar);
-
-            //Setting the services
-            cv.setSelected(rs.getBoolean("cv"));resGate.setSelected(rs.getBoolean("resGate"));orcid.setSelected(rs.getBoolean("orcid"));
-            inst.setSelected(rs.getBoolean("inst"));publ.setSelected(rs.getBoolean("publ"));wos.setSelected(rs.getBoolean("wos"));
-            gSch.setSelected(rs.getBoolean("gSch"));linIn.setSelected(rs.getBoolean("linIn"));scopus.setSelected(rs.getBoolean("scopus"));
-            pure.setSelected(rs.getBoolean("pure"));acad.setSelected(rs.getBoolean("acad"));twit.setSelected(rs.getBoolean("twit"));
-
-            //Retrieve the information found in the upload_Authors table
-            rs = stmt.executeQuery(sqlSelectAuthors);
-            while(rs.next()) {
-                System.out.println("We are making contacts");
-                Contact c = new Contact(rs.getInt("contact_ID"), rs.getString("givenName"),
-                        rs.getString("surname"), rs.getString("email"),
-                        rs.getString("phone"));
-                System.out.println(c);
-                addedContacts.addElement(c);
-                displayedContacts.removeElement(c);
-            }
-            System.out.println("We are getting files");
-            //Retrieve the information found in the upload_Files table.
-            DefaultListModel news = (DefaultListModel) attachedFileList.getModel();
-            rs = stmt.executeQuery(sqlSelectFiles);
-            while(rs.next()) {
-                news.addElement(new File(rs.getString("File")));
-            }
-
-        }catch(SQLException | ParseException e){
-            System.out.println(e);
+        for(int i = 0; i < currentUpload.getAttachedFiles().getSize(); i++){
+            ((DefaultListModel<File>) attachedFileList.getModel()).addElement((File) currentUpload.getAttachedFiles().getElementAt(i));
         }
+
+        //Why wont it set the date?
+        LocalDate date = currentUpload.getDate();
+//        if(date != null) {
+            publishDatePanel.getModel().setDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+//        }
+        for(int i = 0; i< currentUpload.getAddedContacts().getSize(); i++){
+            addedContacts.addElement((Contact) currentUpload.getAddedContacts().getElementAt(i));
+            displayedContacts.removeElement(currentUpload.getAddedContacts().getElementAt(i));
+        }
+        cv.setSelected(currentUpload.isCv());resGate.setSelected(currentUpload.isResGate());orcid.setSelected(currentUpload.isOrcid());
+        inst.setSelected(currentUpload.isInst());publ.setSelected(currentUpload.isPubl());wos.setSelected(currentUpload.isWos());
+        gSch.setSelected(currentUpload.isgSch());linIn.setSelected(currentUpload.isLinIn());scopus.setSelected(currentUpload.isScopus());
+        pure.setSelected(currentUpload.isPure());acad.setSelected(currentUpload.isAcad());twit.setSelected(currentUpload.isTwit());
+
     }
 
 
@@ -517,92 +484,34 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }else if(e.getSource() == resetBtn){
             resetAll();
         }else if(e.getSource() == uploadBtn || e.getSource() == saveBtn){
+            currentUpload.setTitle(titleField.getText());
+            currentUpload.setDescription(descriptionTextArea.getText());
+            currentUpload.setAttachedFiles((DefaultListModel) attachedFileList.getModel());
+            currentUpload.setType((String) selectTypeComboBox.getSelectedItem());
+            if(publishDatePanel.getModel().isSelected()) {
+                Date date = (Date) (publishDatePanel.getModel().getValue());
+                Instant instant = date.toInstant();
+                currentUpload.setDate(instant.atZone(ZoneId.systemDefault()).toLocalDate());
+            }else{
+                //default to todays date
+                currentUpload.setDate(LocalDate.now());
+            }
+            currentUpload.setAddedContacts(addedContacts);
+            currentUpload.setCv(cv.isSelected());currentUpload.setResGate(resGate.isSelected());currentUpload.setOrcid(orcid.isSelected());
+            currentUpload.setInst(inst.isSelected());currentUpload.setPubl(publ.isSelected());currentUpload.setWos(wos.isSelected());
+            currentUpload.setgSch(gSch.isSelected());currentUpload.setLinIn(linIn.isSelected());currentUpload.setScopus(scopus.isSelected());
+            currentUpload.setPure(pure.isSelected());currentUpload.setAcad(acad.isSelected());currentUpload.setTwit(twit.isSelected());
+
+            UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, uploadID != 0);
             /*
             Upload and save essentially have the same information they need to convey, the only difference being that by
             uploading, the isUpload field will be set to true, and can no longer be selected to edit. However there are
             different SQL statements required if the current upload is new or an existing one. This is identified in the
             first if statement.
              */
-            String sqlUpload, sqlAuthors, sqlFiles;
-            if(uploadID != 0) { //If an uploadID is specified, then it already exists in db and thus only need to update
-                sqlUpload = "UPDATE uploads SET Title = ?,Description = ?, type = ?, Date = ?, cv = ?, resGate = ?, orcid = ?, inst = ?, publ = ?, wos = ?, gSch = ?, linIn = ?, scopus = ?, pure = ?, acad = ?, twit = ?, isUploaded = ? WHERE upload_ID = ?";
-                sqlAuthors = "UPDATE upload_Authors SET contact_ID = ?, nameUsed = ? WHERE upload_ID = ?";
-                sqlFiles = "UPDATE upload_Files SET File = ? WHERE upload_ID = ?";
-
-            }else {//A fresh insertion, creating new uploadID that will be used to associate with authors and files
-                sqlUpload = "INSERT INTO uploads(Title,Description, type, Date, cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit, isUploaded) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                sqlAuthors = "INSERT INTO upload_Authors(contact_ID, nameUsed, upload_ID) VALUES(?,?,?)";
-                sqlFiles = "INSERT INTO upload_Files(File, upload_ID) VALUES(?,?)";
-            }
-                try (Connection conn = this.connect();
-                     PreparedStatement pstmt = conn.prepareStatement(sqlUpload, Statement.RETURN_GENERATED_KEYS)) {
-                    pstmt.setString(1, titleField.getText());
-                    pstmt.setString(2, descriptionTextArea.getText());
-                    pstmt.setString(3, String.valueOf(selectTypeComboBox.getSelectedItem()));
-                    DateModel date = publishDatePanel.getModel();
-                    pstmt.setString(4, date.getYear()+"-"+ date.getMonth() +"-"+ date.getDay());
-                    pstmt.setBoolean(5, cv.isSelected());pstmt.setBoolean(6, resGate.isSelected());pstmt.setBoolean(7, orcid.isSelected());
-                    pstmt.setBoolean(8, inst.isSelected());pstmt.setBoolean(9, publ.isSelected());pstmt.setBoolean(10, wos.isSelected());
-                    pstmt.setBoolean(11, gSch.isSelected());pstmt.setBoolean(12, linIn.isSelected());pstmt.setBoolean(13, scopus.isSelected());
-                    pstmt.setBoolean(14, pure.isSelected());pstmt.setBoolean(15, acad.isSelected());pstmt.setBoolean(16, twit.isSelected());
-                    //isUpload column defines if it has been uploaded or saved, so if the upload btn is pressed, then true
-                    if(e.getSource() == uploadBtn) {
-                        pstmt.setBoolean(17, true);
-                    }else{
-                        pstmt.setBoolean(17, false);
-                    }
-                    //If the upload already exists then the update requires a primary key, uploadID
-                    if(uploadID!=0){
-                        pstmt.setInt(18, uploadID);
-                    }
-
-                    pstmt.executeUpdate(); //Execute the statment
-                    ResultSet rs = pstmt.getGeneratedKeys(); //generated keys has the row that was entered
-                    if (rs.next() && uploadID == 0) { //if we are working with an upload that didn't exist before
-                        uploadID = rs.getInt(1); //Allows for authors and files to be associated with upload
-                    }
-
-                    //add in each contact into upload_Authors, associating it with the upload.
-                    for (int i = 0; i < addedContacts.getSize(); i++) {
-                        PreparedStatement pstmtAuthors = conn.prepareStatement(sqlAuthors);
-                        pstmtAuthors.setInt(1, addedContacts.getElementAt(i).getContact_ID());
-                        pstmtAuthors.setBoolean(2, true);
-                        pstmtAuthors.setInt(3, uploadID);
-                        pstmtAuthors.executeUpdate();
-                    }
-                    //add in each file into upload_Files, associating it with the upload.
-                    for (int i = 0; i < attachedFileList.getModel().getSize(); i++) {
-                        PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
-                        pstmtFiles.setString(1, attachedFileList.getModel().getElementAt(i).toString());
-                        pstmtFiles.setInt(2, uploadID);
-                        pstmtFiles.executeUpdate();
-                    }
-                    if(e.getSource() == uploadBtn) {
-                        LogDB.logUploadedUpload(uploadID);
-                    }else{
-                        LogDB.logSavedUpload(uploadID);
-                    }
-
-                } catch (SQLException et) {
-                    System.out.println(et.getMessage());
-                }
 
         }
 
-    }
-    /**
-     *Initiate a connection the database being used
-     */
-    private Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:data/database.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
     }
 
     public void valueChangedTemplate(ListSelectionEvent e) {

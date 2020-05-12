@@ -2,30 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/log" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/src/panel/ComProps.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/upload" afterDir="true" />
+      <change afterPath="$PROJECT_DIR$/src/upload/UploadDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DragFileDemo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileAndTextTransferHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GridTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ListTransfermanager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StretchIcon.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TabbedPaneController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/AssDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/ContactDisplayPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactDisplayPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/Log.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/EditPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/EditPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/HistoryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/HistoryPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/LogTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/TableColumnAdjuster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/TableColumnAdjuster.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/TwoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/TwoPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/Upload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/Upload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/Upload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/upload/Upload.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/UploadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/UploadVerticalOrientation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadVerticalOrientation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +159,10 @@
       <workItem from="1588768040148" duration="7080000" />
       <workItem from="1588815846358" duration="15877000" />
       <workItem from="1588938979821" duration="19882000" />
-      <workItem from="1588977918300" duration="24868000" />
+      <workItem from="1588977918300" duration="25427000" />
+      <workItem from="1589156194133" duration="2209000" />
+      <workItem from="1589203354912" duration="265000" />
+      <workItem from="1589241050876" duration="9364000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -412,7 +402,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589023290711</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Major clean up of nearly all files. Removed what was determined to be redundant commented out code. Streamlined the windows size components in twoPanels, copying the implementation inside uploadPanel. Have made new package of log. Relegated common properties to ComProps. Still need UploadPanel to be reduced in size by creating a UploadDB.">
+      <created>1589029350605</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1589029350606</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -468,11 +465,11 @@
     </state>
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587113265301" />
     <state x="237" y="159" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587905595204" />
-    <state x="3457" y="729" key="#com.intellij.ide.util.MemberChooser" timestamp="1588990437411">
+    <state x="3457" y="729" key="#com.intellij.ide.util.MemberChooser" timestamp="1589242921375">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="587" y="207" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588853367093" />
-    <state x="3457" y="729" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588990437410" />
+    <state x="3457" y="729" key="#com.intellij.ide.util.MemberChooser/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589242921375" />
     <state x="513" y="277" key="#com.intellij.ide.util.PackageChooserDialog" timestamp="1588667741838">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -523,33 +520,33 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588667804511" />
-    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1589028279902">
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1589250933244">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279902" />
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933244" />
     <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121837" />
-    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1589028279902">
+    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1589250933241">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279902" />
+    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933241" />
     <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
-    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1589028279901">
+    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1589250933240">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
     <state width="1520" height="191" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924550" />
-    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279901" />
+    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933240" />
     <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121835" />
-    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1589028279902">
+    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1589250933242">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589028279902" />
+    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933242" />
     <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />
@@ -592,10 +589,11 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="93" y="93" width="1377" height="816" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588670020066" />
-    <state x="93" y="93" width="1377" height="816" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588822346593">
-      <screen x="0" y="0" width="1563" height="1002" />
+    <state x="2850" y="611" width="1692" height="847" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1589250937637">
+      <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="93" y="93" width="1377" height="816" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588822346592" />
+    <state x="2850" y="611" width="1692" height="847" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250937637" />
     <state x="2828" y="606" width="1736" height="856" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1588955921648">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
@@ -604,11 +602,11 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="599" y="342" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587466289302" />
-    <state x="321" y="-20" width="928" height="555" maximized="true" key="dock-window-1" timestamp="1588940215901">
+    <state x="217" y="329" width="952" height="556" maximized="true" key="dock-window-1" timestamp="1589241577465">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="2490" y="555" width="1176" height="537" key="dock-window-1/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924887" />
-    <state x="321" y="-20" width="928" height="555" maximized="true" key="dock-window-1/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588940215901" />
+    <state x="217" y="329" width="952" height="556" maximized="true" key="dock-window-1/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589241577465" />
     <state x="3422" y="784" width="1577" height="1010" key="dock-window-2" timestamp="1588954065431">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>

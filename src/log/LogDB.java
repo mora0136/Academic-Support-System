@@ -147,26 +147,27 @@ public class LogDB {
         }
     }
 
-    public static List<Log> getLogsForDayWithActionFilter(LocalDate dateFrom, LocalDate dateTo, String action){
-        String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND action = ?";
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(dateFrom)); // less
-            pstmt.setDate(2, Date.valueOf(dateTo)); // to more
-            pstmt.setString(3, action);
-            ResultSet rs = pstmt.executeQuery();
-            List<Log> list = new ArrayList<>();
-            while(rs.next()){
-                list.add(new Log(rs));
-            }
+//    public static List<Log> getLogsForDayWithActionFilter(LocalDate dateFrom, LocalDate dateTo, String action){
+//        String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND action = ?";
+//        try (Connection conn = connect();
+//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//            pstmt.setDate(1, Date.valueOf(dateFrom)); // less
+//            pstmt.setDate(2, Date.valueOf(dateTo)); // to more
+//            pstmt.setString(3, action);
+//            ResultSet rs = pstmt.executeQuery();
+//            List<Log> list = new ArrayList<>();
+//            while(rs.next()){
+//                list.add(new Log(rs));
+//            }
+//
+//            return list;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
-            return list;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     public static List<Log> getLogsForDayWithTypeActionFilter(LocalDate dateFrom, LocalDate dateTo, String type, String action){
         String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND type = ? AND action = ?";
         try (Connection conn = connect();
