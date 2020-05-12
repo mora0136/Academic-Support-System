@@ -1,7 +1,7 @@
 package log;
 
 import contacts.ContactDB;
-import upload.Upload;
+import upload.UploadDB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,17 +12,16 @@ public class Log {
     LocalDate date;
     String type;
     String action;
-    String description;
+    Object data; //Either Upload or Contact
+//    String description;
 
-    public Object getActionType() {
-        return actionType;
+    public Object getData() {
+        return data;
     }
 
-    public void setActionType(Object at) {
-        this.actionType = at;
+    public void setData(Object at) {
+        this.data = at;
     }
-
-    Object actionType; //Either Upload or Contact
 
     //Deprecated
 //    Log(int logID, LocalDate time, String type, String action, String description){
@@ -42,15 +41,15 @@ public class Log {
         //Find associated data for its particular type
         if(this.type.equals("Upload")){
             int uploadID = rs.getInt("associate_ID");
-            actionType = new Upload(uploadID, "Temp");
-//            actionType = new Upload();
-            description = "Replace with SQL UploadDB Code";
+//            actionType = new Upload(uploadID, "Temp");
+            data = UploadDB.getUpload(uploadID);
+//            description = data.toString();
         }else {
             int contactID = rs.getInt("associate_ID");
             ContactDB db = new ContactDB();
-            actionType = db.getContactDetails(contactID);
-            description = actionType.toString();
-            System.out.println("Description");
+            data = db.getContactDetails(contactID);
+//            description = data.toString();
+//            System.out.println("Description");
         }
     }
     public int getLogID() {
@@ -84,13 +83,13 @@ public class Log {
         this.action = action;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
 
     public String toString(){
         return String.valueOf(logID);

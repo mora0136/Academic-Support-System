@@ -23,7 +23,6 @@ public class LogTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-
         Log l = list.get(rowIndex);
         switch(columnIndex){
             case 0:
@@ -31,7 +30,7 @@ public class LogTableModel extends AbstractTableModel {
             case 1:
                 return l.getAction();
             case 2:
-                return l.getDescription();
+                return l.getData();
             case 3: //This column is not displayed, is strictly here to be able to return the log data.
                 return l;
         }

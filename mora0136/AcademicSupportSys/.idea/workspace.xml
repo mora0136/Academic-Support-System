@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/upload" afterDir="true" />
-      <change afterPath="$PROJECT_DIR$/src/upload/UploadDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contacts/ContactDisplayPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactDisplayPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/Log.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/log/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/EditPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/EditPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/HistoryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/HistoryPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/Upload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/upload/Upload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/UploadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/LogTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogTableModel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +156,8 @@
       <workItem from="1588977918300" duration="25427000" />
       <workItem from="1589156194133" duration="2209000" />
       <workItem from="1589203354912" duration="265000" />
-      <workItem from="1589241050876" duration="9364000" />
+      <workItem from="1589241050876" duration="9689000" />
+      <workItem from="1589276632958" duration="7665000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -409,14 +404,20 @@
       <option name="project" value="LOCAL" />
       <updated>1589029350606</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Seperated SQL code from the Upload Panel into UploadDB and made an upload instance to store an upload">
+      <created>1589251081053</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1589251081053</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updating repo workspace environment" />
     <MESSAGE value="Search works.Very bigger mess. Still needs some changes as per notes kept." />
     <MESSAGE value="Search works using SuffixTrie, YAY! Very bigger mess tho. Still needs some changes as per notes kept to streamline process." />
     <MESSAGE value="Fixed some bugs relating to content display and button creation" />
@@ -441,7 +442,8 @@
     <MESSAGE value="dates are really bad in java. I h8 it." />
     <MESSAGE value="Filtering abilities inside the history panel. This commit is pre a major clean up code structure" />
     <MESSAGE value="Major clean up of nearly all files. Removed what was determined to be redundant commented out code. Streamlined the windows size components in twoPanels, copying the implementation inside uploadPanel. Have made new package of log. Relegated common properties to ComProps. Still need UploadPanel to be reduced in size by creating a UploadDB." />
-    <option name="LAST_COMMIT_MESSAGE" value="Major clean up of nearly all files. Removed what was determined to be redundant commented out code. Streamlined the windows size components in twoPanels, copying the implementation inside uploadPanel. Have made new package of log. Relegated common properties to ComProps. Still need UploadPanel to be reduced in size by creating a UploadDB." />
+    <MESSAGE value="Seperated SQL code from the Upload Panel into UploadDB and made an upload instance to store an upload" />
+    <option name="LAST_COMMIT_MESSAGE" value="Seperated SQL code from the Upload Panel into UploadDB and made an upload instance to store an upload" />
   </component>
   <component name="WindowStateProjectService">
     <state x="665" y="364" key="#Notifications" timestamp="1588670532830">
@@ -505,12 +507,12 @@
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="2925" y="686" key="#console_2.sql/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588949303462" />
-    <state x="3213" y="658" key="CommitChangelistDialog2" timestamp="1589029338769">
+    <state x="2736" y="658" key="CommitChangelistDialog2" timestamp="1589251075653">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
     <state x="357" y="73" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858911390" />
-    <state x="3213" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589029338769" />
+    <state x="2736" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589251075653" />
     <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -520,33 +522,33 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588667804511" />
-    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1589250933244">
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom" timestamp="1589284280792">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933244" />
+    <state width="1877" height="199" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589284280792" />
     <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121837" />
-    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1589250933241">
+    <state width="1877" height="199" key="GridCell.Tab.0.center" timestamp="1589284280792">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933241" />
+    <state width="1877" height="199" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589284280792" />
     <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
-    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1589250933240">
+    <state width="1877" height="199" key="GridCell.Tab.0.left" timestamp="1589284280792">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
     <state width="1520" height="191" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924550" />
-    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933240" />
+    <state width="1877" height="199" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589284280792" />
     <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121835" />
-    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1589250933242">
+    <state width="1877" height="199" key="GridCell.Tab.0.right" timestamp="1589284280792">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250933242" />
+    <state width="1877" height="199" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589284280792" />
     <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />
@@ -589,11 +591,11 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="93" y="93" width="1377" height="816" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588670020066" />
-    <state x="2850" y="611" width="1692" height="847" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1589250937637">
+    <state x="2850" y="611" width="1692" height="847" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1589281053116">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="93" y="93" width="1377" height="816" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588822346592" />
-    <state x="2850" y="611" width="1692" height="847" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589250937637" />
+    <state x="2850" y="611" width="1692" height="847" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589281053116" />
     <state x="2828" y="606" width="1736" height="856" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1588955921648">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
