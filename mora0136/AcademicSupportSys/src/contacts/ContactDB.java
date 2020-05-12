@@ -91,8 +91,8 @@ public class ContactDB {
                 startIndexes = sn.getData().getStartIndexes();
                 for (SuffixIndex s : startIndexes) {
                     //Prevents duplicate contacts being displayed as a node may contain many subStrings of itself
-                    if (!listModel.contains(s.getContact())) {
-                        listModel.addElement(s.getContact());
+                    if (!listModel.contains(s.getObj())) {
+                        listModel.addElement((Contact) s.getObj());
                     }
                 }
 
