@@ -85,8 +85,6 @@ public class ContactDisplayPanel extends JPanel{
                 if (windowWidth < 650 || windowHeight < 450) {
                     height = (int) (windowWidth / (650/100));
                     heightInsets = (int)(windowWidth / (650/40));
-                    System.out.println(height+" "+width);
-                    System.out.println(windowHeight+" "+ windowWidth);
                     headerFont = (int)(Double.min(windowWidth /(650/headerFont), windowHeight/(450/headerFont)));
                     listFont = (int)(Double.min(windowWidth/(650/listFont), windowHeight/(450/listFont)));
                     bodyFont = (int)(Double.min(windowWidth/(650/bodyFont), windowHeight/(450/bodyFont)));
