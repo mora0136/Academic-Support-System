@@ -166,6 +166,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         displayPanel.setLayout(gridBag);
         displayLogs();
         logScroll = new JScrollPane(displayPanel);
+        logScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         rightPanel.add(logScroll, BorderLayout.CENTER);
 
