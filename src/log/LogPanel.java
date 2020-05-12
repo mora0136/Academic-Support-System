@@ -2,8 +2,8 @@ package log;
 
 import contacts.Contact;
 import contacts.ContactDisplayPanel;
-import upload.Upload;
 import panel.UploadPanelDisabled;
+import upload.Upload;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -43,24 +43,26 @@ public class LogPanel extends JPanel{
     public void valueChanged(ListSelectionEvent e){
         LogTableModel tableModel = (LogTableModel) logTable.getModel();
         Log l;
-        switch((String)tableModel.getValueAt(logTable.getSelectedRow(), 0)){
-            case "Upload":
-                System.out.println("upload selected");
-                UploadPanelDisabled upload = null;
-                upload = new UploadPanelDisabled();
-                l = (Log)tableModel.getValueAt(logTable.getSelectedRow(), 3);
-                Upload u = (Upload)l.getActionType();
-                upload.setToExistingUpload(u.getUploadID());
-                upload.setPreferredSize(new Dimension(1280, 720));
-                JOptionPane.showConfirmDialog(null, upload, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
-                break;
-            case "Contact":
-                //Display the shown contact in a non editable panel
-                l = (Log)tableModel.getValueAt(logTable.getSelectedRow(), 3);
-                Contact c = (Contact)l.getActionType();
-                ContactDisplayPanel dp = new ContactDisplayPanel(c);
-                JOptionPane.showConfirmDialog(null, dp, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
-                break;
+        if(logTable.getSelectedRow() != -1) {
+            switch ((String) tableModel.getValueAt(logTable.getSelectedRow(), 0)) {
+                case "Upload":
+                    UploadPanelDisabled upload = null;
+                    upload = new UploadPanelDisabled();
+                    l = (Log) tableModel.getValueAt(logTable.getSelectedRow(), 3);
+                    Upload u = (Upload) l.getData();
+                    upload.setToExistingUpload(u.getUploadID());
+                    upload.setPreferredSize(new Dimension(1280, 720));
+                    JOptionPane.showConfirmDialog(null, upload, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
+                    break;
+                case "Contact":
+                    //Display the shown contact in a non editable panel
+                    l = (Log) tableModel.getValueAt(logTable.getSelectedRow(), 3);
+                    Contact c = (Contact) l.getData();
+                    ContactDisplayPanel dp = new ContactDisplayPanel(c);
+                    dp.setPreferredSize(new Dimension(350, 300));
+                    JOptionPane.showConfirmDialog(null, dp, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
+                    break;
+            }
         }
     }
 }
