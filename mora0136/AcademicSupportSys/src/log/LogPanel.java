@@ -2,7 +2,7 @@ package log;
 
 import contacts.Contact;
 import contacts.ContactDisplayPanel;
-import panel.Upload;
+import upload.Upload;
 import panel.UploadPanelDisabled;
 
 import javax.swing.*;

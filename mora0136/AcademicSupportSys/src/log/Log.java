@@ -1,7 +1,7 @@
 package log;
 
 import contacts.ContactDB;
-import panel.Upload;
+import upload.Upload;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +43,7 @@ public class Log {
         if(this.type.equals("Upload")){
             int uploadID = rs.getInt("associate_ID");
             actionType = new Upload(uploadID, "Temp");
+//            actionType = new Upload();
             description = "Replace with SQL UploadDB Code";
         }else {
             int contactID = rs.getInt("associate_ID");
