@@ -4,20 +4,20 @@ import contacts.Contact;
 
 public class SuffixIndex {
 
-    Contact contact;
+    Object obj;
     int character;
 
-    public SuffixIndex(Contact contact, int character) {
-        this.contact = contact;
+    public SuffixIndex(Object data, int character) {
+        this.obj = data;
         this.character = character;
     }
 
-    public Contact getContact() {
-        return contact;
+    public Object getObj() {
+        return obj;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setObj(Contact obj) {
+        this.obj = obj;
     }
 
     public int getCharacter() {
@@ -34,6 +34,6 @@ public class SuffixIndex {
      */
     @Override
     public String toString() {
-        return contact.getName() + " "+ contact.getSurname() +"." + character;
+        return obj.toString();
     }
 }

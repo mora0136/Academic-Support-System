@@ -1,7 +1,5 @@
 package suffixtree;
 
-import contacts.Contact;
-
 public class SuffixTrie {
 
     private final SuffixTrieNode root = new SuffixTrieNode();
@@ -11,10 +9,10 @@ public class SuffixTrie {
      * is a sentence from the given text file.
      *
      * @param str the sentence to insert
-     * @param contact the starting index/position of the sentence
+     * @param obj the starting index/position of the sentence
      * @return the final node inserted
      */
-    public SuffixTrieNode insert(String str, Contact contact) {
+    public SuffixTrieNode insert(String str, Object obj) {
         SuffixTrieNode currentNode = root;
         int charactersInSentence = 0;
         str = str.toLowerCase();
@@ -29,10 +27,10 @@ public class SuffixTrie {
                 SuffixTrieNode childNode = currentNode.getChild((c[i+j]));
                 if(childNode == null){
                     childNode = new SuffixTrieNode();
-                    childNode.addData(contact, charactersInSentence);
+                    childNode.addData(obj, charactersInSentence);
                     currentNode.addChild(c[i+j], childNode);
                 }else{
-                    childNode.addData(contact, charactersInSentence);
+                    childNode.addData(obj, charactersInSentence);
                 }
                 currentNode = childNode; //Move down to that node to prepare for next insertion
                 charactersInSentence++;
@@ -65,7 +63,7 @@ public class SuffixTrie {
         //This is necessary is the program searches for the same node successively
         //Note that the character is also adjusted to appropriately show where the suffix starts
         for(SuffixIndex index : currentNode.getData().getStartIndexes()){
-            nodeFound.addData(index.getContact(), index.getCharacter()-str.length()+1);
+            nodeFound.addData(index.getObj(), index.getCharacter()-str.length()+1);
         }
 
         return nodeFound;

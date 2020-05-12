@@ -3,6 +3,7 @@ package upload;
 import contacts.Contact;
 import log.LogDB;
 
+import javax.swing.*;
 import java.sql.*;
 
 public class UploadDB {
@@ -106,6 +107,38 @@ public class UploadDB {
             System.out.println(et.getMessage());
         }
 
+    }
+
+    public static DefaultListModel getAllEditableUploads(){
+        String sql = "SELECT * FROM uploads WHERE isUploaded = false AND isDeleted = false";
+        DefaultListModel<Upload> editable = new DefaultListModel<>();
+        try(Connection conn = connect();
+            Statement stmt  = conn.createStatement();) {
+
+            //Retrieve the information found in the Uploads tables
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                editable.addElement(new Upload(rs));
+            }
+        }catch(SQLException ev){
+
+        }
+        return editable;
+    }
+
+    public static void deleteUpload(Upload upload){
+        String sqlUploads = "UPDATE uploads SET isDeleted = ? WHERE upload_ID = ?";
+
+        int uploadID = upload.getUploadID();
+
+        try (Connection conn = connect()) {
+            PreparedStatement pstmtUpload = conn.prepareStatement(sqlUploads);
+            pstmtUpload.setBoolean(1, true);
+            pstmtUpload.setInt(2, uploadID);
+            pstmtUpload.executeUpdate();
+        } catch (SQLException ev) {
+            System.out.println(ev.getMessage());
+        }
     }
 
     private static Connection connect() {

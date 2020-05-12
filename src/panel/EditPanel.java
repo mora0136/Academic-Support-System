@@ -1,7 +1,11 @@
 package panel;
 
 import log.LogDB;
+import suffixtree.SuffixIndex;
+import suffixtree.SuffixTrie;
+import suffixtree.SuffixTrieNode;
 import upload.Upload;
+import upload.UploadDB;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -10,13 +14,17 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EditPanel extends TwoPanel implements DocumentListener, FocusListener {
     JScrollPane scrollContactPanel;
     JList editList;
     DefaultListModel<Upload> editable;
     UploadVerticalOrientation displayUpload;
+    SuffixTrie sf;
 
     EditPanel(JPanel pane) throws IOException {
         super(pane);
@@ -25,19 +33,10 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         searchField.addFocusListener(this);
 
         //Get some type of list from upload where isUploaded is false
-        String sql = "SELECT * FROM uploads WHERE isUploaded = false AND isDeleted = false";
-        editable = new DefaultListModel<>();
-        try(Connection conn = this.connect();
-            Statement stmt  = conn.createStatement();) {
-
-            //Retrieve the information found in the Uploads tables
-            ResultSet rs = stmt.executeQuery(sql);
-            while(rs.next()){
-                editable.addElement(new Upload(rs.getInt("upload_ID"), rs.getString("Title")));
-//                editable.addElement(new Upload());
-            }
-        }catch(SQLException ev){
-
+        editable = UploadDB.getAllEditableUploads();
+        sf = new SuffixTrie();
+        for(int i = 0; i < editable.getSize(); i++){
+            sf.insert(editable.getElementAt(i).toString(), editable.getElementAt(i));
         }
         editList = new JList(editable);
         editList.addListSelectionListener(this::valueChanged);
@@ -96,21 +95,9 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
     //Consider moving/marking info rather then deleting?
     public void actionPerformedDelete(ActionEvent e){
-        String sqlUploads = "UPDATE uploads SET isDeleted = ? WHERE upload_ID = ?";
+        UploadDB.deleteUpload((Upload) editList.getSelectedValue());
 
-        int uploadID = editable.getElementAt(editList.getSelectedIndex()).getUploadID();
-
-        try (Connection conn = this.connect()) {
-            PreparedStatement pstmtUpload = conn.prepareStatement(sqlUploads);
-            pstmtUpload.setBoolean(1, true);
-            pstmtUpload.setInt(2, uploadID);
-            pstmtUpload.executeUpdate();
-
-        } catch (SQLException ev) {
-            System.out.println(ev.getMessage());
-        }
-
-        LogDB.logDeletedUpload(uploadID);
+        LogDB.logDeletedUpload(((Upload) editList.getSelectedValue()).getUploadID());
 
         editable.removeElementAt(editList.getSelectedIndex());
         editList.setSelectedIndex(-1);
@@ -145,6 +132,28 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
     private void search(){
         //Search for the Title
+        if(searchField.getText().length() == 0 || searchField.equals("Search...")) {
+            editable = UploadDB.getAllEditableUploads();
+            editList.setModel(editable);
+        }else{
+            ArrayList<SuffixIndex> startIndexes;
+            editable.removeAllElements();
+            SuffixTrieNode sn = sf.get(searchField.getText());
+            if (sn != null) {
+                startIndexes = sn.getData().getStartIndexes();
+                for (SuffixIndex s : startIndexes) {
+                    //Prevents duplicate contacts being displayed as a node may contain many subStrings of itself
+                    if (!editable.contains(s.getObj())) {
+                        editable.addElement((Upload) s.getObj());
+                    }
+                }
+
+            } else {
+                //This is where an error message should be returned as nothing found.
+                JLabel noContent = new JLabel("Contact not Found");
+                noContent.setFont(new Font("Arial", Font.PLAIN, 16));
+            }
+        }
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus

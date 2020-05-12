@@ -1,7 +1,5 @@
 package suffixtree;
 
-import contacts.Contact;
-
 import java.util.TreeMap;
 
 public class SuffixTrieNode {
@@ -28,8 +26,8 @@ public class SuffixTrieNode {
         numChildren++;
     }
 
-    public void addData(Contact contact, int characterPos) {
-        data.addStartIndex(new SuffixIndex(contact, characterPos));
+    public void addData(Object obj, int characterPos) {
+        data.addStartIndex(new SuffixIndex(obj, characterPos));
     }
 
     public SuffixTrieData getData(){
