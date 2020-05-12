@@ -138,16 +138,16 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         c.insets = new Insets(0, 20, 5, 5);
         gridBag.setConstraints(templateStatement, c);
         descPanel.add(templateStatement);
-        //Defining the textArea
+        //Defining the Description textArea
         descriptionTextArea = new JTextArea();
         descriptionTextArea.setLineWrap(true);
-        descriptionTextArea.setPreferredSize(new Dimension(1, 1));
+        JScrollPane descriptionScroll = new JScrollPane(descriptionTextArea);
         c.weightx = 0.8;
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.insets = new Insets(0, 5, 5, 20);
-        gridBag.setConstraints(descriptionTextArea, c);
-        descPanel.add(descriptionTextArea);
+        gridBag.setConstraints(descriptionScroll, c);
+        descPanel.add(descriptionScroll);
 
         //The File Selection section
         //Define the File Label
@@ -168,13 +168,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         DefaultListModel<File> tempFileList = new DefaultListModel<>();
         attachedFileList = new JList(tempFileList);
         attachedFileList.setCellRenderer(new FileRenderer());
-        attachedFileList.setFont(new Font("Arial", Font.PLAIN, 16));
         attachedFileList.setTransferHandler(new FileListTransferHandler(attachedFileList));
         attachedFileList.setDropMode(DropMode.INSERT);
+        JScrollPane fileScroll = new JScrollPane(attachedFileList);
         c.weighty = 0.9;
         c.fill = GridBagConstraints.BOTH;
-        gridBag.setConstraints(attachedFileList, c);
-        filePanel.add(attachedFileList);
+        gridBag.setConstraints(fileScroll, c);
+        filePanel.add(fileScroll);
 
         //The type DropDown Section(e.g Article, Book, Journal)
         //Define the type Label
@@ -503,6 +503,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             currentUpload.setPure(pure.isSelected());currentUpload.setAcad(acad.isSelected());currentUpload.setTwit(twit.isSelected());
 
             UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, uploadID != 0);
+            if(e.getSource() == uploadBtn){
+                cardLayout.show(cardPane, "Home");
+                JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully Upload!", "Successful Upload", JOptionPane.PLAIN_MESSAGE);
+                resetAll();
+            }else{
+                JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully saved!", "Successfully Saved", JOptionPane.PLAIN_MESSAGE);
+            }
             /*
             Upload and save essentially have the same information they need to convey, the only difference being that by
             uploading, the isUpload field will be set to true, and can no longer be selected to edit. However there are

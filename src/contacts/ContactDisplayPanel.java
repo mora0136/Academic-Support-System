@@ -28,9 +28,9 @@ public class ContactDisplayPanel extends JPanel{
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 1;
         top = new Insets(10, 10, 0, 0);
-        bottom = new Insets(0, 20, 10, 10);
+        bottom = new Insets(0, 50, 10, 10);
 
-        JLabel givenName = new JLabel("Name");
+        JLabel givenName = new JLabel("Name:");
         c.insets = top;
         gridBag.setConstraints(givenName, c);
         add(givenName);
@@ -40,7 +40,7 @@ public class ContactDisplayPanel extends JPanel{
         gridBag.setConstraints(givenNameField, c);
         add(givenNameField);
 
-        JLabel lastName = new JLabel("Surname");
+        JLabel lastName = new JLabel("Surname:");
         c.insets = top;
         gridBag.setConstraints(lastName, c);
         add(lastName);
@@ -50,7 +50,7 @@ public class ContactDisplayPanel extends JPanel{
         gridBag.setConstraints(lastNameField, c);
         add(lastNameField);
 
-        JLabel email = new JLabel("Email");
+        JLabel email = new JLabel("Email:");
         c.insets = top;
         gridBag.setConstraints(email, c);
         add(email);
@@ -60,7 +60,7 @@ public class ContactDisplayPanel extends JPanel{
         gridBag.setConstraints(emailField, c);
         add(emailField);
 
-        JLabel phone = new JLabel("Phone");
+        JLabel phone = new JLabel("Phone:");
         c.insets = top;
         gridBag.setConstraints(phone, c);
         add(phone);
@@ -80,11 +80,11 @@ public class ContactDisplayPanel extends JPanel{
                 int checkBoxFont = (int)(mainFont*(0.75));
                 int width = 50;
                 int height = 100;
-                int heightInsets = 10;
+                int heightInsets = 40;
 
                 if (windowWidth < 650 || windowHeight < 450) {
                     height = (int) (windowWidth / (650/100));
-                    heightInsets = (int)(windowWidth / (650/10));
+                    heightInsets = (int)(windowWidth / (650/40));
                     System.out.println(height+" "+width);
                     System.out.println(windowHeight+" "+ windowWidth);
                     headerFont = (int)(Double.min(windowWidth /(650/headerFont), windowHeight/(450/headerFont)));
@@ -92,17 +92,6 @@ public class ContactDisplayPanel extends JPanel{
                     bodyFont = (int)(Double.min(windowWidth/(650/bodyFont), windowHeight/(450/bodyFont)));
                     checkBoxFont = (int)(Double.min(windowWidth/(650/checkBoxFont), windowHeight/(450/checkBoxFont)));
                 }
-
-                c.insets = new Insets(heightInsets, 10, 0, 0);
-                gridBag.setConstraints(givenName, c);
-                gridBag.setConstraints(lastName, c);
-                gridBag.setConstraints(email, c);
-                gridBag.setConstraints(phone, c);
-                c.insets = new Insets(0, 20, heightInsets, 10);
-                gridBag.setConstraints(givenNameField, c);
-                gridBag.setConstraints(lastNameField, c);
-                gridBag.setConstraints(emailField, c);
-                gridBag.setConstraints(phoneField, c);
 
                 setBorder(new EmptyBorder(height, 0, height, 0));
 

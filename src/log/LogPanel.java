@@ -59,7 +59,7 @@ public class LogPanel extends JPanel{
                     l = (Log) tableModel.getValueAt(logTable.getSelectedRow(), 3);
                     Contact c = (Contact) l.getData();
                     ContactDisplayPanel dp = new ContactDisplayPanel(c);
-                    dp.setPreferredSize(new Dimension(350, 300));
+                    dp.setPreferredSize(new Dimension(350, 350));
                     JOptionPane.showConfirmDialog(null, dp, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
                     break;
             }
