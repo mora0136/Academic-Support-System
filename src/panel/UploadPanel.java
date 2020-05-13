@@ -121,7 +121,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         descLabel = new JLabel("Description:");
         c.gridheight = 1;
         c.weightx = 1;
-        c.insets = new Insets(0, 5, 0, 20);
+        c.insets = new Insets(0, 5, 0, 5);
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(descLabel, c);
         descPanel.add(descLabel);
@@ -131,28 +131,26 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         for(int i = 0; i < t.getSize(); i++){
             templates.addElement((Template) t.get(i));
         }
-        templates.add(0, new Template(-1, "Add Template"));
+        templates.add(0, new Template(-1, "Add/Edit Templates"));
         templateStatement = new JList(templates);
-//        templateStatement.setPreferredSize(new Dimension(1, 1));
+        templateStatement.setCellRenderer(new templateCellRenderer());
+        templateStatement.setMinimumSize(new Dimension(1, 1));
         templateStatement.addListSelectionListener(this::valueChangedTemplate);
-        c.gridwidth = 1;
-        c.weightx = 0.2;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, 5, 5, 5);
         gridBag.setConstraints(templateStatement, c);
-        descPanel.add(templateStatement);
         //Defining the Description textArea
         descriptionTextArea = new JTextArea(1, 1);
         descriptionTextArea.setLineWrap(true);
         descriptionTextArea.setWrapStyleWord(true);
         JScrollPane descriptionScroll = new JScrollPane(descriptionTextArea);
-        c.weightx = 0.8;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 5, 5, 5);
         gridBag.setConstraints(descriptionScroll, c);
-        descPanel.add(descriptionScroll);
+        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        sp.setOneTouchExpandable(true);
+        gridBag.setConstraints(sp, c);
+        sp.add(templateStatement);
+        sp.add(descriptionScroll);
+        descPanel.add(sp);
 
         //The File Selection section
         //Define the File Label
@@ -172,6 +170,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         filePanel.add(fileSelectBtn);
         //Define a list to display files and drag pane
         DefaultListModel<File> tempFileList = new DefaultListModel<>();
+        tempFileList.addElement(null);
         attachedFileList = new JList(tempFileList);
         attachedFileList.setCellRenderer(new FileRenderer());
         attachedFileList.setTransferHandler(new FileListTransferHandler(attachedFileList));
@@ -418,6 +417,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 ComProps.textAreaProperties(descriptionTextArea, bodyFont);
                 ComProps.textFieldProperties(searchField, headerFont);
 
+                selectTypeComboBox.setFont(new Font("Arial", Font.PLAIN, listFont));
                 fileSelectBtn.setFont(new Font("Arial", Font.PLAIN, bodyFont));
                 selectAll.setFont(new Font("Arial", Font.PLAIN, headerFont));
                 deselectAll.setFont(new Font("Arial", Font.PLAIN, headerFont));
@@ -434,7 +434,10 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         titleField.setText("");
         searchField.setText("");
         publishDatePanel.getModel().setValue(null); //maybe
-        attachedFileList.setModel(new DefaultListModel());
+        if(attachedFileList.getModel().getSize() > 1) {
+            DefaultListModel f = (DefaultListModel) attachedFileList.getModel();
+            f.removeRange(1, f.getSize() - 1);
+        }
         displayedContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
             displayedContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
@@ -492,7 +495,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }else if(e.getSource() == uploadBtn || e.getSource() == saveBtn){
             currentUpload.setTitle(titleField.getText());
             currentUpload.setDescription(descriptionTextArea.getText());
-            currentUpload.setAttachedFiles((DefaultListModel) attachedFileList.getModel());
+            DefaultListModel f = new DefaultListModel<>();
+            // removes the null at the front of the list
+            for(int i = 1; i < attachedFileList.getModel().getSize(); i++){
+                f.addElement(attachedFileList.getModel().getElementAt(i));
+            }
+            currentUpload.setAttachedFiles(f);
             currentUpload.setType((String) selectTypeComboBox.getSelectedItem());
             if(publishDatePanel.getModel().isSelected()) {
                 Date date = (Date) (publishDatePanel.getModel().getValue());
@@ -543,7 +551,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 for(int i = 0; i < temp.getSize(); i++){
                     templates.addElement((Template) temp.get(i));
                 }
-                templates.add(0, new Template(-1, "Add Template"));
+                templates.add(0, new Template(-1, "Add/Edit Templates"));
             }else {
                 String keyword = templateStatement.getSelectedValue().toString();
                 descriptionTextArea.append(keyword);
@@ -682,11 +690,38 @@ class FileListTransferHandler extends TransferHandler {
  */
 class FileRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-        File file = (File)value;
-        setText( file.getName() );
+        if(value == null) { // Any element that is null is considered as a placeholder for the drag file info
+            try {
+                super.getListCellRendererComponent(list, value, index, false, false);
+                Image i = ImageIO.read(new File("resources/addFile.png"));
+                i = i.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+                setIcon(new ImageIcon(i));
+                setText("Drag a file to attach");
+                setToolTipText("Drag a file to attach");
+                setVerticalTextPosition(SwingConstants.CENTER);
+                setHorizontalTextPosition(SwingConstants.RIGHT);
+                setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+            } catch (IOException e) {
+            }
+        }else{
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            File file = (File)value;
+            setText( file.getName() );
+        }
 
         return this;
+    }
+}
+
+class templateCellRenderer extends DefaultListCellRenderer{
+    @Override
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel listCellRendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
+        listCellRendererComponent.setToolTipText(listCellRendererComponent.getText());
+        if(index == 0){
+            listCellRendererComponent.setFont(new Font("Arial", Font.BOLD, listCellRendererComponent.getFont().getSize()+2));
+            listCellRendererComponent.setBackground(Color.LIGHT_GRAY);
+}
+        return listCellRendererComponent;
     }
 }
