@@ -175,6 +175,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         attachedFileList.setCellRenderer(new FileRenderer());
         attachedFileList.setTransferHandler(new FileListTransferHandler(attachedFileList));
         attachedFileList.setDropMode(DropMode.INSERT);
+        attachedFileList.getSelectionModel().addListSelectionListener(this::valueChangedFile);
         JScrollPane fileScroll = new JScrollPane(attachedFileList);
         c.weighty = 0.9;
         c.fill = GridBagConstraints.BOTH;
@@ -543,10 +544,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
                 JOptionPane.showConfirmDialog(null, new TemplatePanel(), "Edit Templates", JOptionPane.PLAIN_MESSAGE);
                 templates.removeAllElements();
-//                for(int i = 0; i < edit.getSize(); i++){
-//                    templates.addElement((Template) edit.getElementAt(i));
-//                }
-//                templates.addElement("AddNew Template");
                 DefaultListModel temp = TemplateDB.getTemplates();
                 for(int i = 0; i < temp.getSize(); i++){
                     templates.addElement((Template) temp.get(i));
@@ -556,6 +553,18 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 String keyword = templateStatement.getSelectedValue().toString();
                 descriptionTextArea.append(keyword);
                 templateStatement.clearSelection();
+            }
+        }
+    }
+
+    public void valueChangedFile(ListSelectionEvent e) {
+        if(attachedFileList.getSelectedIndex() > 0) {
+            String[] options = {"Back", "Remove File"};
+            int result = JOptionPane.showOptionDialog(null, new FileOptionPanel((File) attachedFileList.getSelectedValue()), "File Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (result == JOptionPane.NO_OPTION) {
+                //remove from the list
+                DefaultListModel l = (DefaultListModel) attachedFileList.getModel();
+                l.remove(attachedFileList.getSelectedIndex());
             }
         }
     }
@@ -716,12 +725,12 @@ class FileRenderer extends DefaultListCellRenderer {
 class templateCellRenderer extends DefaultListCellRenderer{
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel listCellRendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
-        listCellRendererComponent.setToolTipText(listCellRendererComponent.getText());
+        super.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
+        setToolTipText(this.getText());
         if(index == 0){
-            listCellRendererComponent.setFont(new Font("Arial", Font.BOLD, listCellRendererComponent.getFont().getSize()+2));
-            listCellRendererComponent.setBackground(Color.LIGHT_GRAY);
-}
-        return listCellRendererComponent;
+            setFont(new Font("Arial", Font.BOLD, this.getFont().getSize()+2));
+            setBackground(Color.LIGHT_GRAY);
+        }
+        return this;
     }
 }
