@@ -3,6 +3,9 @@ package panel;
 import contacts.Contact;
 import contacts.ContactDB;
 import org.jdatepicker.JDatePanel;
+import template.Template;
+import template.TemplateDB;
+import template.TemplatePanel;
 import upload.Upload;
 import upload.UploadDB;
 
@@ -11,7 +14,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -32,7 +34,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     Image backImg, resetImg, fileImg, saveImg, uploadImg;
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
     DefaultListModel<Contact> displayedContacts, addedContacts, notAddedContacts;
-    DefaultListModel<String> templates;
+    DefaultListModel<Template> templates;
     JComboBox selectTypeComboBox;
     JTextArea descriptionTextArea;
     JTextField titleField, searchField;
@@ -100,7 +102,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         backResetPanel.add(resetBtn);
 
         //A generic inset that will apply until next changed
-        c.insets = new Insets(0, 20, 0, 20);
+        c.insets = new Insets(0, 5, 0, 5);
 
         //The Title Text Section
         titleLabel = new JLabel("Title:");
@@ -119,33 +121,36 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         descLabel = new JLabel("Description:");
         c.gridheight = 1;
         c.weightx = 1;
-        c.insets = new Insets(0, 20, 0, 20);
+        c.insets = new Insets(0, 5, 0, 20);
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(descLabel, c);
         descPanel.add(descLabel);
         //Defining the template statements
-        String[] str = new String[]{"AddNew Template"};
-        templates = new DefaultListModel();
-        templates.addElement("testing word");
-        templates.addElement("AddNew Template");
+        templates = new DefaultListModel<>();
+        DefaultListModel t = TemplateDB.getTemplates();
+        for(int i = 0; i < t.getSize(); i++){
+            templates.addElement((Template) t.get(i));
+        }
+        templates.add(0, new Template(-1, "Add Template"));
         templateStatement = new JList(templates);
-        templateStatement.setPreferredSize(new Dimension(1, 1));
+//        templateStatement.setPreferredSize(new Dimension(1, 1));
         templateStatement.addListSelectionListener(this::valueChangedTemplate);
         c.gridwidth = 1;
         c.weightx = 0.2;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, 20, 5, 5);
+        c.insets = new Insets(0, 5, 5, 5);
         gridBag.setConstraints(templateStatement, c);
         descPanel.add(templateStatement);
         //Defining the Description textArea
-        descriptionTextArea = new JTextArea();
+        descriptionTextArea = new JTextArea(1, 1);
         descriptionTextArea.setLineWrap(true);
+        descriptionTextArea.setWrapStyleWord(true);
         JScrollPane descriptionScroll = new JScrollPane(descriptionTextArea);
         c.weightx = 0.8;
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 5, 5, 20);
+        c.insets = new Insets(0, 5, 5, 5);
         gridBag.setConstraints(descriptionScroll, c);
         descPanel.add(descriptionScroll);
 
@@ -153,6 +158,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //Define the File Label
         fileLabel = new JLabel("File:");
         c.weighty = 0.1;
+        c.insets = new Insets(0, 5, 5, 5);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(fileLabel, c);
@@ -525,63 +531,21 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         if(templateStatement.isSelectionEmpty()){
             descriptionTextArea.requestFocusInWindow();
         }else {
-            if(templateStatement.getSelectedIndex() == templateStatement.getModel().getSize()-1){
-                JPanel editTemplatePanel = new JPanel();
-                editTemplatePanel.setLayout(new BorderLayout());
-                JButton add = new JButton("Add/Edit");
-                JButton delete = new JButton("Delete");
-                JTextField text = new JTextField();
-                DefaultListModel edit = new DefaultListModel();
-                for(int i = 0; i < templates.getSize()-1; i++){
-                    edit.addElement(templates.getElementAt(i));
-                }
-                JList editTemplate = new JList(edit);
+            if(templates.getElementAt(templateStatement.getSelectedIndex()).getTemplateID() == -1){
 
-                editTemplate.addListSelectionListener(new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        if(editTemplate.isSelectionEmpty()){
-                            text.setText("");
-                        }else{
-                            text.setText(editTemplate.getSelectedValue().toString());
-                        }
-                    }
-                });
-                add.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        edit.addElement(text.getText());
-                        if(!editTemplate.isSelectionEmpty()) {
-                            edit.removeElement(editTemplate.getSelectedValue());
-                        }
-                        text.setText("");
-                    }
-                });
-
-                delete.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        edit.removeElement(editTemplate.getSelectedValue());
-                        text.setText("");
-                    }
-                });
-                JPanel addTextPanel = new JPanel();
-                addTextPanel.setLayout(new BorderLayout());
-                addTextPanel.add(text, BorderLayout.CENTER);
-                addTextPanel.add(add, BorderLayout.EAST);
-                editTemplatePanel.add(editTemplate, BorderLayout.CENTER);
-                editTemplatePanel.add(delete, BorderLayout.EAST);
-                editTemplatePanel.add(addTextPanel, BorderLayout.SOUTH);
-                editTemplatePanel.setPreferredSize(new Dimension(500,500));
-
-                JOptionPane.showConfirmDialog(null, editTemplatePanel, "Edit Templates", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showConfirmDialog(null, new TemplatePanel(), "Edit Templates", JOptionPane.PLAIN_MESSAGE);
                 templates.removeAllElements();
-                for(int i = 0; i < edit.getSize(); i++){
-                    templates.addElement((String) edit.getElementAt(i));
+//                for(int i = 0; i < edit.getSize(); i++){
+//                    templates.addElement((Template) edit.getElementAt(i));
+//                }
+//                templates.addElement("AddNew Template");
+                DefaultListModel temp = TemplateDB.getTemplates();
+                for(int i = 0; i < temp.getSize(); i++){
+                    templates.addElement((Template) temp.get(i));
                 }
-                templates.addElement("AddNew Template");
+                templates.add(0, new Template(-1, "Add Template"));
             }else {
-                String keyword = (String) templateStatement.getSelectedValue();
+                String keyword = templateStatement.getSelectedValue().toString();
                 descriptionTextArea.append(keyword);
                 templateStatement.clearSelection();
             }
