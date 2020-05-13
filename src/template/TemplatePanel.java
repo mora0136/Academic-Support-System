@@ -1,24 +1,40 @@
 package template;
 
+import panel.ComProps;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class TemplatePanel extends JPanel {
 
     public TemplatePanel() {
         setLayout(new BorderLayout());
         JButton add = new JButton("Add/Edit");
+        Image addImg = null, deleteImg = null;
+        try {
+            addImg = ImageIO.read(new File("resources/add.png"));
+            deleteImg = ImageIO.read(new File("resources/delete.png"));
+        }catch(IOException e){
+            System.out.println(e);
+        }
+
         JButton delete = new JButton("Delete");
+        delete.setEnabled(false);
         JTextField text = new JTextField();
         DefaultListModel templates = TemplateDB.getTemplates();
-//        for (int i = 0; i < templates.getSize() - 1; i++) {
-//            edit.addElement(templates.getElementAt(i));
-//        }
         JList editTemplate = new JList(templates);
+
+        ComProps.listProperties(editTemplate, 20);
+        ComProps.buttonProperties(add, addImg, 30, 30, 18, true);
+        ComProps.buttonProperties(delete, deleteImg, 50, 50, 24, false);
+        ComProps.textFieldProperties(text, 18);
 
         editTemplate.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -27,6 +43,7 @@ public class TemplatePanel extends JPanel {
                     text.setText("");
                 } else {
                     text.setText(editTemplate.getSelectedValue().toString());
+                    delete.setEnabled(true);
                 }
             }
         });
