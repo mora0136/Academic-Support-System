@@ -173,4 +173,5 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             searchField.getDocument().addDocumentListener(this);
         }
     }
+
 }
