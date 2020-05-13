@@ -4,6 +4,8 @@ import log.Log;
 import log.LogDB;
 import log.LogPanel;
 import org.jdatepicker.JDatePicker;
+import suffixtree.SuffixTrie;
+import suffixtree.SuffixTrieNode;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,6 +31,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
     JFormattedTextField fromText, toText;
     JScrollPane logScroll;
     int mainFont = 32;
+    SuffixTrie st;
 
     HistoryPanel(JPanel pane) throws IOException, SQLException {
         super(pane);
@@ -134,26 +137,27 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         gridBag.setConstraints(actionBox, c);
         filterPanel.add(actionBox);
 
-        titleLabel = new JLabel("By Title:");
-        c.insets = new Insets(20, 60, 0, 0);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        gridBag.setConstraints(titleLabel, c);
-        filterPanel.add(titleLabel);
+        sortPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        titleField = new JTextField("Enter Search Query...");
-        titleField.setForeground(Color.GRAY);
-        titleField.addFocusListener(this);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(20, 0, 0, 30);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        gridBag.setConstraints(titleField, c);
-        filterPanel.add(titleField);
+//        titleLabel = new JLabel("By Title:");
+////        c.insets = new Insets(20, 60, 0, 0);
+////        c.fill = GridBagConstraints.HORIZONTAL;
+////        c.gridwidth = GridBagConstraints.RELATIVE;
+////        gridBag.setConstraints(titleLabel, c);
+//        sortPanel.add(titleLabel);
+
+//        titleField = new JTextField("Enter Search Query...", 15);//Need to adjust columns
+//        titleField.setForeground(Color.GRAY);
+//        titleField.addFocusListener(this);
+////        c.fill = GridBagConstraints.HORIZONTAL;
+////        c.insets = new Insets(20, 0, 0, 30);
+////        c.gridwidth = GridBagConstraints.REMAINDER;
+////        gridBag.setConstraints(titleField, c);
+//        sortPanel.add(titleField);
 
         leftPanel.add(filterPanel, BorderLayout.CENTER);
 
         //The sort Panel
-        sortPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         sortlabel = new JLabel("Sort By:");
         sortPanel.add(sortlabel);
         sortBox = new JComboBox(new String[]{"Date<ASC>", "Date<DESC>"});
@@ -201,9 +205,9 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 ComProps.headingProperties(toLabel, headerFont);
                 ComProps.headingProperties(typeLabel, headerFont);
                 ComProps.headingProperties(actionLabel, headerFont);
-                ComProps.headingProperties(titleLabel, headerFont);
+//                ComProps.headingProperties(titleLabel, headerFont);
                 ComProps.headingProperties(sortlabel, listFont);
-                ComProps.textFieldProperties(titleField, listFont);
+//                ComProps.textFieldProperties(titleField, listFont);
                 fromText.setFont(new Font("Arial", Font.PLAIN, listFont));
                 toText.setFont(new Font("Arial", Font.PLAIN, listFont));
                 typeBox.setFont(new Font("Arial", Font.PLAIN, listFont));
@@ -254,6 +258,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             }
 
         }
+//        searchLogs();
         repaint();
         revalidate();
     }
@@ -291,7 +296,9 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
     public void displayLogs(){
         LocalDate dateFrom = LocalDate.of(2020, 4, 7);
         LocalDate dateTo = LocalDate.now();
+        st = new SuffixTrie();
 
+        displayPanel.removeAll();
         displayPanel.setLayout(gridBag);
         c.fill = GridBagConstraints.BOTH;
         c.gridwidth = GridBagConstraints.REMAINDER;
@@ -300,8 +307,11 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         c.weighty = 0;
 
         for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
-            java.util.List<Log> l = LogDB.getLogsForDay(dateTo.minusDays(1), dateTo);
+            java.util.List<Log> l = LogDB.getLogsForDay(dateTo, dateTo);
             if(!l.isEmpty()) {
+                for(Log li : l){
+                    st.insert((String) li.getData().toString(), li);
+                }
                 JPanel log = new LogPanel(dateTo, l);
                 gridBag.setConstraints(log, c);
                 displayPanel.add(log);
@@ -312,6 +322,36 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
 
     //No implementation, is kind of hard to do with current setup.
     public void actionPerformedSort(ActionEvent e){
+    }
+
+    public void searchLogs(){
+//        if(titleField.getText().length() == 0 || titleField.equals("Enter Search Query...")) {
+////            editable = UploadDB.getAllEditableUploads();
+////            editList.setModel(editable);
+//            displayLogs();
+//            System.out.println("displayLogs");
+//        }else {
+//            for (Component c : displayPanel.getComponents()) {
+//                ArrayList<SuffixIndex> startIndexes;
+//                SuffixTrieNode sn = st.get(titleField.getText());
+//                if (sn != null) {
+//                    startIndexes = sn.getData().getStartIndexes();
+//                    for (SuffixIndex s : startIndexes) {
+//                        //Prevents duplicate contacts being displayed as a node may contain many subStrings of itself
+//                        if (!editable.contains(s.getObj())) {
+//                            editable.addElement((Upload) s.getObj());
+//                        }
+//                    }
+//
+//                } else {
+//                    //This is where an error message should be returned as nothing found.
+//                    JLabel noContent = new JLabel("Contact not Found");
+//                    noContent.setFont(new Font("Arial", Font.PLAIN, 16));
+//                }
+//            }
+//        }
+        System.out.println(st.get(titleField.getText()));
+        SuffixTrieNode sn = st.get(titleField.getText());
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus

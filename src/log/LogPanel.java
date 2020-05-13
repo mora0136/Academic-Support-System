@@ -69,9 +69,7 @@ public class LogPanel extends JPanel{
                 ComProps.headingProperties(day, headerFont);
                 logTable.setFont(new Font("Arial", Font.PLAIN, listFont));
                 setJTableColumnsWidth(logTable, getWidth()-50, 20, 20, 80);
-                System.out.println("here");
                 logTable.setRowHeight(rowHeight);
-                System.out.println("over here");
                 repaint();
                 revalidate();
             }
