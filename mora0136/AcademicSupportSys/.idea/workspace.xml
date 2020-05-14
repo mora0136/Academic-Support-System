@@ -5,8 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/log/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/HistoryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/HistoryPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -163,7 +161,7 @@
       <workItem from="1589241050876" duration="9689000" />
       <workItem from="1589276632958" duration="15666000" />
       <workItem from="1589336297414" duration="17488000" />
-      <workItem from="1589421140440" duration="6806000" />
+      <workItem from="1589421140440" duration="9530000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -473,14 +471,20 @@
       <option name="project" value="LOCAL" />
       <updated>1589424080660</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="History Panel now shows date on the right day. I want to change it so that each log gets a timestamp instead of date to allow for chronological ordering. This means changing LocalDate to LocalDateTime. Revert to here if changes do not work.">
+      <created>1589453654582</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1589453654582</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="initial framework of the upload Panel. Have added a JDatePanel from an open source project, this is located in Java folder. GridBag layouts are still not working but am going to refine strategy. java folder is not committing so code wont work on checkout." />
     <MESSAGE value="rightside layout being implemented more. Contacts do not display properly but are showing which is a good sign." />
     <MESSAGE value="Roll back to here if contactList no longer works. NOTE no java folder" />
     <MESSAGE value="Changed ContactList to a ContactDB to better reflect its usage. Thsi was because the contacts are now displayed using a JList. This is made inside the current Panel and so the ContactDB only queries the database and creates a ModelList which each panel refers to as the contact. This is a much better approach and is more streamlined with everything being contained inside the panels in which they are being used." />
@@ -505,7 +509,8 @@
     <MESSAGE value="shown drag functionality on the file. This is done by editing the cellRenderer and providing an initial null value to be able to display an image and text." />
     <MESSAGE value="FileOption is now displayed when a file is pressed. From here you can view details about the file or remove it from the list" />
     <MESSAGE value="UploadPanel added contactslist now properly sized as proportional to the other list" />
-    <option name="LAST_COMMIT_MESSAGE" value="UploadPanel added contactslist now properly sized as proportional to the other list" />
+    <MESSAGE value="History Panel now shows date on the right day. I want to change it so that each log gets a timestamp instead of date to allow for chronological ordering. This means changing LocalDate to LocalDateTime. Revert to here if changes do not work." />
+    <option name="LAST_COMMIT_MESSAGE" value="History Panel now shows date on the right day. I want to change it so that each log gets a timestamp instead of date to allow for chronological ordering. This means changing LocalDate to LocalDateTime. Revert to here if changes do not work." />
   </component>
   <component name="WindowStateProjectService">
     <state x="665" y="364" key="#Notifications" timestamp="1588670532830">
@@ -569,12 +574,12 @@
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="2925" y="686" key="#console_2.sql/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588949303462" />
-    <state x="2736" y="658" key="CommitChangelistDialog2" timestamp="1589424078828">
+    <state x="2736" y="658" key="CommitChangelistDialog2" timestamp="1589453652014">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
     <state x="357" y="73" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858911390" />
-    <state x="2736" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589424078828" />
+    <state x="2736" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589453652014" />
     <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -584,33 +589,33 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588667804511" />
-    <state width="1877" height="189" key="GridCell.Tab.0.bottom" timestamp="1589453449871">
+    <state width="1877" height="189" key="GridCell.Tab.0.bottom" timestamp="1589455990470">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="189" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1589336666029" />
-    <state width="1877" height="189" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589453449871" />
+    <state width="1877" height="189" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589455990470" />
     <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121837" />
-    <state width="1877" height="189" key="GridCell.Tab.0.center" timestamp="1589453449871">
+    <state width="1877" height="189" key="GridCell.Tab.0.center" timestamp="1589455990470">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="189" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1589336666029" />
-    <state width="1877" height="189" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589453449871" />
+    <state width="1877" height="189" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589455990470" />
     <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
-    <state width="1877" height="189" key="GridCell.Tab.0.left" timestamp="1589453449871">
+    <state width="1877" height="189" key="GridCell.Tab.0.left" timestamp="1589455990470">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
     <state width="1520" height="189" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1589336666028" />
-    <state width="1877" height="189" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589453449871" />
+    <state width="1877" height="189" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589455990470" />
     <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121835" />
-    <state width="1877" height="189" key="GridCell.Tab.0.right" timestamp="1589453449871">
+    <state width="1877" height="189" key="GridCell.Tab.0.right" timestamp="1589455990470">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="189" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1589336666029" />
-    <state width="1877" height="189" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589453449871" />
+    <state width="1877" height="189" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1589455990470" />
     <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
     <state width="1877" height="347" key="GridCell.Tab.1.bottom" timestamp="1589424959706">
       <screen x="2736" y="514" width="1920" height="1040" />

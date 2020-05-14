@@ -260,8 +260,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
 //
 //        }
 //        searchLogs();
-//        repaint();
-//        revalidate();
     }
 
     //Once a type is selected, instantiate the appropriate action selection options.
@@ -321,7 +319,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             dateTo = LocalDate.now();
         }
 
-        for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
+        for(;dateTo.isAfter(dateFrom.minusDays(1)); dateTo = dateTo.minusDays(1)){
             java.util.List<Log> l;
             if(typeBox.getSelectedIndex() != -1){
                 if(actionBox.getSelectedIndex() != -1){
@@ -341,6 +339,8 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 gridBag.setConstraints(log, c);
                 displayPanel.add(log);
             }
+            repaint();
+            revalidate();
 
         }
 

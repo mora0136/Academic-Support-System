@@ -13,7 +13,7 @@ public class LogDB {
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Upload");
             pstmt.setString(3, "Saved");
             pstmt.setInt(4, uploadID);
@@ -29,7 +29,7 @@ public class LogDB {
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Upload");
             pstmt.setString(3, "Uploaded");
             pstmt.setInt(4, uploadID);
@@ -44,7 +44,7 @@ public class LogDB {
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Upload");
             pstmt.setString(3, "Deleted");
             pstmt.setInt(4, uploadID);
@@ -61,7 +61,7 @@ public class LogDB {
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Contact");
             pstmt.setString(3, "Saved");
             pstmt.setInt(4, contactID);
@@ -77,7 +77,7 @@ public class LogDB {
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Contact");
             pstmt.setString(3, "Deleted");
             pstmt.setInt(4, contactID);
@@ -93,7 +93,7 @@ public class LogDB {
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(LocalDate.now()));
+            pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Contact");
             pstmt.setString(3, "New");
             pstmt.setInt(4, contactID);
@@ -104,12 +104,13 @@ public class LogDB {
             return -1;
         }
     }
-
+    //Day represents the first millisecond of that day, so adding a day gets the range for that single day
     public static List<Log> getLogsForDay(LocalDate day){
-        String sql = "SELECT * FROM log WHERE date = ?";
+        String sql = "SELECT * FROM log WHERE date >= ? AND date < ? ORDER BY date DESC";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(day)); // less
+            pstmt.setDate(1, Date.valueOf(day));
+            pstmt.setDate(2, Date.valueOf(day.plusDays(1))); // less
             ResultSet rs = pstmt.executeQuery();
             List<Log> list = new ArrayList<>();
             while(rs.next()){
@@ -125,11 +126,12 @@ public class LogDB {
     }
 
     public static List<Log> getLogsForDayWithTypeFilter(LocalDate day, String type){
-        String sql = "SELECT * FROM log WHERE date = ? AND type = ?";
+        String sql = "SELECT * FROM log WHERE date >= ? AND date < ? AND type = ? ORDER BY date DESC";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, Date.valueOf(day)); // less
-            pstmt.setString(2, type);
+            pstmt.setDate(2, Date.valueOf(day.plusDays(1))); // less
+            pstmt.setString(3, type);
             ResultSet rs = pstmt.executeQuery();
             List<Log> list = new ArrayList<>();
             while(rs.next()){
@@ -144,34 +146,14 @@ public class LogDB {
         }
     }
 
-//    public static List<Log> getLogsForDayWithActionFilter(LocalDate dateFrom, LocalDate dateTo, String action){
-//        String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND action = ?";
-//        try (Connection conn = connect();
-//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            pstmt.setDate(1, Date.valueOf(dateFrom)); // less
-//            pstmt.setDate(2, Date.valueOf(dateTo)); // to more
-//            pstmt.setString(3, action);
-//            ResultSet rs = pstmt.executeQuery();
-//            List<Log> list = new ArrayList<>();
-//            while(rs.next()){
-//                list.add(new Log(rs));
-//            }
-//
-//            return list;
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
     public static List<Log> getLogsForDayWithTypeActionFilter(LocalDate day, String type, String action){
-        String sql = "SELECT * FROM log WHERE date = ? AND type = ? AND action = ?";
+        String sql = "SELECT * FROM log WHERE date >= ? AND date < ? AND type = ? AND action = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, Date.valueOf(day)); // less
-            pstmt.setString(2, type);
-            pstmt.setString(3, action);
+            pstmt.setDate(2, Date.valueOf(day.plusDays(1))); // less
+            pstmt.setString(3, type);
+            pstmt.setString(4, action);
             ResultSet rs = pstmt.executeQuery();
             List<Log> list = new ArrayList<>();
             while(rs.next()){
