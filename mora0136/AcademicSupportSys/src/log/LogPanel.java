@@ -103,6 +103,7 @@ public class LogPanel extends JPanel{
                     l = (Log) tableModel.getValueAt(logTable.getSelectedRow(), 3);
                     Contact c = (Contact) l.getData();
                     ContactDisplayPanel dp = new ContactDisplayPanel(c);
+                    dp.setMainFont(64);// Because view is smaller then intended use the font size is doubled so it is readable
                     dp.setPreferredSize(new Dimension(350, 350));
                     JOptionPane.showConfirmDialog(null, dp, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
                     break;
