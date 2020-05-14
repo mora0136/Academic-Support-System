@@ -2,6 +2,7 @@ package panel;
 
 import contacts.Contact;
 import contacts.ContactDB;
+import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePanel;
 import template.Template;
 import template.TemplateDB;
@@ -31,7 +32,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel, saveUploadPanel, filePanel, typeDatePanel, fileTypeDatePanel, contactsListPanel, titlePanel, descPanel;
     JScrollPane contactListScroll, addedListScroll;
     JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn, selectAll, deselectAll;
-    Image backImg, resetImg, fileImg, saveImg, uploadImg;
+    Image backImg, resetImg, saveImg, uploadImg;
     JLabel titleLabel, descLabel, fileLabel, typeLabel, dateLabel, uploadLabel, authorsLabel, contactsLabel, addedLabel;
     DefaultListModel<Contact> displayedContacts, addedContacts, notAddedContacts;
     DefaultListModel<Template> templates;
@@ -94,11 +95,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
         //Define the back button
         backBtn = new JButton("Back");
-        backBtn.addActionListener(this::actionPerformed);
+        backBtn.addActionListener(this::actionPerformedBack);
         backResetPanel.add(backBtn);
         //Define the Reset Button
         resetBtn = new JButton("Reset");
-        resetBtn.addActionListener(this::actionPerformed);
+        resetBtn.addActionListener(this::actionPerformedReset);
         backResetPanel.add(resetBtn);
 
         //A generic inset that will apply until next changed
@@ -184,13 +185,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
         //The type DropDown Section(e.g Article, Book, Journal)
         //Define the type Label
-        typeLabel = new JLabel("Type");
+        typeLabel = new JLabel("Type:");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weighty = 0.25;
         c.gridwidth = GridBagConstraints.RELATIVE;
         gridBag.setConstraints(typeLabel, c);
         typeDatePanel.add(typeLabel);
-        //Define the comboBox containg the possible types
+        //Define the comboBox containing the possible types
         String[] types = new String[]{"Article", "Journal", "Paper", "Book", "Research"};
         selectTypeComboBox = new JComboBox(types);
         c.weightx = 10;
@@ -213,13 +214,14 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(publishDatePanel, c);
         typeDatePanel.add(publishDatePanel);
 
-        //Add the File and type and Date to one panel, organised in a 1row*2column grid
+        //Add the File and typeDate to one panel, organised in a 1row*2column grid
         fileTypeDatePanel.add(filePanel);
         fileTypeDatePanel.add(typeDatePanel);
 
         //Add each panel with specific proportions to a panel to contain the centre of the leftPanel
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.BOTH;
+
         c.weighty = 0.1;
         gridBag.setConstraints(titlePanel, c);
         uploadDetailsLeftPanel.add(titlePanel);
@@ -237,13 +239,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //The following defines the Panels to be used on the right side
         rightPanel = new JPanel();
         contactsPanel = new JPanel(); //Contains the Contact Label and search Field
-        contactsListPanel = new JPanel(); //Contains the two labels and lists containg added and not added contacts
+        contactsListPanel = new JPanel(); //Contains the two labels and lists containing added and not added contacts
         servicesPanel = new JPanel(); //Contains the Label, buttons and checkBoxes for what service to upload to
         JPanel contactsServicesPanel = new JPanel(); //Contains the contacts and services to take up the centre of right panel
 
         rightPanel.setLayout(new BorderLayout());
         contactsPanel.setLayout(gridBag);
-        contactsListPanel.setLayout(gridBag);
+        contactsListPanel.setLayout(new SpringLayout());
         servicesPanel.setLayout(new GridLayout(5, 3));
         contactsServicesPanel.setLayout(new GridLayout(2, 1));
 
@@ -260,7 +262,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //Defining the searchField
         searchField = new JTextField("Search...");
         searchField.setForeground(Color.GRAY);
-        searchField.addActionListener(this::actionPerformed);
         searchField.getDocument().addDocumentListener((DocumentListener) this);
         searchField.addFocusListener(this);
         c.gridwidth = GridBagConstraints.REMAINDER;
@@ -271,20 +272,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //The contactsListPanel
         //Defining the ContactsLabel
         contactsLabel = new JLabel("Contacts");
-        c.insets = new Insets(0, 5, 0, 5);
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.anchor = GridBagConstraints.CENTER;
-        c.weightx = 0.5;
-        gridBag.setConstraints(contactsLabel, c);
+        contactsListPanel.setLayout(new SpringLayout());
         contactsListPanel.add(contactsLabel);
         //Defining the added Label
         addedLabel = new JLabel("Added");
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.anchor = GridBagConstraints.CENTER;
-        gridBag.setConstraints(addedLabel, c);
         contactsListPanel.add(addedLabel);
-        //The Contact Selector lists
-        //instantiate each relevant object
+        //The Contact Selector lists instantiation
         contactDB = new ContactDB();
         displayedContacts = contactDB.getListModel(); //The displayed list which changes according to the search results
         addedContacts = new DefaultListModel<>(); //The contacts that have been added to the upload
@@ -294,21 +287,25 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }
         //Defining the not added contact List and adding a Scroll Pane
         notAddedContactList = new JList(displayedContacts);
+        notAddedContactList.setFixedCellWidth(1); // fixed width ensures the space is filled evenly between both lists despite anything that it contains
         notAddedContactList.addListSelectionListener(this::valueChangedToAdd);
         contactListScroll = new JScrollPane(notAddedContactList);
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.weighty = 0.8;
-        c.fill = GridBagConstraints.BOTH;
-        gridBag.setConstraints(contactListScroll, c);
         contactsListPanel.add(contactListScroll);
         //Defining the added Contact List and adding a scroll pane
         addedContactsList = new JList(addedContacts);
+        addedContactsList.setFixedCellWidth(1);
         addedContactsList.addListSelectionListener(this::valueChangedAdded);
         addedListScroll = new JScrollPane(addedContactsList);
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        gridBag.setConstraints(addedListScroll, c);
         contactsListPanel.add(addedListScroll);
-
+        //Apply a grid to the contacts list
+        SpringUtilities.makeCompactGrid(contactsListPanel,
+                2, 2, //rows, cols
+                0, 0,        //initX, initY
+                5, 5);
+        //Add List Panel to the contacts Panel
+        c.weighty = 0.8;
+        c.fill = GridBagConstraints.BOTH;
+        c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(contactsListPanel, c);
         contactsPanel.add(contactsListPanel);
 
@@ -316,8 +313,10 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         uploadLabel = new JLabel("Upload to...");
         servicesPanel.add(uploadLabel);
         selectAll = new JButton("Select All");
+        selectAll.addActionListener(this::actionPerformedSelect);
         servicesPanel.add(selectAll);
         deselectAll = new JButton("Deselect All");
+        deselectAll.addActionListener(this::actionPerformedSelect);
         servicesPanel.add(deselectAll);
         //The CheckBoxes that are added to the services Panel
         cv = new JCheckBox("Personal C.V.");
@@ -344,11 +343,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //The saveUploadPanel
         //Defining Save btn
         saveBtn = new JButton("Save");
-        saveBtn.addActionListener(this::actionPerformed);
+        saveBtn.addActionListener(this::actionPerformedUpdateDB);
         saveUploadPanel.add(saveBtn);
         //Defining Upload btn
         uploadBtn = new JButton("Upload");
-        uploadBtn.addActionListener(this::actionPerformed);
+        uploadBtn.addActionListener(this::actionPerformedUpdateDB);
         saveUploadPanel.add(uploadBtn);
 
         //Adding to the rightPanel
@@ -358,8 +357,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //Adding to the window
         add(leftPanel);
         add(rightPanel);
-
-//        setToExistingUpload(14);
 
         //The following defines what should happen to a component when the window is resized.
         addComponentListener(new ComponentAdapter() {
@@ -434,16 +431,21 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         descriptionTextArea.setText("");
         titleField.setText("");
         searchField.setText("");
-        publishDatePanel.getModel().setValue(null); //maybe
+
+        DateModel d = publishDatePanel.getModel();
+        d.setValue(new Date(System.currentTimeMillis()));
+
         if(attachedFileList.getModel().getSize() > 1) {
             DefaultListModel f = (DefaultListModel) attachedFileList.getModel();
             f.removeRange(1, f.getSize() - 1);
         }
+
+        addedContacts.removeAllElements();
         displayedContacts.removeAllElements();
         for(int i = 0; i<contactDB.getListModel().getSize(); i++){
             displayedContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
         }
-        addedContacts.removeAllElements();
+
         cv.setSelected(false);resGate.setSelected(false);orcid.setSelected(false);
         inst.setSelected(false);publ.setSelected(false);wos.setSelected(false);
         gSch.setSelected(false);linIn.setSelected(false);scopus.setSelected(false);
@@ -483,57 +485,64 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
 
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == backBtn){
-            //Introduce a are sure
-            if(uploadID == 0) {
-                cardLayout.show(cardPane, "Home");
-            }else{
-                cardLayout.show(cardPane, "Edit");
-            }
-        }else if(e.getSource() == resetBtn){
-            resetAll();
-        }else if(e.getSource() == uploadBtn || e.getSource() == saveBtn){
-            currentUpload.setTitle(titleField.getText());
-            currentUpload.setDescription(descriptionTextArea.getText());
-            DefaultListModel f = new DefaultListModel<>();
-            // removes the null at the front of the list
-            for(int i = 1; i < attachedFileList.getModel().getSize(); i++){
-                f.addElement(attachedFileList.getModel().getElementAt(i));
-            }
-            currentUpload.setAttachedFiles(f);
-            currentUpload.setType((String) selectTypeComboBox.getSelectedItem());
-            if(publishDatePanel.getModel().isSelected()) {
-                Date date = (Date) (publishDatePanel.getModel().getValue());
-                Instant instant = date.toInstant();
-                currentUpload.setDate(instant.atZone(ZoneId.systemDefault()).toLocalDate());
-            }else{
-                //default to todays date
-                currentUpload.setDate(LocalDate.now());
-            }
-            currentUpload.setAddedContacts(addedContacts);
-            currentUpload.setCv(cv.isSelected());currentUpload.setResGate(resGate.isSelected());currentUpload.setOrcid(orcid.isSelected());
-            currentUpload.setInst(inst.isSelected());currentUpload.setPubl(publ.isSelected());currentUpload.setWos(wos.isSelected());
-            currentUpload.setgSch(gSch.isSelected());currentUpload.setLinIn(linIn.isSelected());currentUpload.setScopus(scopus.isSelected());
-            currentUpload.setPure(pure.isSelected());currentUpload.setAcad(acad.isSelected());currentUpload.setTwit(twit.isSelected());
-
-            UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, uploadID != 0);
-            if(e.getSource() == uploadBtn){
-                cardLayout.show(cardPane, "Home");
-                JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully Upload!", "Successful Upload", JOptionPane.PLAIN_MESSAGE);
-                resetAll();
-            }else{
-                JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully saved!", "Successfully Saved", JOptionPane.PLAIN_MESSAGE);
-            }
-            /*
-            Upload and save essentially have the same information they need to convey, the only difference being that by
-            uploading, the isUpload field will be set to true, and can no longer be selected to edit. However there are
-            different SQL statements required if the current upload is new or an existing one. This is identified in the
-            first if statement.
-             */
-
+    public void actionPerformedBack(ActionEvent e){
+        if(uploadID == 0) {
+            cardLayout.show(cardPane, "Home");
+        }else{
+            cardLayout.show(cardPane, "Edit");
         }
+    }
 
+    public void actionPerformedReset(ActionEvent e){
+        resetAll();
+    }
+
+    public void actionPerformedUpdateDB(ActionEvent e) {
+        currentUpload.setTitle(titleField.getText());
+        currentUpload.setDescription(descriptionTextArea.getText());
+        DefaultListModel f = new DefaultListModel<>();
+        // removes the null at the front of the list
+        for(int i = 1; i < attachedFileList.getModel().getSize(); i++){
+            f.addElement(attachedFileList.getModel().getElementAt(i));
+        }
+        currentUpload.setAttachedFiles(f);
+        currentUpload.setType((String) selectTypeComboBox.getSelectedItem());
+        if(publishDatePanel.getModel().isSelected()) {
+            Date date = (Date) (publishDatePanel.getModel().getValue());
+            Instant instant = date.toInstant();
+            currentUpload.setDate(instant.atZone(ZoneId.systemDefault()).toLocalDate());
+        }else{
+            //default to todays date
+            currentUpload.setDate(LocalDate.now());
+        }
+        currentUpload.setAddedContacts(addedContacts);
+        currentUpload.setCv(cv.isSelected());currentUpload.setResGate(resGate.isSelected());currentUpload.setOrcid(orcid.isSelected());
+        currentUpload.setInst(inst.isSelected());currentUpload.setPubl(publ.isSelected());currentUpload.setWos(wos.isSelected());
+        currentUpload.setgSch(gSch.isSelected());currentUpload.setLinIn(linIn.isSelected());currentUpload.setScopus(scopus.isSelected());
+        currentUpload.setPure(pure.isSelected());currentUpload.setAcad(acad.isSelected());currentUpload.setTwit(twit.isSelected());
+
+        UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, uploadID != 0);
+        if(e.getSource() == uploadBtn){
+            cardLayout.show(cardPane, "Home");
+            JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully Upload!", "Successful Upload", JOptionPane.PLAIN_MESSAGE);
+            resetAll();
+        }else{
+            JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully saved!", "Successfully Saved", JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+
+    public void actionPerformedSelect(ActionEvent e){
+        if(e.getSource() == selectAll){
+            cv.setSelected(true);resGate.setSelected(true);orcid.setSelected(true);
+            inst.setSelected(true);publ.setSelected(true);wos.setSelected(true);
+            gSch.setSelected(true);linIn.setSelected(true);scopus.setSelected(true);
+            pure.setSelected(true);acad.setSelected(true);twit.setSelected(true);
+        }else{
+            cv.setSelected(false);resGate.setSelected(false);orcid.setSelected(false);
+            inst.setSelected(false);publ.setSelected(false);wos.setSelected(false);
+            gSch.setSelected(false);linIn.setSelected(false);scopus.setSelected(false);
+            pure.setSelected(false);acad.setSelected(false);twit.setSelected(false);
+        }
     }
 
     public void valueChangedTemplate(ListSelectionEvent e) {
