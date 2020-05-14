@@ -23,7 +23,6 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     ContactsPanel(JPanel pane) throws IOException {
         super(pane);
         contactDB = new ContactDB();
-
         searchField.getDocument().addDocumentListener(this);
         searchField.addFocusListener(this);
 
@@ -51,7 +50,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 int height = 50;
 
                 if (windowWidth < 1100 || windowHeight < 450) {
-                    width = (int) (windowHeight * (1100/80));
+                    width = (int) (windowHeight / (1100/50));
                     headerFont = (int)(Double.min(windowWidth /(1100/headerFont), windowHeight/(450/headerFont)));
                     listFont = (int)(Double.min(windowWidth/(1100/listFont), windowHeight/(450/listFont)));
                     bodyFont = (int)(Double.min(windowWidth/(1100/bodyFont), windowHeight/(450/bodyFont)));
@@ -65,17 +64,23 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
 
     public void actionPerformedNew(ActionEvent e){
         contactSelected = 0;
+        contactInfoPanel.setTextEmpty();
         contactInfoPanel.setEditable(true);
+        contactList.setEnabled(false);
         edit.setEnabled(true);
         edit.setText("Save");
         editImg = saveImg;
         edit.setIcon(new ImageIcon(editImg));
+        delete.setText("Cancel");
+        delete.setEnabled(true);
+        addNew.setEnabled(false);
     }
 
     public void actionPerformedEdit(ActionEvent e){
         switch(e.getActionCommand()) {
             case "Edit":
                 contactInfoPanel.setEditable(true);
+                contactList.setEnabled(false);
                 edit.setText("Save");
                 editImg = saveImg;
                 edit.setIcon(new ImageIcon(editImg));
@@ -103,23 +108,35 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 for(int i = 0; i<contactDB.getListModel().getSize(); i++){
                     listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
                 }
+                contactList.setEnabled(true);
+                edit.setEnabled(false);
+                delete.setEnabled(false);
+                addNew.setEnabled(true);
                 break;
         }
+        delete.setText("Delete");
     }
 
 
 
     public void actionPerformedDelete(ActionEvent e){
-        contactDB.deleteContact(contactSelected);
-        delete.setEnabled(false);
-        edit.setEnabled(false);
+        if(e.getActionCommand() == "Delete"){
+            contactDB.deleteContact(contactSelected);
+            LogDB.logDeletedContact(contactSelected);
+            listOfContacts.removeAllElements();
+            for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
+                listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
+            }
+        }
+
         contactInfoPanel.setTextEmpty();
         contactInfoPanel.setEditable(false);
-        LogDB.logDeletedContact(contactSelected);
-        listOfContacts.removeAllElements();
-        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-            listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
-        }
+        edit.setEnabled(false);
+        edit.setText("Edit");
+        delete.setEnabled(false);
+        delete.setText("Delete");
+        contactList.setEnabled(true);
+        addNew.setEnabled(true);
     }
 
     public void valueChanged(ListSelectionEvent e){
@@ -172,6 +189,12 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             searchField.setForeground(Color.GRAY);
             searchField.getDocument().addDocumentListener(this);
         }
+    }
+
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        if(searchImg != null) g.drawImage(searchImg, 0,0,this.getWidth(),this.getHeight(),this);
     }
 
 }
