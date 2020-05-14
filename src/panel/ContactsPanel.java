@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener{
+public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener {
     JScrollPane scrollContactPanel;
     JList contactList;
     int contactSelected = 0;
@@ -38,23 +38,23 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         rightPanel.add(contactInfoPanel, BorderLayout.NORTH);
 
         // Details what styles should apply to buttons at the certain size of a window
-        addComponentListener(new ComponentAdapter(){
-            public void componentResized(ComponentEvent e){
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
-                int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
-                int checkBoxFont = (int)(mainFont*(0.75));
+                int listFont = (int) (mainFont * (0.75));
+                int bodyFont = (int) (mainFont * (0.5));
+                int checkBoxFont = (int) (mainFont * (0.75));
                 int width = 50;
                 int height = 50;
 
                 if (windowWidth < 1100 || windowHeight < 450) {
-                    width = (int) (windowHeight / (1100/50));
-                    headerFont = (int)(Double.min(windowWidth /(1100/headerFont), windowHeight/(450/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(1100/listFont), windowHeight/(450/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(1100/bodyFont), windowHeight/(450/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(1100/checkBoxFont), windowHeight/(450/checkBoxFont)));
+                    width = (int) (windowHeight / (1100 / 50));
+                    headerFont = (int) (Double.min(windowWidth / (1100 / headerFont), windowHeight / (450 / headerFont)));
+                    listFont = (int) (Double.min(windowWidth / (1100 / listFont), windowHeight / (450 / listFont)));
+                    bodyFont = (int) (Double.min(windowWidth / (1100 / bodyFont), windowHeight / (450 / bodyFont)));
+                    checkBoxFont = (int) (Double.min(windowWidth / (1100 / checkBoxFont), windowHeight / (450 / checkBoxFont)));
                 }
                 searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
                 ComProps.listProperties(contactList, headerFont);
@@ -62,36 +62,41 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         });
     }
 
-    public void actionPerformedNew(ActionEvent e){
+    public void actionPerformedNew(ActionEvent e) {
         contactSelected = 0;
         contactInfoPanel.setTextEmpty();
         contactInfoPanel.setEditable(true);
         contactList.setEnabled(false);
+
+        //Alter the edit button to suit the context, in this case change to save;
+//        edit.setEnabled(true);
+//        edit.setText("Save");
+//        editImg = saveImg;
+//        edit.setIcon(new ImageIcon(editImg));
+        setEditToSave(true);
         edit.setEnabled(true);
-        edit.setText("Save");
-        editImg = saveImg;
-        edit.setIcon(new ImageIcon(editImg));
+
+        //Change delete to suit the context
         delete.setText("Cancel");
         delete.setEnabled(true);
+
         addNew.setEnabled(false);
     }
 
-    public void actionPerformedEdit(ActionEvent e){
-        switch(e.getActionCommand()) {
+    public void actionPerformedEdit(ActionEvent e) {
+        switch (e.getActionCommand()) {
             case "Edit":
                 contactInfoPanel.setEditable(true);
                 contactList.setEnabled(false);
-                edit.setText("Save");
-                editImg = saveImg;
-                edit.setIcon(new ImageIcon(editImg));
+                delete.setText("Cancel");
+                setEditToSave(true);
+                addNew.setEnabled(false);
                 break;
             case "Save":
                 contactInfoPanel.setEditable(false);
-                String [] newText = contactInfoPanel.getTextFields();
+                String[] newText = contactInfoPanel.getTextFields();
                 if (contactSelected == 0) {
                     contactSelected = contactDB.addContact(newText[0], newText[1], newText[2], newText[3]);
-                    edit.setEnabled(false);
-                    delete.setEnabled(false);
 //                    contactInfoPanel.setTextEmpty();
                     LogDB.logNewContact(contactSelected);
                 } else {
@@ -99,28 +104,32 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                     LogDB.logSavedContact(contactSelected);
 
                 }
-                edit.setText("Edit");
-                editImg = tempImg;
-                edit.setIcon(new ImageIcon(editImg));
 
                 //Refresh the list of contacts as a change has occurred
                 listOfContacts.removeAllElements();
-                for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-                    listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+                int indexOfCurrentContact = -1; //ensures that the current selection of the new list remains the same as the old one
+                for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
+                    Contact c = (Contact) contactDB.getListModel().getElementAt(i);
+                    if (c.getContact_ID() == contactSelected) {
+                        indexOfCurrentContact = i;
+                    }
+                    listOfContacts.addElement(c);
                 }
+                contactList.setSelectedIndex(indexOfCurrentContact);
                 contactList.setEnabled(true);
+
+                setEditToSave(false);
                 edit.setEnabled(false);
                 delete.setEnabled(false);
+                delete.setText("Delete");
                 addNew.setEnabled(true);
                 break;
         }
-        delete.setText("Delete");
     }
 
 
-
-    public void actionPerformedDelete(ActionEvent e){
-        if(e.getActionCommand() == "Delete"){
+    public void actionPerformedDelete(ActionEvent e) {
+        if (e.getActionCommand() == "Delete") {
             contactDB.deleteContact(contactSelected);
             LogDB.logDeletedContact(contactSelected);
             listOfContacts.removeAllElements();
@@ -128,52 +137,54 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
             }
         }
-
+        //Cancel and delete actions
         contactInfoPanel.setTextEmpty();
         contactInfoPanel.setEditable(false);
         edit.setEnabled(false);
-        edit.setText("Edit");
+        setEditToSave(false);
         delete.setEnabled(false);
         delete.setText("Delete");
         contactList.setEnabled(true);
         addNew.setEnabled(true);
     }
 
-    public void valueChanged(ListSelectionEvent e){
-        if (e.getValueIsAdjusting() == false) {
-            if (contactList.getSelectedIndex() == -1) {
-                //No selection, disable fire button.
-                contactInfoPanel.setTextEmpty();
+    public void valueChanged(ListSelectionEvent e) {
+//        if (e.getValueIsAdjusting() == false) {
+        if (contactList.getSelectedIndex() == -1) {
+            //No selection, disable fire button.
+            contactInfoPanel.setTextEmpty();
 
-            } else {
-                //Selection, enable the fire button.
-                edit.setEnabled(true);
-                delete.setEnabled(true);
-                Contact c = (Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex());
-                contactInfoPanel.setContact(c);
-                contactSelected = c.getContact_ID();
-            }
+        } else {
+            //Selection, enable the fire button.
+            edit.setEnabled(true);
+            delete.setEnabled(true);
+            Contact c = (Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex());
+            contactInfoPanel.setContact(c);
+            contactSelected = c.getContact_ID();
         }
+//        }
     }
 
     //Any text entry into JTextField will search for the contact desired.
     @Override
-    public void insertUpdate(DocumentEvent e) { search();
+    public void insertUpdate(DocumentEvent e) {
+        search();
     }
 
     @Override
-    public void removeUpdate(DocumentEvent e) { search();
+    public void removeUpdate(DocumentEvent e) {
+        search();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
     }
 
-    private void search(){
+    private void search() {
         contactDB.searchForContact(searchField.getText());
         listOfContacts.removeAllElements();
-        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-            listOfContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+        for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
+            listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
         }
     }
 
@@ -182,8 +193,9 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         searchField.setText("");
         searchField.setForeground(Color.BLACK);
     }
+
     public void focusLost(FocusEvent e) {
-        if(searchField.getText().isEmpty()){
+        if (searchField.getText().isEmpty()) {
             searchField.getDocument().removeDocumentListener(this);
             searchField.setText("Search...");
             searchField.setForeground(Color.GRAY);
@@ -191,10 +203,15 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         }
     }
 
-
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        if(searchImg != null) g.drawImage(searchImg, 0,0,this.getWidth(),this.getHeight(),this);
+    private void setEditToSave(boolean isSave) {
+        if(isSave){
+            edit.setText("Save");
+            editImg = saveImg;
+            edit.setIcon(new ImageIcon(editImg));
+        }else{
+            edit.setText("Edit");
+            editImg = tempImg;
+            edit.setIcon(new ImageIcon(editImg));
+        }
     }
-
 }

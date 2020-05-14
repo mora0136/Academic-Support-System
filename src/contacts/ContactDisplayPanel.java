@@ -3,7 +3,6 @@ package contacts;
 import panel.ComProps;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -70,28 +69,35 @@ public class ContactDisplayPanel extends JPanel{
         gridBag.setConstraints(phoneField, c);
         add(phoneField);
 
+//        SpringUtilities.makeCompactGrid(this, 4, 2, 5, 5, 5, 5);
+//        setMaximumSize(new Dimension(20, 20));
+//        setPreferredSize(new Dimension(20, 20));
+//        setMinimumSize(new Dimension(20, 20));
+
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
-                int windowWidth = getWidth();
-                int windowHeight = getHeight();
+                int windowWidth = getParent().getParent().getWidth();
+                int windowHeight = getParent().getParent().getHeight();
                 int headerFont = mainFont;
                 int listFont = (int)(mainFont*(0.75));
                 int bodyFont = (int)(mainFont*(0.5));
                 int checkBoxFont = (int)(mainFont*(0.75));
-                int width = 50;
-                int height = 100;
-                int heightInsets = 40;
+//                int width = 50;
+                int borderHeight = 40;
+                int borderWidth = 20;
 
-                if (windowWidth < 650 || windowHeight < 450) {
-                    height = (int) (windowWidth / (650/100));
-                    heightInsets = (int)(windowWidth / (650/40));
-                    headerFont = (int)(Double.min(windowWidth /(650/headerFont), windowHeight/(450/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(650/listFont), windowHeight/(450/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(650/bodyFont), windowHeight/(450/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(650/checkBoxFont), windowHeight/(450/checkBoxFont)));
+                if (windowWidth < 1000 || windowHeight < 500) {
+                    borderHeight = (int) (borderHeight / (1000/40));
+                    borderWidth = (int)(windowWidth / (500/20));
+                    headerFont = (int)(Double.min(windowWidth /(1000/headerFont), windowHeight/(500/headerFont)));
+                    listFont = (int)(Double.min(windowWidth/(1000/listFont), windowHeight/(500/listFont)));
+                    bodyFont = (int)(Double.min(windowWidth/(1000/bodyFont), windowHeight/(500/bodyFont)));
+                    checkBoxFont = (int)(Double.min(windowWidth/(1000/checkBoxFont), windowHeight/(500/checkBoxFont)));
                 }
 
-                setBorder(new EmptyBorder(height, 0, height, 0));
+                System.out.println("This is the width from getWidth(): "+getWidth());
+                System.out.println("This is the width from getParent().getWidth(): "+getParent().getParent().getWidth());
+                setBorder(BorderFactory.createEmptyBorder(borderHeight, borderWidth, borderHeight, borderWidth));
 
                 ComProps.headingProperties(givenName, headerFont);
                 ComProps.headingProperties(lastName, headerFont);
@@ -104,6 +110,10 @@ public class ContactDisplayPanel extends JPanel{
                 ComProps.textFieldProperties(phoneField, listFont);
             }
         });
+    }
+
+    public void setMainFont(int size) {
+        mainFont = size;
     }
 
     public void setContact(Contact c){
