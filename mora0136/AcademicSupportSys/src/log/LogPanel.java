@@ -34,17 +34,10 @@ public class LogPanel extends JPanel{
         }else {
             day = new JLabel(date.format(DateTimeFormatter.ofPattern("EEEE, dd LLLL")));
         }
-//        day.setFont(new Font("Arial", Font.PLAIN, 32));
         add(day, BorderLayout.NORTH);
 
         logTable = new JTable(new LogTableModel(log));
         logTable.getSelectionModel().addListSelectionListener(this::valueChanged);
-//        logTable.setFont(new Font("Arial", Font.PLAIN, 24));
-//        logTable.setRowHeight(30); // very temp please change to more structured approach
-//        logTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-//        TableColumnAdjuster tca = new TableColumnAdjuster(logTable);
-//        tca.setDynamicAdjustment(true);
-//        tca.adjustColumns();
         add(logTable, BorderLayout.CENTER);
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){

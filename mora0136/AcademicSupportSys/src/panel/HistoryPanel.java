@@ -221,46 +221,47 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
 
     //Apply Filter Button action
     public void actionPerformedNew(ActionEvent e){
-        displayPanel.removeAll();
-        LocalDate dateFrom, dateTo;
-        if(fromDate.getModel().isSelected()) {
-            Calendar calFrom = (Calendar) (fromDate.getModel().getValue());
-            Instant instFrom = calFrom.getTime().toInstant();
-            dateFrom = instFrom.atZone(ZoneId.systemDefault()).toLocalDate();
-        }else {
-            dateFrom = LocalDate.of(2020, 1, 1);
-        }
-
-        if(toDate.getModel().isSelected()) {
-            Calendar calTo = (Calendar) (toDate.getModel().getValue());
-            Instant instTo = calTo.getTime().toInstant();
-            dateTo = instTo.atZone(ZoneId.systemDefault()).toLocalDate();
-        }else{
-            dateTo = LocalDate.now();
-        }
-
-        for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
-            java.util.List<Log> l;
-            if(typeBox.getSelectedIndex() != -1){
-                if(actionBox.getSelectedIndex() != -1){
-                    l = LogDB.getLogsForDayWithTypeActionFilter(dateTo.minusDays(1), dateTo, (String)typeBox.getSelectedItem(), (String)actionBox.getSelectedItem());
-                }else{
-                    l = LogDB.getLogsForDayWithTypeFilter(dateTo.minusDays(1), dateTo, (String)typeBox.getSelectedItem());
-                }
-            }else{
-                l = LogDB.getLogsForDay(dateTo.minusDays(1), dateTo);
-//                l.sort(Comparator.comparing(Log::getDate));
-            }
-            if(!l.isEmpty()) {
-                JPanel log = new LogPanel(dateTo, l);
-                gridBag.setConstraints(log, c);
-                displayPanel.add(log);
-            }
-
-        }
+        displayLogs();
+//        displayPanel.removeAll();
+//        LocalDate dateFrom, dateTo;
+//        if(fromDate.getModel().isSelected()) {
+//            Calendar calFrom = (Calendar) (fromDate.getModel().getValue());
+//            Instant instFrom = calFrom.getTime().toInstant();
+//            dateFrom = instFrom.atZone(ZoneId.systemDefault()).toLocalDate();
+//        }else {
+//            dateFrom = LocalDate.of(2020, 1, 1);
+//        }
+//
+//        if(toDate.getModel().isSelected()) {
+//            Calendar calTo = (Calendar) (toDate.getModel().getValue());
+//            Instant instTo = calTo.getTime().toInstant();
+//            dateTo = instTo.atZone(ZoneId.systemDefault()).toLocalDate();
+//        }else{
+//            dateTo = LocalDate.now();
+//        }
+//
+//        for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
+//            java.util.List<Log> l;
+//            if(typeBox.getSelectedIndex() != -1){
+//                if(actionBox.getSelectedIndex() != -1){
+//                    l = LogDB.getLogsForDayWithTypeActionFilter(dateTo.minusDays(1), dateTo, (String)typeBox.getSelectedItem(), (String)actionBox.getSelectedItem());
+//                }else{
+//                    l = LogDB.getLogsForDayWithTypeFilter(dateTo.minusDays(1), dateTo, (String)typeBox.getSelectedItem());
+//                }
+//            }else{
+//                l = LogDB.getLogsForDay(dateTo.minusDays(1), dateTo);
+////                l.sort(Comparator.comparing(Log::getDate));
+//            }
+//            if(!l.isEmpty()) {
+//                JPanel log = new LogPanel(dateTo, l);
+//                gridBag.setConstraints(log, c);
+//                displayPanel.add(log);
+//            }
+//
+//        }
 //        searchLogs();
-        repaint();
-        revalidate();
+//        repaint();
+//        revalidate();
     }
 
     //Once a type is selected, instantiate the appropriate action selection options.
@@ -289,15 +290,12 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         actionBox.setModel(new DefaultComboBoxModel());
         actionBox.setEnabled(false);
         actionLabel.setEnabled(false);
-        titleField.setText("");
+//        titleField.setText("");
         displayLogs();
     }
 
     public void displayLogs(){
-        LocalDate dateFrom = LocalDate.of(2020, 4, 7);
-        LocalDate dateTo = LocalDate.now();
         st = new SuffixTrie();
-
         displayPanel.removeAll();
         displayPanel.setLayout(gridBag);
         c.fill = GridBagConstraints.BOTH;
@@ -306,8 +304,35 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         c.weightx = 1;
         c.weighty = 0;
 
+        LocalDate dateFrom, dateTo;
+        if(fromDate.getModel().isSelected()) {
+            Calendar calFrom = (Calendar) (fromDate.getModel().getValue());
+            Instant instFrom = calFrom.getTime().toInstant();
+            dateFrom = instFrom.atZone(ZoneId.systemDefault()).toLocalDate();
+        }else {
+            dateFrom = LocalDate.of(2020, 1, 1);
+        }
+
+        if(toDate.getModel().isSelected()) {
+            Calendar calTo = (Calendar) (toDate.getModel().getValue());
+            Instant instTo = calTo.getTime().toInstant();
+            dateTo = instTo.atZone(ZoneId.systemDefault()).toLocalDate();
+        }else{
+            dateTo = LocalDate.now();
+        }
+
         for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
-            java.util.List<Log> l = LogDB.getLogsForDay(dateTo, dateTo);
+            java.util.List<Log> l;
+            if(typeBox.getSelectedIndex() != -1){
+                if(actionBox.getSelectedIndex() != -1){
+                    l = LogDB.getLogsForDayWithTypeActionFilter(dateTo, (String)typeBox.getSelectedItem(), (String)actionBox.getSelectedItem());
+                }else{
+                    l = LogDB.getLogsForDayWithTypeFilter(dateTo, (String)typeBox.getSelectedItem());
+                }
+            }else{
+                l = LogDB.getLogsForDay(dateTo);
+//                l.sort(Comparator.comparing(Log::getDate));
+            }
             if(!l.isEmpty()) {
                 for(Log li : l){
                     st.insert((String) li.getData().toString(), li);
@@ -318,6 +343,19 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             }
 
         }
+
+//        for(;dateTo.isAfter(dateFrom); dateTo = dateTo.minusDays(1)){
+//            java.util.List<Log> l = LogDB.getLogsForDay(dateTo, dateTo);
+//            if(!l.isEmpty()) {
+//                for(Log li : l){
+//                    st.insert((String) li.getData().toString(), li);
+//                }
+//                JPanel log = new LogPanel(dateTo, l);
+//                gridBag.setConstraints(log, c);
+//                displayPanel.add(log);
+//            }
+//
+//        }
     }
 
     //No implementation, is kind of hard to do with current setup.

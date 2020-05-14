@@ -105,13 +105,11 @@ public class LogDB {
         }
     }
 
-    public static List<Log> getLogsForDay(LocalDate dateFrom, LocalDate dateTo){
-
-        String sql = "SELECT * FROM log WHERE date >= ? AND date <= ?";
+    public static List<Log> getLogsForDay(LocalDate day){
+        String sql = "SELECT * FROM log WHERE date = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(dateFrom)); // less
-            pstmt.setDate(2, Date.valueOf(dateTo)); // to more
+            pstmt.setDate(1, Date.valueOf(day)); // less
             ResultSet rs = pstmt.executeQuery();
             List<Log> list = new ArrayList<>();
             while(rs.next()){
@@ -126,13 +124,12 @@ public class LogDB {
         }
     }
 
-    public static List<Log> getLogsForDayWithTypeFilter(LocalDate dateFrom, LocalDate dateTo, String type){
-        String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND type = ?";
+    public static List<Log> getLogsForDayWithTypeFilter(LocalDate day, String type){
+        String sql = "SELECT * FROM log WHERE date = ? AND type = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(dateFrom)); // less
-            pstmt.setDate(2, Date.valueOf(dateTo)); // to more
-            pstmt.setString(3, type);
+            pstmt.setDate(1, Date.valueOf(day)); // less
+            pstmt.setString(2, type);
             ResultSet rs = pstmt.executeQuery();
             List<Log> list = new ArrayList<>();
             while(rs.next()){
@@ -168,14 +165,13 @@ public class LogDB {
 //        }
 //    }
 
-    public static List<Log> getLogsForDayWithTypeActionFilter(LocalDate dateFrom, LocalDate dateTo, String type, String action){
-        String sql = "SELECT * FROM log WHERE date >= ? AND date <= ? AND type = ? AND action = ?";
+    public static List<Log> getLogsForDayWithTypeActionFilter(LocalDate day, String type, String action){
+        String sql = "SELECT * FROM log WHERE date = ? AND type = ? AND action = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDate(1, Date.valueOf(dateFrom)); // less
-            pstmt.setDate(2, Date.valueOf(dateTo)); // to more
-            pstmt.setString(3, type);
-            pstmt.setString(4, action);
+            pstmt.setDate(1, Date.valueOf(day)); // less
+            pstmt.setString(2, type);
+            pstmt.setString(3, action);
             ResultSet rs = pstmt.executeQuery();
             List<Log> list = new ArrayList<>();
             while(rs.next()){
