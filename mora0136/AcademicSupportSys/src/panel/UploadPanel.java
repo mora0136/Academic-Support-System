@@ -47,6 +47,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     int mainFont = 32;
     ContactDB contactDB; //Should be changed to static
     Upload currentUpload = new Upload();
+    JSplitPane sp;
 
     public UploadPanel(JPanel pane){
         this.cardPane = pane;
@@ -146,7 +147,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         descriptionTextArea.setWrapStyleWord(true);
         JScrollPane descriptionScroll = new JScrollPane(descriptionTextArea);
         gridBag.setConstraints(descriptionScroll, c);
-        JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         sp.setOneTouchExpandable(true);
         gridBag.setConstraints(sp, c);
         sp.add(templateStatement);
@@ -365,7 +366,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
                 int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
+                int bodyFont = (int)(mainFont*(0.6));
                 int checkBoxFont = (int)(mainFont*(0.75));
                 int width = 50;
                 int height = 50;
@@ -430,7 +431,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         selectTypeComboBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
         titleField.setText("");
-        searchField.setText("");
+        searchField.setText("Search...");
+        searchField.setForeground(Color.GRAY);
 
         DateModel d = publishDatePanel.getModel();
         d.setValue(new Date(System.currentTimeMillis()));
