@@ -14,9 +14,6 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class EditPanel extends TwoPanel implements DocumentListener, FocusListener {
@@ -72,18 +69,6 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
                     ComProps.listProperties(editList, headerFont);
             }
         });
-    }
-
-    private Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:data/database.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
     }
 
     public void actionPerformedEdit(ActionEvent e){

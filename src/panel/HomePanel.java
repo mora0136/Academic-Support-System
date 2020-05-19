@@ -15,7 +15,7 @@ import java.io.IOException;
 public class HomePanel extends JPanel implements ActionListener {
     JPanel cardPane, buttonGroupTop, buttonGroupBottom;
     CardLayout cardLayout;
-    //Instance variables of image and button allow for resizing to change dimenions as per window size
+    //Instance variables of image and button allow for resizing to change dimensions as per window size
     Image uploadImg, editImg, historyImg, settingImg, contactsImg;
     JButton upload, edit, history, setting, contacts;
     HomePanel(JPanel pane){
@@ -66,7 +66,7 @@ public class HomePanel extends JPanel implements ActionListener {
                     font = 16;
                 }
                 if(getWidth()<1200 && getHeight()<600){
-                    //Scaling factor is decided by restricinting factor/element height/width
+                    //Scaling factor is decided by restricting factor/element height/width
                     //e.g. 200/1200 = 0.16. (button width)/(1200 as per condition in if statement)
                     int height = (int)(getHeight()*0.333);
                     int width = (int)(getWidth()*0.16);

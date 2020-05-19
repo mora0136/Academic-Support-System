@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UploadPanelDisabled extends UploadPanel{
+
+    /**
+     * This disabled version of the upload Panel removes the Template Statements and Contact List from address book.
+     * This also, as the name implies, disables all fields inside so they are non editable and display as such.
+     */
     public UploadPanelDisabled(){
         super(new JPanel(new CardLayout()));
         leftPanel.remove(backResetPanel);

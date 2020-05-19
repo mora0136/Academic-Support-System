@@ -5,7 +5,6 @@ import suffixtree.SuffixTrie;
 import suffixtree.SuffixTrieNode;
 
 import javax.swing.*;
-import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -21,6 +20,9 @@ public class ContactDB {
         return listModel;
     }
 
+    /**
+     * Will Query the database to get all the contacts. The contacts are then added to the suffixTrie and saved to listModel
+     */
     public void extractContactsFromDB(){
 
         String sql = "SELECT * FROM contacts WHERE isDeleted = false ORDER BY givenName";
@@ -29,7 +31,6 @@ public class ContactDB {
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql)){
             sf = new SuffixTrie();
-//            listOfContacts = new HashMap<>();
             listModel = new DefaultListModel();
             while(rs.next()) {
                 Contact c = new Contact(rs.getInt("contact_ID"), rs.getString("givenName"),
@@ -42,7 +43,7 @@ public class ContactDB {
             System.out.println(e);
         }
     }
-    /*
+    /**
     Validates and connects to the local database located in url.
      */
     private Connection connect() {
@@ -79,7 +80,7 @@ public class ContactDB {
      * @param search The search term to find in the Suffix Trie
      */
     public void searchForContact(String search){
-        //JtextArea defaults to Search... when focus is lost, to ensure the SuffixTrie does not search for this term
+        // searchField defaults to Search... when focus is lost, to ensure the SuffixTrie does not search for this term
         // and display no results a catch is here to prevent this error
         if(search.length() == 0 || search.equals("Search...")){
             extractContactsFromDB();
@@ -97,9 +98,9 @@ public class ContactDB {
                 }
 
             }else{
-                //This is where an error message should be returned as nothing found.
-                JLabel noContent = new JLabel("Contact not Found");
-                noContent.setFont(new Font("Arial", Font.PLAIN, 16));
+                //When no contacts are found, display a dummy contact. In the panel this is not selectable.
+                listModel = new DefaultListModel<>();
+                listModel.addElement(new Contact(-1,"No Related Contacts Found", "", "", ""));
             }
         }
     }
@@ -185,6 +186,11 @@ public class ContactDB {
         }
     }
 
+    /**
+     * This will query the database for the details of an individual contact
+     * @param contactID The Contact ID of the contact to search for
+     * @return an instance of the contact
+     */
     public Contact getContactDetails(int contactID){
         String sql = "SELECT * FROM contacts WHERE contact_ID = ?";
 

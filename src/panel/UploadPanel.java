@@ -29,7 +29,8 @@ import java.util.Date;
 
 public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
     CardLayout cardLayout;
-    JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel, saveUploadPanel, filePanel, typeDatePanel, fileTypeDatePanel, contactsListPanel, titlePanel, descPanel;
+    JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel,
+            saveUploadPanel, filePanel, typeDatePanel, fileTypeDatePanel, contactsListPanel, titlePanel, descPanel;
     JScrollPane contactListScroll, addedListScroll;
     JButton backBtn, resetBtn, fileSelectBtn, saveBtn, uploadBtn, selectAll, deselectAll;
     Image backImg, resetImg, saveImg, uploadImg;
@@ -585,7 +586,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
      * @param e The event
      */
     public void valueChangedToAdd(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting() == false) {
+        if (!e.getValueIsAdjusting()) {
             if (notAddedContactList.getSelectedIndex() == -1) {
             } else {
                 Contact selectedContact = (Contact) notAddedContactList.getSelectedValue();
@@ -601,7 +602,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
      * @param e The event
      */
     public void valueChangedAdded(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting() == false) {
+        if (!e.getValueIsAdjusting()) {
             if (addedContactsList.getSelectedIndex() == -1) {
             } else {
                 Contact selectedContact = (Contact) addedContactsList.getSelectedValue();
@@ -658,7 +659,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 File file = fc.getSelectedFile();
                 DefaultListModel l = (DefaultListModel)attachedFileList.getModel();
                 l.addElement(file);
-            }catch(Exception e1){};
+            }catch(Exception e1){
+
+            };
         }else{
         }
     }
@@ -696,14 +699,12 @@ class FileListTransferHandler extends TransferHandler {
             for (int i = 0; i < files.size(); i++) {
                 model.addElement(files.get(i));
             }
-            } catch(UnsupportedFlavorException e){
-                e.printStackTrace();
-            } catch(IOException e){
-                e.printStackTrace();
-            }
-            return true;
+        } catch(UnsupportedFlavorException | IOException e){
+            e.printStackTrace();
         }
+        return true;
     }
+}
 
 /**
  * Defines how to display a File for each cell in the JList
