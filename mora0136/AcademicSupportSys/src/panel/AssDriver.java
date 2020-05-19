@@ -28,7 +28,7 @@ public class AssDriver {
         cardPane.add(setting, "Settings");
         cardPane.add(contacts, "Contacts");
         frame.add(cardPane);
-        //Systems with high DPI and are scaling will not utilise the proper minimum size()
+        //Systems with high DPI and more then 100% scaling will not utilise the proper minimum size()
         //target system is 1920x1080 displays, a typical academic workstation
         frame.setMinimumSize(new Dimension(622, 350)); // minimum size 16:9
         frame.setSize(1280, 720); //Default to 16:9 HD

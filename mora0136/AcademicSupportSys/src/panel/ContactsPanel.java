@@ -69,10 +69,6 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         contactList.setEnabled(false);
 
         //Alter the edit button to suit the context, in this case change to save;
-//        edit.setEnabled(true);
-//        edit.setText("Save");
-//        editImg = saveImg;
-//        edit.setIcon(new ImageIcon(editImg));
         setEditToSave(true);
         edit.setEnabled(true);
 
@@ -83,12 +79,17 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         addNew.setEnabled(false);
     }
 
+    /**
+     * A contact has been selected and the edit button has been hit. This button doubles as a save and edit buttons
+     * The code in setEditToSave() shows how the icon and text change.
+     * @param e
+     */
     public void actionPerformedEdit(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Edit":
                 contactInfoPanel.setEditable(true);
-                contactList.setEnabled(false);
-                delete.setText("Cancel");
+                contactList.setEnabled(false); // Do not allow for the selection og a different contact
+                delete.setText("Cancel"); //Change so it suits the context. Cannot delete from within edit mode
                 setEditToSave(true);
                 addNew.setEnabled(false);
                 break;
@@ -97,7 +98,6 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 String[] newText = contactInfoPanel.getTextFields();
                 if (contactSelected == 0) {
                     contactSelected = contactDB.addContact(newText[0], newText[1], newText[2], newText[3]);
-//                    contactInfoPanel.setTextEmpty();
                     LogDB.logNewContact(contactSelected);
                 } else {
                     contactDB.updateContact(newText[0], newText[1], newText[2], newText[3], contactSelected);
@@ -127,7 +127,10 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         }
     }
 
-
+    /**
+     * Any time a contact has been selected and delete is then pressed
+     * @param e
+     */
     public void actionPerformedDelete(ActionEvent e) {
         if (e.getActionCommand() == "Delete") {
             contactDB.deleteContact(contactSelected);
@@ -136,9 +139,8 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
                 listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
             }
+            contactInfoPanel.setTextEmpty();
         }
-        //Cancel and delete actions
-        contactInfoPanel.setTextEmpty();
         contactInfoPanel.setEditable(false);
         edit.setEnabled(false);
         setEditToSave(false);
@@ -148,21 +150,23 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         addNew.setEnabled(true);
     }
 
+    /**
+     * Any time the selection of the contact changes.
+     * @param e
+     */
     public void valueChanged(ListSelectionEvent e) {
-//        if (e.getValueIsAdjusting() == false) {
         if (contactList.getSelectedIndex() == -1) {
             //No selection, disable fire button.
             contactInfoPanel.setTextEmpty();
 
         } else {
-            //Selection, enable the fire button.
+            //Contact has been selected, enable the action buttons and display contact
             edit.setEnabled(true);
             delete.setEnabled(true);
             Contact c = (Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex());
             contactInfoPanel.setContact(c);
             contactSelected = c.getContact_ID();
         }
-//        }
     }
 
     //Any text entry into JTextField will search for the contact desired.
@@ -181,19 +185,40 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     }
 
     private void search() {
+        //Stops the potential for a user to select contact, search, then edit the previously selected contact despite it not being visible.
+        contactSelected = 0;
+        edit.setEnabled(false);
+        delete.setEnabled(false);
+
         contactDB.searchForContact(searchField.getText());
         listOfContacts.removeAllElements();
         for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
             listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
         }
+
+        //When no contacts are found, the model will contain a dummy contact with ID -1, in which case disable selection
+        if(listOfContacts.getElementAt(0).getContact_ID() == -1){
+            contactList.setEnabled(false);
+        }else{
+            contactList.setEnabled(true);
+        }
     }
 
-    //Allow for the display of the "Search..." text on the text area while not in focus
+    /**
+     * Remove the Search... and set the text being added to normal
+     * @param e
+     */
     public void focusGained(FocusEvent e) {
-        searchField.setText("");
-        searchField.setForeground(Color.BLACK);
+        if(searchField.getText().equals("Search...")) {
+            searchField.setText("");
+            searchField.setForeground(Color.BLACK);
+        }
     }
 
+    /**
+     * Allow for the display of the "Search..." text on the text area while not in focus and empty
+     * @param e
+     */
     public void focusLost(FocusEvent e) {
         if (searchField.getText().isEmpty()) {
             searchField.getDocument().removeDocumentListener(this);
@@ -203,6 +228,10 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         }
     }
 
+    /**
+     * Change the edit button to a save button
+     * @param isSave true if the button is to shown as save
+     */
     private void setEditToSave(boolean isSave) {
         if(isSave){
             edit.setText("Save");
