@@ -94,36 +94,43 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 addNew.setEnabled(false);
                 break;
             case "Save":
-                contactInfoPanel.setEditable(false);
-                String[] newText = contactInfoPanel.getTextFields();
-                if (contactSelected == 0) {
-                    contactSelected = contactDB.addContact(newText[0], newText[1], newText[2], newText[3]);
-                    LogDB.logNewContact(contactSelected);
-                } else {
-                    contactDB.updateContact(newText[0], newText[1], newText[2], newText[3], contactSelected);
-                    LogDB.logSavedContact(contactSelected);
+                //Error checking on Email and Phone to ensure correct format
+                String[] details = contactInfoPanel.getTextFields();
+                if(!contactInfoPanel.isValidEmail()) {
+                    JOptionPane.showMessageDialog(this, "the email \""+details[2]+"\" entered was not valid.");
+                }else if(!contactInfoPanel.isValidPhone()) {
+                    JOptionPane.showMessageDialog(this, "The phone entered was not valid");
+                }else{
+                    contactInfoPanel.setEditable(false);
+                    if (contactSelected == 0) {
+                        contactSelected = contactDB.addContact(details[0], details[1], details[2], details[3]);
+                        LogDB.logNewContact(contactSelected);
+                    } else {
+                        contactDB.updateContact(details[0], details[1], details[2], details[3], contactSelected);
+                        LogDB.logSavedContact(contactSelected);
 
-                }
-
-                //Refresh the list of contacts as a change has occurred
-                listOfContacts.removeAllElements();
-                int indexOfCurrentContact = -1; //ensures that the current selection of the new list remains the same as the old one
-                for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
-                    Contact c = (Contact) contactDB.getListModel().getElementAt(i);
-                    if (c.getContact_ID() == contactSelected) {
-                        indexOfCurrentContact = i;
                     }
-                    listOfContacts.addElement(c);
-                }
-                contactList.setSelectedIndex(indexOfCurrentContact);
-                contactList.setEnabled(true);
 
-                setEditToSave(false);
-                edit.setEnabled(false);
-                delete.setEnabled(false);
-                delete.setText("Delete");
-                addNew.setEnabled(true);
-                break;
+                    //Refresh the list of contacts as a change has occurred
+                    listOfContacts.removeAllElements();
+                    int indexOfCurrentContact = -1; //ensures that the current selection of the new list remains the same as the old one
+                    for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
+                        Contact c = (Contact) contactDB.getListModel().getElementAt(i);
+                        if (c.getContact_ID() == contactSelected) {
+                            indexOfCurrentContact = i;
+                        }
+                        listOfContacts.addElement(c);
+                    }
+                    contactList.setSelectedIndex(indexOfCurrentContact);
+                    contactList.setEnabled(true);
+
+                    setEditToSave(false);
+                    edit.setEnabled(false);
+                    delete.setEnabled(false);
+                    delete.setText("Delete");
+                    addNew.setEnabled(true);
+                    break;
+                }
         }
     }
 
@@ -140,6 +147,8 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
             }
             contactInfoPanel.setTextEmpty();
+        }else if(e.getActionCommand() == "Cancel"){ // reset contact fields to what it was previously
+            contactInfoPanel.setContact((Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex()));
         }
         contactInfoPanel.setEditable(false);
         edit.setEnabled(false);
