@@ -11,7 +11,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener {
     JScrollPane scrollContactPanel;
@@ -20,7 +19,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     DefaultListModel<Contact> listOfContacts;
     ContactDisplayPanel contactInfoPanel;
 
-    ContactsPanel(JPanel pane) throws IOException {
+    ContactsPanel(JPanel pane){
         super(pane);
         contactDB = new ContactDB();
         searchField.getDocument().addDocumentListener(this);
@@ -43,23 +42,19 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
-                int listFont = (int) (mainFont * (0.75));
-                int bodyFont = (int) (mainFont * (0.5));
-                int checkBoxFont = (int) (mainFont * (0.75));
-                int width = 50;
-                int height = 50;
 
                 if (windowWidth < 1100 || windowHeight < 450) {
-                    width = (int) (windowHeight / (1100 / 50));
                     headerFont = (int) (Double.min(windowWidth / (1100 / headerFont), windowHeight / (450 / headerFont)));
-                    listFont = (int) (Double.min(windowWidth / (1100 / listFont), windowHeight / (450 / listFont)));
-                    bodyFont = (int) (Double.min(windowWidth / (1100 / bodyFont), windowHeight / (450 / bodyFont)));
-                    checkBoxFont = (int) (Double.min(windowWidth / (1100 / checkBoxFont), windowHeight / (450 / checkBoxFont)));
                 }
                 searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
                 ComProps.listProperties(contactList, headerFont);
             }
         });
+    }
+
+    @Override
+    protected void resetAll() {
+        contactList.clearSelection();
     }
 
     public void actionPerformedNew(ActionEvent e) {
@@ -148,7 +143,11 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             }
             contactInfoPanel.setTextEmpty();
         }else if(e.getActionCommand() == "Cancel"){ // reset contact fields to what it was previously
-            contactInfoPanel.setContact((Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex()));
+            try {
+                contactInfoPanel.setContact((Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex()));
+            }catch(ArrayIndexOutOfBoundsException a){
+                contactInfoPanel.setTextEmpty();
+            }
         }
         contactInfoPanel.setEditable(false);
         edit.setEnabled(false);
@@ -245,11 +244,11 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         if(isSave){
             edit.setText("Save");
             editImg = saveImg;
-            edit.setIcon(new ImageIcon(editImg));
         }else{
             edit.setText("Edit");
             editImg = tempImg;
-            edit.setIcon(new ImageIcon(editImg));
         }
+        int font = Integer.min(Integer.min(getWidth() /(1300/32), getHeight()/(600/32)), 32);
+        ComProps.buttonProperties(edit, editImg, (int)(getHeight() * 0.0625), 50, font, true);
     }
 }

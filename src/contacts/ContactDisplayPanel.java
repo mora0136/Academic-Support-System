@@ -95,9 +95,6 @@ public class ContactDisplayPanel extends JPanel{
                 int windowHeight = getParent().getParent().getHeight();
                 int headerFont = mainFont;
                 int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
-                int checkBoxFont = (int)(mainFont*(0.75));
-//                int width = 50;
                 int borderHeight = 40;
                 int borderWidth = 20;
 
@@ -106,12 +103,8 @@ public class ContactDisplayPanel extends JPanel{
                     borderWidth = (int)(windowWidth / (500/20));
                     headerFont = (int)(Double.min(windowWidth /(1000/headerFont), windowHeight/(500/headerFont)));
                     listFont = (int)(Double.min(windowWidth/(1000/listFont), windowHeight/(500/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(1000/bodyFont), windowHeight/(500/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(1000/checkBoxFont), windowHeight/(500/checkBoxFont)));
                 }
 
-                System.out.println("This is the width from getWidth(): "+getWidth());
-                System.out.println("This is the width from getParent().getWidth(): "+getParent().getParent().getWidth());
                 setBorder(BorderFactory.createEmptyBorder(borderHeight, borderWidth, borderHeight, borderWidth));
 
                 ComProps.headingProperties(givenName, headerFont);

@@ -362,6 +362,14 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
         //The following defines what should happen to a component when the window is resized.
         addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                if(uploadID == 0){
+                    resetAll();
+                }
+            }
+            @Override
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
@@ -374,10 +382,10 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
                 if (windowWidth < 1300 || windowHeight < 600) {
                     width = (int) (windowHeight * 0.0625);
-                    headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
+                    headerFont = (Integer.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    listFont = (Integer.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
+                    bodyFont = (Integer.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
+                    checkBoxFont = (Integer.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
 
                 ComProps.buttonProperties(backBtn, backImg, width, height, headerFont, true);
@@ -490,7 +498,14 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
     public void actionPerformedBack(ActionEvent e){
         if(uploadID == 0) {
-            cardLayout.show(cardPane, "Home");
+            int n = JOptionPane.showConfirmDialog(this,
+                    "Would you like to return to the Home Panel?\nAll unsaved data will be erased.",
+                    "Continue Back?",
+                    JOptionPane.YES_NO_OPTION);
+            if(n == JOptionPane.OK_OPTION){
+                resetAll();
+                cardLayout.show(cardPane, "Home");
+            }
         }else{
             cardLayout.show(cardPane, "Edit");
         }
@@ -501,6 +516,40 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
     public void actionPerformedUpdateDB(ActionEvent e) {
+        titleField.setBorder(UIManager.getBorder("TextField.border"));
+        descriptionTextArea.setBorder(UIManager.getBorder("TextField.border"));
+        if(e.getSource() == uploadBtn){
+            if(titleField.getText().isBlank()){
+                JOptionPane.showMessageDialog(this, "Please Enter a Title");
+                titleField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                return; // exit the upload action, fields still required
+            }else if(descriptionTextArea.getText().isBlank()){
+                JOptionPane.showMessageDialog(this, "Please Enter a Description");
+                descriptionTextArea.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                return;
+            }else if(!(cv.isSelected() || resGate.isSelected() || orcid.isSelected() || inst.isSelected() ||
+                    publ.isSelected() || wos.isSelected() || gSch.isSelected() || linIn.isSelected() ||
+                    scopus.isSelected() || pure.isSelected() || acad.isSelected() || twit.isSelected())){
+                JOptionPane.showMessageDialog(this, "Please Enter at least one service to upload to");
+                return;
+            }
+            //Confirm the selection made was correct
+            int n = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to upload?\nUploaded data cannot be changed and is permanent.",
+                    "Continue Upload?",
+                    JOptionPane.YES_NO_OPTION);
+            if(n == JOptionPane.NO_OPTION || n == JOptionPane.CLOSED_OPTION){
+                return;
+            }
+
+        }else if (e.getSource() == saveBtn){
+            if(titleField.getText().isBlank()){
+                JOptionPane.showMessageDialog(this, "Please Enter a Title");
+                titleField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                return; // exit the save action, fields still required
+            }
+        }
+
         currentUpload.setTitle(titleField.getText());
         currentUpload.setDescription(descriptionTextArea.getText());
         DefaultListModel f = new DefaultListModel<>();
