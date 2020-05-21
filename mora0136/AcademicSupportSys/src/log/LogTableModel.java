@@ -1,12 +1,11 @@
 package log;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LogTableModel extends AbstractTableModel {
 
-    private List<Log> list = new ArrayList<>();
+    private List<Log> list;
 
     LogTableModel(List<Log> l){
         list = l;

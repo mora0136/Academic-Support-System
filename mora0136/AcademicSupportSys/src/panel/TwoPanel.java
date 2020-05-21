@@ -22,7 +22,7 @@ abstract class TwoPanel extends JPanel{
     GridBagConstraints c;
     final int mainFont = 32;
 
-    TwoPanel(JPanel pane) throws IOException {
+    TwoPanel(JPanel pane){
         this.cardPane = pane;
         this.cardLayout = (CardLayout)pane.getLayout();
 
@@ -36,15 +36,23 @@ abstract class TwoPanel extends JPanel{
         gridBag = new GridBagLayout();
         c = new GridBagConstraints();
 
+        try{
+            backImg = ImageIO.read(new File("resources/back.png"));
+            searchImg = ImageIO.read(new File("resources/search.png"));
+            addNewImg = ImageIO.read(new File("resources/add.png"));
+            editImg = ImageIO.read(new File("resources/edit_contact.png"));
+            tempImg = editImg;
+            saveImg = ImageIO.read(new File("resources/save.png"));
+            deleteImg = ImageIO.read(new File("resources/delete.png"));
+        }catch(IOException e){
+
+        }
+
         //left and right panels to be added in
         setLayout(new GridLayout(1, 2));
 
         back = new JButton("Back");
         back.addActionListener(this::actionPerformedBack);
-        backImg = ImageIO.read(new File("resources/back.png"));
-
-
-        searchImg = ImageIO.read(new File("resources/search.png"));
 
         searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
@@ -52,19 +60,14 @@ abstract class TwoPanel extends JPanel{
 
         addNew = new JButton("Add New");
         addNew.addActionListener(this::actionPerformedNew);
-        addNewImg = ImageIO.read(new File("resources/add.png"));
 
         edit = new JButton("Edit");
         edit.setEnabled(false);
         edit.addActionListener(this::actionPerformedEdit);
-        editImg = ImageIO.read(new File("resources/edit_contact.png"));
-        tempImg = editImg;
-        saveImg = ImageIO.read(new File("resources/save.png"));
 
         delete = new JButton("Delete");
         delete.setEnabled(false);
         delete.addActionListener(this::actionPerformedDelete);
-        deleteImg = ImageIO.read(new File("resources/delete.png"));
 
         leftPanel.setLayout(new BorderLayout());
         rightPanel.setLayout(new BorderLayout());
@@ -99,25 +102,17 @@ abstract class TwoPanel extends JPanel{
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
-                int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
-                int checkBoxFont = (int)(mainFont*(0.75));
                 int width = 50;
                 int height = 50;
 
                 if (windowWidth < 1300 || windowHeight < 600) {
                     width = (int) (windowHeight * 0.0625);
                     headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
                     ComProps.buttonProperties(back, backImg, width, height, headerFont, false);
                     ComProps.buttonProperties(addNew, addNewImg, width, height, headerFont, true);
                     ComProps.buttonProperties(edit, editImg, width, height, headerFont, true);
                     ComProps.buttonProperties(delete, deleteImg, width, height, headerFont, true);
-                    saveImg = saveImg.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-                    tempImg = tempImg.getScaledInstance(width, height, Image.SCALE_DEFAULT);
             }
         });
     }
@@ -127,8 +122,11 @@ abstract class TwoPanel extends JPanel{
      * @param e The Action Event call
      */
     public void actionPerformedBack(ActionEvent e){
+        resetAll();
         cardLayout.show(cardPane, "Home");
     }
+
+    protected abstract void resetAll();
 
     public void actionPerformedNew(ActionEvent e){
         edit.setEnabled(true);

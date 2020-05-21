@@ -42,22 +42,14 @@ public class LogPanel extends JPanel{
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
                 int windowWidth = getWidth();
-                int windowHeight = getHeight();
                 int headerFont = mainFont;
                 int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
-                int checkBoxFont = (int)(mainFont*(0.75));
-                int width = 50;
-                int height = 50;
                 int rowHeight = 30;
 
                 if (windowWidth < 550) {
-                    height = (int) (windowWidth / (550/100));
                     rowHeight = (int)(windowWidth/(550/30));
                     headerFont = (int)windowWidth /(550/headerFont);
                     listFont = (int)(windowWidth/(550/listFont));
-                    bodyFont = (int)(Double.min(windowWidth/(550/bodyFont), windowHeight/(450/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(550/checkBoxFont), windowHeight/(450/checkBoxFont)));
                 }
                 ComProps.headingProperties(day, headerFont);
                 logTable.setFont(new Font("Arial", Font.PLAIN, listFont));
@@ -69,7 +61,7 @@ public class LogPanel extends JPanel{
         });
 
     }
-    //Courtest of https://www.codejava.net/java-se/swing/setting-column-width-and-row-height-for-jtable
+    //Courtesy of https://www.codejava.net/java-se/swing/setting-column-width-and-row-height-for-jtable
     public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth,
                                              double... percentages) {
         double total = 0;
@@ -96,7 +88,7 @@ public class LogPanel extends JPanel{
                     Upload u = (Upload) l.getData();
                     upload.setToExistingUpload(u.getUploadID());
                     upload.setPreferredSize(new Dimension(1280, 720));
-                    JOptionPane.showConfirmDialog(null, upload, "Viewing Contact", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, upload, "Viewing Upload", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case "Contact":
                     //Display the shown contact in a non editable panel

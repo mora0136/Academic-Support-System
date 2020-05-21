@@ -47,6 +47,12 @@ public class HomePanel extends JPanel implements ActionListener {
         buttonGroupBottom.add(contacts = new JButton("Contacts"));
         buttonGroupBottom.add(setting = new JButton("Settings"));
 
+        upload.addActionListener(this);
+        edit.addActionListener(this);
+        history.addActionListener(this);
+        contacts.addActionListener(this);
+        setting.addActionListener(this);
+
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(buttonGroupTop, c);
         add(buttonGroupTop);
@@ -57,51 +63,30 @@ public class HomePanel extends JPanel implements ActionListener {
         //TO-DO declare get height and get width as variables.
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
-                System.out.println("x="+getWidth()+", y="+getHeight());
+//                System.out.println("x="+getWidth()+", y="+getHeight()); // easily observe the current view port size
                 GridBagConstraints c2 = new GridBagConstraints();
+                int windowWidth = getWidth();
+                int windowHeight = getHeight();
                 int font = 32;
-                if(getWidth() <= 300 || getHeight() <= 300){
-                    font = 8;
-                }else if(getWidth() <= 600 || getHeight() <= 600){
-                    font = 16;
-                }
-                if(getWidth()<1200 && getHeight()<600){
+                int width = 200;
+                int height = 200;
+                c2.insets = new Insets(20, 50, 20, 50);
+
+                if(getWidth()<1200 || getHeight()<600){
                     //Scaling factor is decided by restricting factor/element height/width
                     //e.g. 200/1200 = 0.16. (button width)/(1200 as per condition in if statement)
-                    int height = (int)(getHeight()*0.333);
-                    int width = (int)(getWidth()*0.16);
+                    width = (windowWidth) / (1200/200);
+                    height = (windowHeight) / (600/200);
+                    width = (int)(getWidth()*0.16);
+                    font = (int)(Double.min(windowWidth /(1300/font), windowHeight/(600/font)));
                     c2.insets = new Insets((int)(getHeight()*0.0333), (int)(getWidth()*0.0416), (int)(getHeight()*0.0333), (int)(getWidth()*0.0416));
+
+                }
                     buttonProperties(upload, uploadImg, width, height, font, gridBag, c2);
                     buttonProperties(edit, editImg, width, height, font, gridBag, c2);
                     buttonProperties(history, historyImg, width, height, font, gridBag, c2);
                     buttonProperties(contacts, contactsImg, width, height, font, gridBag, c2);
                     buttonProperties(setting, settingImg, width, height, font, gridBag, c2);
-
-                }else if(getWidth() < 1200){
-                    int width = (int)(getWidth()*0.16);
-                    c2.insets = new Insets(20, (int)(getWidth()*0.0416), 20, (int)(getWidth()*0.0416));
-                    buttonProperties(upload, uploadImg, width, width, font, gridBag, c2);
-                    buttonProperties(edit, editImg, width, width, font, gridBag, c2);
-                    buttonProperties(history, historyImg, width, width, font, gridBag, c2);
-                    buttonProperties(contacts, contactsImg, width, width, font, gridBag, c2);
-                    buttonProperties(setting, settingImg, width, width, font, gridBag, c2);
-                }else if(getHeight() < 600){
-                    int height = (int)(getHeight()*0.333);
-//                    int font = 16;//(int)(16/(600/getHeight()));
-                    c2.insets = new Insets((int)(getHeight()*0.0333), 50, (int)(getHeight()*0.0333), 50);
-                    buttonProperties(upload, uploadImg, height, height, font, gridBag, c2);
-                    buttonProperties(edit, editImg, height, height, font, gridBag, c2);
-                    buttonProperties(history, historyImg, height, height, font, gridBag, c2);
-                    buttonProperties(contacts, contactsImg, height, height, font, gridBag, c2);
-                    buttonProperties(setting, settingImg, height, height, font, gridBag, c2);
-                }else{
-                    c2.insets = new Insets(20, 50, 20, 50);
-                    buttonProperties(upload, uploadImg, 200, 200, font, gridBag, c2);
-                    buttonProperties(edit, editImg, 200, 200, font, gridBag, c2);
-                    buttonProperties(history, historyImg, 200, 200, font, gridBag, c2);
-                    buttonProperties(contacts, contactsImg, 200, 200, font, gridBag, c2);
-                    buttonProperties(setting, settingImg, 200, 200, font, gridBag, c2);
-                }
             }
         });
     }
@@ -138,7 +123,6 @@ public class HomePanel extends JPanel implements ActionListener {
         btn.setMargin(new Insets(0, (int)(width*0.25), 0, (int)(width*0.25)));
         btn.setFont(new Font("Arial", Font.PLAIN, font));
         btn.setFocusPainted(false);
-        btn.addActionListener(this); //adds a duplicate action listener everytime screen is resized, needs to be changed.
         gridBag.setConstraints(btn,c);
     }
 }

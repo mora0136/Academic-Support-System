@@ -13,7 +13,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class EditPanel extends TwoPanel implements DocumentListener, FocusListener {
@@ -23,19 +22,16 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
     UploadVerticalOrientation displayUpload;
     SuffixTrie sf;
 
-    EditPanel(JPanel pane) throws IOException {
+    EditPanel(JPanel pane){
         super(pane);
 
         searchField.getDocument().addDocumentListener(this);
         searchField.addFocusListener(this);
 
         //Get some type of list from upload where isUploaded is false
-        editable = UploadDB.getAllEditableUploads();
-        sf = new SuffixTrie();
-        for(int i = 0; i < editable.getSize(); i++){
-            sf.insert(editable.getElementAt(i).toString(), editable.getElementAt(i));
-        }
+        editable = new DefaultListModel<>();
         editList = new JList(editable);
+        populateListToEdit(); //
         editList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(editList);
 
@@ -48,27 +44,30 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
         // Details what styles should apply to buttons at the certain size of a window
         addComponentListener(new ComponentAdapter(){
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                populateListToEdit();
+            }
+
+            @Override
             public void componentResized(ComponentEvent e){
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
-                int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
-                int checkBoxFont = (int)(mainFont*(0.75));
-                int width = 50;
-                int height = 50;
 
                 if (windowWidth < 1300 || windowHeight < 600) {
-                    width = (int) (windowHeight * 0.0625);
                     headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
-                    checkBoxFont = (int)(Double.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
                 }
                     searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
                     ComProps.listProperties(editList, headerFont);
             }
         });
+    }
+
+    @Override
+    protected void resetAll() {
+        editList.clearSelection();
     }
 
     public void actionPerformedEdit(ActionEvent e){
@@ -153,6 +152,15 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
             searchField.setText("Search...");
             searchField.setForeground(Color.GRAY);
             searchField.getDocument().addDocumentListener(this);
+        }
+    }
+
+    private void populateListToEdit(){
+        DefaultListModel temp = UploadDB.getAllEditableUploads();
+        sf = new SuffixTrie();
+        for(int i = 0; i < temp.size(); i++){
+            editable.addElement((Upload) temp.getElementAt(i));
+            sf.insert(editable.getElementAt(i).toString(), editable.getElementAt(i));
         }
     }
 }
