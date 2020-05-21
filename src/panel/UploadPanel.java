@@ -27,6 +27,17 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+/*
+ * This is by far the most complex Panel of all classes. It is not suggested you start here if you are wishing to first
+ * understand the workings of this project. UploadPanel has the most user input of all panels and the layout of the
+ * information per mockups were very incompatible with the Layout Managers of java. This then required a lot of JPanel
+ * objects to contain sometimes one Component. Utilising GridBag Layout is powerful but overwhelming in how it can
+ * clutter code. The structure of this class is first, insantiating all fields on the left side of the windows, and
+ * then instantiating the right side of the window. Button listeners are given their own methods that take an Action
+ * Event. Some other classes are contained within and are exclusively used inside of the UploadPanel. Further
+ * information can be found where they exist.
+ */
+
 public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
     CardLayout cardLayout;
     JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel,
@@ -623,7 +634,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             String[] options = {"Back", "Remove File"};
             int result = JOptionPane.showOptionDialog(null, new FileOptionPanel((File) attachedFileList.getSelectedValue()), "File Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (result == JOptionPane.NO_OPTION) {
-                //remove from the list
+                //remove from the list was selected so do this
                 DefaultListModel l = (DefaultListModel) attachedFileList.getModel();
                 l.remove(attachedFileList.getSelectedIndex());
             }
@@ -652,10 +663,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
      */
     public void valueChangedAdded(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            if (addedContactsList.getSelectedIndex() == -1) {
-            } else {
+            if (addedContactsList.getSelectedIndex() != -1) {
                 Contact selectedContact = (Contact) addedContactsList.getSelectedValue();
-//                System.out.println(selectedContact);
                 displayedContacts.addElement(selectedContact);
                 notAddedContacts.addElement(selectedContact);
                 addedContacts.removeElement(selectedContact);
@@ -663,19 +672,15 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }
     }
 
+
+    //The Properties of the search contacts field when adding text and focus is moved.
     //Defines what should be done any time text is entered into the SearchField
     @Override
-    public void insertUpdate(DocumentEvent e) { search();
-    }
-
+    public void insertUpdate(DocumentEvent e) { search(); }
     @Override
-    public void removeUpdate(DocumentEvent e) { search();
-    }
-
+    public void removeUpdate(DocumentEvent e) { search(); }
     @Override
-    public void changedUpdate(DocumentEvent e) {
-    }
-
+    public void changedUpdate(DocumentEvent e) { }
     private void search(){
         contactDB.searchForContact(searchField.getText());
         displayedContacts.removeAllElements();
@@ -685,8 +690,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             }
         }
     }
-
-    //Clear whatever was in the textField previously
+    //Clear whatever was in the search textField previously
     public void focusGained(FocusEvent e) {
         searchField.setText("");
         searchField.setForeground(Color.BLACK);
@@ -700,6 +704,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             searchField.getDocument().addDocumentListener(this);
         }
     }
+
     //Select a file via the fileSelectButton
     public void fileSelectedAction(ActionEvent e){
         int returnVal = fc.showOpenDialog(this);
@@ -709,7 +714,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 DefaultListModel l = (DefaultListModel)attachedFileList.getModel();
                 l.addElement(file);
             }catch(Exception e1){
-
+                JOptionPane.showMessageDialog(this, e,"Warning!", JOptionPane.WARNING_MESSAGE);
             };
         }else{
         }
@@ -718,7 +723,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 }
 
 /**
- * Allows for the Drag and Drop mechanics to work.
+ * Allows for the Drag and Drop mechanics of the file list to work by utilising fileListFlavors.
  */
 class FileListTransferHandler extends TransferHandler {
     private JList list;
@@ -756,7 +761,9 @@ class FileListTransferHandler extends TransferHandler {
 }
 
 /**
- * Defines how to display a File for each cell in the JList
+ * Defines how to display a File for each cell in the JList. Any row in this list that is null will be converted to a
+ * info message. This displays an image icon and text informing the user to drag a file into the list. This will ass the
+ * file to the list. This null row cannot be edited. It also ensures a file in the list shows it's fileName
  */
 class FileRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -772,6 +779,7 @@ class FileRenderer extends DefaultListCellRenderer {
                 setHorizontalTextPosition(SwingConstants.RIGHT);
                 setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
             } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, e,"Warning!", JOptionPane.WARNING_MESSAGE);
             }
         }else{
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -783,6 +791,12 @@ class FileRenderer extends DefaultListCellRenderer {
     }
 }
 
+
+/*
+ * The template List has a initial row that acts as a dummy to launch the add/edit template view. To give this element
+ * a unique look, a cell renderer changes the background of that single element and it's properties to better convey
+ * importance to the user
+ */
 class templateCellRenderer extends DefaultListCellRenderer{
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

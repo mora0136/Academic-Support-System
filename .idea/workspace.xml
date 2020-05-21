@@ -3,16 +3,29 @@
   <component name="ChangeListManager">
     <list default="true" id="69ac4ac7-29ef-4a1d-9947-149e17c8356e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contacts/Contact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/Contact.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contacts/ContactDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/contacts/ContactDisplayPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/contacts/ContactDisplayPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/Log.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log/LogDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log/LogPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/log/LogTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/log/LogTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/AssDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/AssDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/ComProps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ComProps.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/ContactsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/ContactsPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/EditPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/EditPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/FileOptionPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/FileOptionPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/HistoryPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/HistoryPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/HomePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/HomePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/SettingPanel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/TwoPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/TwoPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/panel/UploadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/UploadPanelDisabled.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/template/Template.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/template/Template.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/template/TemplateDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/template/TemplateDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/template/TemplatePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/template/TemplatePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/upload/Upload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/upload/Upload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/upload/UploadDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/upload/UploadDB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +180,7 @@
       <workItem from="1589203354912" duration="265000" />
       <workItem from="1589241050876" duration="9689000" />
       <workItem from="1589359778363" duration="488000" />
-      <workItem from="1590017344972" duration="15642000" />
+      <workItem from="1590017344972" duration="22417000" />
     </task>
     <task id="LOCAL-00001" summary="Initial File structure added with classes that are thought as nessecary as of this moment. Implemented a cardLayout that will switch between each of the panel classes. So far only interaction between home and upload works but can be easily made to work with other classes. Need to look more into the ActionEvent/Listener class to get better implementation details.">
       <created>1587115588074</created>
@@ -428,14 +441,20 @@
       <option name="project" value="LOCAL" />
       <updated>1590024184963</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Minor improvements here and there, Still looking at code improvements for readability. Otherwise functionality of the GUI is complete to spec. unless I have a few more ideas.">
+      <created>1590061166460</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1590061166460</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Search works using SuffixTrie, YAY! Very bigger mess tho. Still needs some changes as per notes kept to streamline process." />
     <MESSAGE value="Fixed some bugs relating to content display and button creation" />
     <MESSAGE value="edit button transforms into save button and sets field enabled and disabled." />
     <MESSAGE value="Started implementing edit but then realised I could retrieve contacts better by identifying by id and not name allowing use of a hashmap that can store information to be manipulated. SuffixTrie should be used only for creating a search tree." />
@@ -460,7 +479,8 @@
     <MESSAGE value="Major clean up of nearly all files. Removed what was determined to be redundant commented out code. Streamlined the windows size components in twoPanels, copying the implementation inside uploadPanel. Have made new package of log. Relegated common properties to ComProps. Still need UploadPanel to be reduced in size by creating a UploadDB." />
     <MESSAGE value="Seperated SQL code from the Upload Panel into UploadDB and made an upload instance to store an upload" />
     <MESSAGE value="Error checking on phone and email fields now implemented in ContactsPanel. This includes displaying red dynamically when the text inside does not match the desired pattern." />
-    <option name="LAST_COMMIT_MESSAGE" value="Error checking on phone and email fields now implemented in ContactsPanel. This includes displaying red dynamically when the text inside does not match the desired pattern." />
+    <MESSAGE value="Minor improvements here and there, Still looking at code improvements for readability. Otherwise functionality of the GUI is complete to spec. unless I have a few more ideas." />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor improvements here and there, Still looking at code improvements for readability. Otherwise functionality of the GUI is complete to spec. unless I have a few more ideas." />
   </component>
   <component name="WindowStateProjectService">
     <state x="665" y="364" key="#Notifications" timestamp="1588670532830">
@@ -526,12 +546,12 @@
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="2925" y="686" key="#console_2.sql/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1588949303462" />
-    <state x="2736" y="658" key="CommitChangelistDialog2" timestamp="1590024182443">
+    <state x="2736" y="658" key="CommitChangelistDialog2" timestamp="1590061161472">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="0" y="99" key="CommitChangelistDialog2/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587127563893" />
     <state x="357" y="73" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858911390" />
-    <state x="2736" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590024182443" />
+    <state x="2736" y="658" key="CommitChangelistDialog2/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590061161472" />
     <state x="0" y="108" key="DiffContextDialog" timestamp="1587819239283">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
@@ -541,33 +561,33 @@
     </state>
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587112315714" />
     <state x="562" y="245" key="FileChooserDialogImpl/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1590019998938" />
-    <state width="1877" height="109" key="GridCell.Tab.0.bottom" timestamp="1590060785312">
+    <state width="1877" height="109" key="GridCell.Tab.0.bottom" timestamp="1590065551028">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="109" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590060785312" />
+    <state width="1877" height="109" key="GridCell.Tab.0.bottom/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590065551028" />
     <state width="1520" height="183" key="GridCell.Tab.0.bottom/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121837" />
-    <state width="1877" height="109" key="GridCell.Tab.0.center" timestamp="1590060785312">
+    <state width="1877" height="109" key="GridCell.Tab.0.center" timestamp="1590065551027">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.center/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="109" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590060785312" />
+    <state width="1877" height="109" key="GridCell.Tab.0.center/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590065551027" />
     <state width="1520" height="183" key="GridCell.Tab.0.center/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
-    <state width="1877" height="109" key="GridCell.Tab.0.left" timestamp="1590060785312">
+    <state width="1877" height="109" key="GridCell.Tab.0.left" timestamp="1590065551027">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.left/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482227" />
     <state width="1520" height="191" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924550" />
-    <state width="1877" height="109" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590060785312" />
+    <state width="1877" height="109" key="GridCell.Tab.0.left/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590065551027" />
     <state width="1520" height="183" key="GridCell.Tab.0.left/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121835" />
-    <state width="1877" height="109" key="GridCell.Tab.0.right" timestamp="1590060785312">
+    <state width="1877" height="109" key="GridCell.Tab.0.right" timestamp="1590065551027">
       <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state width="1520" height="269" key="GridCell.Tab.0.right/0.0.1563.1002/2736.0.1920.1040@0.0.1563.1002" timestamp="1587174482228" />
     <state width="1520" height="191" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588858924551" />
-    <state width="1877" height="109" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590060785312" />
+    <state width="1877" height="109" key="GridCell.Tab.0.right/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590065551027" />
     <state width="1520" height="183" key="GridCell.Tab.0.right/0.0.1563.1002@0.0.1563.1002" timestamp="1588223121836" />
     <state width="1520" height="332" key="GridCell.Tab.1.bottom" timestamp="1587819362629">
       <screen x="0" y="0" width="1563" height="1002" />
@@ -642,10 +662,11 @@
       <screen x="0" y="0" width="1563" height="1002" />
     </state>
     <state x="209" y="121" key="new project wizard/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1587640306777" />
-    <state x="444" y="216" width="672" height="678" key="search.everywhere.popup" timestamp="1588295011077">
-      <screen x="0" y="0" width="1563" height="1002" />
+    <state x="3281" y="738" width="826" height="704" key="search.everywhere.popup" timestamp="1590066185276">
+      <screen x="2736" y="514" width="1920" height="1040" />
     </state>
     <state x="444" y="216" width="672" height="678" key="search.everywhere.popup/0.0.1563.1002/2736.514.1920.1040@0.0.1563.1002" timestamp="1588295011077" />
+    <state x="3281" y="738" width="826" height="704" key="search.everywhere.popup/0.0.1563.1002/2736.514.1920.1040@2736.514.1920.1040" timestamp="1590066185276" />
     <state x="604" y="410" key="svn.upgradeDialog" timestamp="1587112327811">
       <screen x="0" y="0" width="1563" height="1002" />
     </state>

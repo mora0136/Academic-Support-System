@@ -3,9 +3,14 @@ package log;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/*
+ Defines the logic and style of the Log Table. The key feature here is that only 3 of the four columns are displayed.
+ This allows for an object(Contact or Upload) to be associated to a row for easy retrieval.
+ */
+
 public class LogTableModel extends AbstractTableModel {
 
-    private List<Log> list;
+    private final List<Log> list;
 
     LogTableModel(List<Log> l){
         list = l;

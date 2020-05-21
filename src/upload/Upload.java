@@ -8,6 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+
+/*
+ * A simple class to instantiate an upload and have multiple of them to select from in a list.
+ */
+
 public class Upload {
     int uploadID;
     String title;
@@ -27,6 +32,7 @@ public class Upload {
         this.title = title;
 
     }
+
     public Upload(ResultSet rs){
         addedContacts = new DefaultListModel<Contact>();
         attachedFiles = new DefaultListModel<File>();
@@ -35,10 +41,7 @@ public class Upload {
             this.title = rs.getString("Title");
             this.description = rs.getString("Description");
             this.type = rs.getString("Type");
-
-//            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             this.date = (rs.getDate("Date")).toLocalDate();
-//            this.date = dateInstant.atZone(ZoneId.systemDefault()).toLocalDate();
 
             cv = (rs.getBoolean("cv"));resGate = (rs.getBoolean("resGate"));orcid = (rs.getBoolean("orcid"));
             inst = (rs.getBoolean("inst"));publ = (rs.getBoolean("publ"));wos = (rs.getBoolean("wos"));
@@ -66,7 +69,6 @@ public class Upload {
                         rs.getString("surname"), rs.getString("email"),
                         rs.getString("phone"));
                 addedContacts.addElement(c);
-//                displayedContacts.removeElement(c);
             }
         }catch(SQLException e){
             System.out.println(e);

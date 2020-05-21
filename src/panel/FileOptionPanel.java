@@ -5,6 +5,11 @@ import java.awt.*;
 import java.io.File;
 import java.util.Date;
 
+/*
+ * A view to be able to show the properties of the file added to an upload. This is utilised whenever a file is selected
+ * and is best suited for display in a JOptionPane.
+ */
+
 public class FileOptionPanel extends JPanel{
     public FileOptionPanel(File file) {
         JLabel name, path, size, lastMod, readable;

@@ -11,6 +11,13 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 
+
+/*
+ * This is an important class in setting a strict design language with which all panels follow. The 'TwoPanel' refers
+ * to the two sides of right and left. left to right presentation of english language and prevalence of books inspires
+ * this design and should be used like such. The Left should be used for input by the user. The right should be used to
+ * show responses to their actions by displaying results of their actions.
+ */
 abstract class TwoPanel extends JPanel{
     JPanel cardPane, leftPanel, rightPanel, contextPanel, displayPanel, optionPanel;
     Image backImg, searchImg, addNewImg, editImg, deleteImg, saveImg, tempImg;
@@ -45,7 +52,13 @@ abstract class TwoPanel extends JPanel{
             saveImg = ImageIO.read(new File("resources/save.png"));
             deleteImg = ImageIO.read(new File("resources/delete.png"));
         }catch(IOException e){
-
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Image files failed to load. No images will be available", "", JOptionPane.WARNING_MESSAGE);
+            backImg = null;
+            searchImg = null;
+            addNewImg = null;
+            tempImg = null;
+            saveImg = null;
+            deleteImg = null;
         }
 
         //left and right panels to be added in
@@ -107,7 +120,7 @@ abstract class TwoPanel extends JPanel{
 
                 if (windowWidth < 1300 || windowHeight < 600) {
                     width = (int) (windowHeight * 0.0625);
-                    headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    headerFont = (Integer.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
                 }
                     ComProps.buttonProperties(back, backImg, width, height, headerFont, false);
                     ComProps.buttonProperties(addNew, addNewImg, width, height, headerFont, true);
@@ -138,12 +151,6 @@ abstract class TwoPanel extends JPanel{
     public void actionPerformedEdit(ActionEvent e){
         edit.setText("Save");
         editImg = saveImg;
-        edit.setIcon(new ImageIcon(editImg));
-    }
-
-    public void actionPerformedSave(ActionEvent e){
-        edit.setText("Edit");
-        editImg = tempImg;
         edit.setIcon(new ImageIcon(editImg));
     }
 

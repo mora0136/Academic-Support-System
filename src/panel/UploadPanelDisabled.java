@@ -3,12 +3,13 @@ package panel;
 import javax.swing.*;
 import java.awt.*;
 
-public class UploadPanelDisabled extends UploadPanel{
+/*
+ * This disabled version of the upload Panel removes the Template Statements and Contact List from address book.
+ * This also, as the name implies, disables all fields inside so they are non editable and display as such.
+ * This is utilised anytime an upload needs to be shown such as in edit Panel and log Panel.
+ */
 
-    /**
-     * This disabled version of the upload Panel removes the Template Statements and Contact List from address book.
-     * This also, as the name implies, disables all fields inside so they are non editable and display as such.
-     */
+public class UploadPanelDisabled extends UploadPanel{
     public UploadPanelDisabled(){
         super(new JPanel(new CardLayout()));
         leftPanel.remove(backResetPanel);

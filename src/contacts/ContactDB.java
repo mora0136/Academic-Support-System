@@ -8,6 +8,15 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 
+/*
+ContactDB is responsible for the communication between the GUI and the database. Other 'DB' classes have static
+implementations of their methods as opposed to this one. The way to use ContactDB is to create an instance of it,
+and then you can start communicating with the database via the contained methods. As can be seen instance variables are
+present inside here, so anything received from the database needs to be stored here and in a location for the GUI to
+access it. This implementation is flawed and a better option was later chosen, and is observable in UploadDB, TemplateDB and
+LogDB. As it stands, the class works despite some of the flaws this approach has, so it will be staying this way.
+ */
+
 public class ContactDB {
     SuffixTrie sf; // stores names of contacts exclusively for searching purposes, does not contain contacts data
     DefaultListModel<Contact> listModel;

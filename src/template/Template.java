@@ -3,6 +3,10 @@ package template;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+ * A class to store simple information about a template statement.
+ */
+
 public class Template {
     int templateID;
     String statement;
