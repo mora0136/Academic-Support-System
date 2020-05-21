@@ -3,6 +3,8 @@ package contacts;
 import panel.ComProps;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -69,10 +71,23 @@ public class ContactDisplayPanel extends JPanel{
         gridBag.setConstraints(phoneField, c);
         add(phoneField);
 
-//        SpringUtilities.makeCompactGrid(this, 4, 2, 5, 5, 5, 5);
-//        setMaximumSize(new Dimension(20, 20));
-//        setPreferredSize(new Dimension(20, 20));
-//        setMinimumSize(new Dimension(20, 20));
+        emailField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) { validateEmail(); }
+            @Override
+            public void removeUpdate(DocumentEvent e) { validateEmail(); }
+            @Override
+            public void changedUpdate(DocumentEvent e) {            }
+        });
+
+        phoneField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) { validatePhone(); }
+            @Override
+            public void removeUpdate(DocumentEvent e) { validatePhone(); }
+            @Override
+            public void changedUpdate(DocumentEvent e) { }
+        });
 
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
@@ -141,5 +156,37 @@ public class ContactDisplayPanel extends JPanel{
 
     public String[] getTextFields(){
         return new String[]{givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText()};
+    }
+
+    public void validateEmail(){
+        if(!isValidEmail()){
+            emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+        }else{
+            emailField.setBorder(UIManager.getBorder("TextField.border"));
+        }
+    }
+
+    public void validatePhone(){
+        if(!isValidPhone()){
+            phoneField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+        }else{
+            phoneField.setBorder(UIManager.getBorder("TextField.border"));
+        }
+    }
+
+    public boolean isValidEmail(){
+        if(emailField.getText().isEmpty()) {
+            return true;
+        }
+        String regexTut = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return emailField.getText().matches(regexTut);
+    }
+
+    public boolean isValidPhone(){
+        if(phoneField.getText().isEmpty()) {
+            return true;
+        }
+        String regex = "^(?=[0-9]*$)(?:.{8}|.{10})$";
+        return phoneField.getText().matches(regex);
     }
 }
