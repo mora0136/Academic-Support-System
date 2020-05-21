@@ -9,6 +9,13 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+
+/*
+ This Panel is responsible for the displaying of the data received from ContactDB after a request was made from
+ ContactPanel. Some dynamic elements include email and phone validation. This view is portable and is used for
+ displaying a contact any time it is necessary. For example inside ContactPanel and HistoryPanel when a contact
+ is selected.
+ */
 public class ContactDisplayPanel extends JPanel{
     JTextField givenNameField, lastNameField, emailField, phoneField;
     Contact c;
@@ -19,6 +26,7 @@ public class ContactDisplayPanel extends JPanel{
         this();
         setContact(c);
     }
+
     public ContactDisplayPanel(){
         //Output area when a contact is selected or a new one is to added
         GridBagLayout gridBag = new GridBagLayout();

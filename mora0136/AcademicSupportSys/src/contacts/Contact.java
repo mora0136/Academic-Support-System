@@ -1,5 +1,10 @@
 package contacts;
 
+/*  A standard representation of a contact. Instance variables are used to display information about the contact and a
+    unique identifier contact_ID allows for the identification of a contact when it is contained inside a list of other
+    contacts.
+ */
+
 public class Contact{
     int contact_ID;
     String givenName;

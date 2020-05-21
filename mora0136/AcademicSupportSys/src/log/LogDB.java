@@ -5,8 +5,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogDB {
-    //return of zero means a successful log was created
+/*
+ *  LogDb is responsible for communicating with the database and handling requests from the GUI. As such it should not
+ *  be instantiated, this class is designated as a getter and giver of information, it does not keep it. This is the
+ *  preferred approach as opposed to ContactDB. The Logs being track are Upload: Saved, Deleted, Uploaded and
+ *  Contact:Added, Saved, Deleted
+ */
+
+public final class LogDB {
+    private LogDB(){
+
+    }
 
     //Logging upload interactions
     public static int logSavedUpload(int uploadID){

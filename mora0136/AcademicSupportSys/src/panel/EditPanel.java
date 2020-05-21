@@ -15,9 +15,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+/*
+ * Any existing/not uploaded uploads are shown within this Panel. It inherits from TwoPanel for a common design language
+ * and displays a view of the selected upload on the right of the screen. As with ContactPanel, a suffix trie is used to
+ * allow for efficient searching of the edit List
+ */
+
 public class EditPanel extends TwoPanel implements DocumentListener, FocusListener {
     JScrollPane scrollContactPanel;
-    JList editList;
+    JList<Upload> editList;
     DefaultListModel<Upload> editable;
     UploadVerticalOrientation displayUpload;
     SuffixTrie sf;
@@ -30,7 +36,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
         //Get some type of list from upload where isUploaded is false
         editable = new DefaultListModel<>();
-        editList = new JList(editable);
+        editList = new JList<>(editable);
         populateListToEdit(); //
         editList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(editList);
@@ -57,7 +63,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
                 int headerFont = mainFont;
 
                 if (windowWidth < 1300 || windowHeight < 600) {
-                    headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    headerFont = (int)(Integer.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
                 }
                     searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
                     ComProps.listProperties(editList, headerFont);
@@ -80,16 +86,16 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
     //Consider moving/marking info rather then deleting?
     public void actionPerformedDelete(ActionEvent e){
-        UploadDB.deleteUpload((Upload) editList.getSelectedValue());
+        UploadDB.deleteUpload(editList.getSelectedValue());
 
-        LogDB.logDeletedUpload(((Upload) editList.getSelectedValue()).getUploadID());
+        LogDB.logDeletedUpload((editList.getSelectedValue()).getUploadID());
 
         editable.removeElementAt(editList.getSelectedIndex());
         editList.setSelectedIndex(-1);
     }
 
     public void valueChanged(ListSelectionEvent e){
-        if (e.getValueIsAdjusting() == false) {
+        if (!e.getValueIsAdjusting()) {
             if (editList.getSelectedIndex() == -1) {
                 //No selection, disable fire button.
                 displayUpload.resetAll();
@@ -117,7 +123,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
     private void search(){
         //Search for the Title
-        if(searchField.getText().length() == 0 || searchField.equals("Search...")) {
+        if(searchField.getText().length() == 0 || searchField.getText().equals("Search...")) {
             editable = UploadDB.getAllEditableUploads();
             editList.setModel(editable);
         }else{
@@ -156,10 +162,10 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
     }
 
     private void populateListToEdit(){
-        DefaultListModel temp = UploadDB.getAllEditableUploads();
+        DefaultListModel<Upload> temp = UploadDB.getAllEditableUploads();
         sf = new SuffixTrie();
         for(int i = 0; i < temp.size(); i++){
-            editable.addElement((Upload) temp.getElementAt(i));
+            editable.addElement(temp.getElementAt(i));
             sf.insert(editable.getElementAt(i).toString(), editable.getElementAt(i));
         }
     }

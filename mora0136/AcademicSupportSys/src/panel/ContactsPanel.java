@@ -12,9 +12,16 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
 
+/*
+ * The view in which an address book of the contacts saved are shown. This panel inherits from TwoPanel, allowing for
+ * the repeating of a common design language, more informatin can be found in twoPanel. It allows for contacts to be
+ * added, edited, saved and deleted. A suffix Trie is implemented to assist user's in finding their desired contact.
+ * The searching of which is instantaneous due to document Listeners.
+ */
+
 public class ContactsPanel extends TwoPanel implements DocumentListener, FocusListener {
     JScrollPane scrollContactPanel;
-    JList contactList;
+    JList<Contact> contactList;
     int contactSelected = 0;
     DefaultListModel<Contact> listOfContacts;
     ContactDisplayPanel contactInfoPanel;
@@ -26,7 +33,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         searchField.addFocusListener(this);
 
         listOfContacts = contactDB.getListModel();
-        contactList = new JList(listOfContacts);
+        contactList = new JList<>(listOfContacts);
         contactList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(contactList);
 
@@ -44,7 +51,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 int headerFont = mainFont;
 
                 if (windowWidth < 1100 || windowHeight < 450) {
-                    headerFont = (int) (Double.min(windowWidth / (1100 / headerFont), windowHeight / (450 / headerFont)));
+                    headerFont = (Integer.min(windowWidth / (1100 / headerFont), windowHeight / (450 / headerFont)));
                 }
                 searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
                 ComProps.listProperties(contactList, headerFont);
@@ -134,7 +141,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
      * @param e
      */
     public void actionPerformedDelete(ActionEvent e) {
-        if (e.getActionCommand() == "Delete") {
+        if (e.getActionCommand().equals("Delete")) {
             contactDB.deleteContact(contactSelected);
             LogDB.logDeletedContact(contactSelected);
             listOfContacts.removeAllElements();
@@ -142,9 +149,9 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
             }
             contactInfoPanel.setTextEmpty();
-        }else if(e.getActionCommand() == "Cancel"){ // reset contact fields to what it was previously
+        }else if(e.getActionCommand().equals("Cancel")){ // reset contact fields to what it was previously
             try {
-                contactInfoPanel.setContact((Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex()));
+                contactInfoPanel.setContact(contactList.getModel().getElementAt(contactList.getSelectedIndex()));
             }catch(ArrayIndexOutOfBoundsException a){
                 contactInfoPanel.setTextEmpty();
             }
@@ -171,7 +178,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             //Contact has been selected, enable the action buttons and display contact
             edit.setEnabled(true);
             delete.setEnabled(true);
-            Contact c = (Contact) contactList.getModel().getElementAt(contactList.getSelectedIndex());
+            Contact c = contactList.getModel().getElementAt(contactList.getSelectedIndex());
             contactInfoPanel.setContact(c);
             contactSelected = c.getContact_ID();
         }
@@ -205,11 +212,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         }
 
         //When no contacts are found, the model will contain a dummy contact with ID -1, in which case disable selection
-        if(listOfContacts.getElementAt(0).getContact_ID() == -1){
-            contactList.setEnabled(false);
-        }else{
-            contactList.setEnabled(true);
-        }
+        contactList.setEnabled(listOfContacts.getElementAt(0).getContact_ID() != -1);
     }
 
     /**

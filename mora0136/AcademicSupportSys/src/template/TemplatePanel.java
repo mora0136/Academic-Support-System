@@ -12,6 +12,13 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+/*
+ * A template statement is a simple string that can be added to the description textBox of the upload Form. The template
+ * Panel is used for adjusting the templates that are included inside the upload Panel. This view is only accessible
+ * there since that is the only location this information is necessary. If a setting menu was created it could be placed
+ * if needed.
+ */
+
 public class TemplatePanel extends JPanel {
 
     public TemplatePanel() {

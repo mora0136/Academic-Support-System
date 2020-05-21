@@ -17,13 +17,20 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 
+
+/*
+ * HistoryPanel inherits from TwoPanel for a common design language. This panel will initially display all logs stored
+ * inside of the logs database. Filters allow for a refining in the logs displayed. The Logs themselves are stored in a
+ * LogPanel. A logPanel is used for a single day of logs and contains the date as a header and a JTable to list the
+ * information. From here a log can be selected to view more info.
+ */
 public class HistoryPanel extends TwoPanel implements FocusListener{
     JButton reset, fromButton, toButton;
     Image resetImg;
     JPanel filterPanel;
-    JLabel filterLabel, dateLabel, fromLabel, toLabel, typeLabel, actionLabel, titleLabel, sortlabel;
+    JLabel filterLabel, dateLabel, fromLabel, toLabel, typeLabel, actionLabel;
     JDatePicker fromDate, toDate;
-    JComboBox typeBox, actionBox, sortBox;
+    JComboBox typeBox, actionBox;
     JTextField titleField;
     JFormattedTextField fromText, toText;
     JScrollPane logScroll;
@@ -33,6 +40,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
     HistoryPanel(JPanel pane){
         super(pane);
 
+        //Changing some of the properties of TwoPanel to suit context better.
         contextPanel.remove(searchField);
         rightPanel.remove(optionPanel);
         addNew.setText("Apply Filter");
@@ -41,7 +49,8 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
         try{
             resetImg = ImageIO.read(new File("resources/reset.png"));
         }catch(IOException e){
-            System.out.println(e);
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Image files failed to load. No images will be available", "", JOptionPane.WARNING_MESSAGE);
+            resetImg = null;
         }
         reset.addActionListener(this::actionPerformedReset);
         c.fill = GridBagConstraints.BOTH;
@@ -160,15 +169,13 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
                 int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.5));
                 int width = 50;
                 int height = 50;
 
                 if (windowWidth < 1300 || windowHeight < 600) {
                     width = (int) (windowHeight * 0.0625);
-                    headerFont = (int)(Double.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
-                    bodyFont = (int)(Double.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
+                    headerFont = (int)(Integer.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    listFont = (int)(Integer.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
                 }
 
                 ComProps.buttonProperties(back, backImg, width, height, headerFont, true);
@@ -181,12 +188,10 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 ComProps.headingProperties(toLabel, headerFont);
                 ComProps.headingProperties(typeLabel, headerFont);
                 ComProps.headingProperties(actionLabel, headerFont);
-                ComProps.headingProperties(sortlabel, listFont);
                 fromText.setFont(new Font("Arial", Font.PLAIN, listFont));
                 toText.setFont(new Font("Arial", Font.PLAIN, listFont));
                 typeBox.setFont(new Font("Arial", Font.PLAIN, listFont));
                 actionBox.setFont(new Font("Arial", Font.PLAIN, listFont));
-                sortBox.setFont(new Font("Arial", Font.PLAIN, bodyFont));
 
             }
         });
@@ -278,8 +283,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 gridBag.setConstraints(log, c);
                 displayPanel.add(log);
             }
-//            repaint();
-//            revalidate();
 
         }
     }

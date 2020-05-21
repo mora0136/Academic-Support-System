@@ -6,6 +6,11 @@ import log.LogDB;
 import javax.swing.*;
 import java.sql.*;
 
+/*
+ * A talker between the GUI and database for uploads.
+ */
+
+
 public class UploadDB {
 
     public static Upload getUpload(int uploadID){
@@ -42,7 +47,7 @@ public class UploadDB {
 
     public static void addExistingUpload(Upload u, boolean isUpload, boolean isExisting){
         String sqlUpload, sqlAuthors, sqlFiles;
-        if(u.getUploadID() != 0){
+        if(isExisting){
             sqlUpload = "UPDATE uploads SET Title = ?,Description = ?, type = ?, Date = ?, cv = ?, resGate = ?, orcid = ?, inst = ?, publ = ?, wos = ?, gSch = ?, linIn = ?, scopus = ?, pure = ?, acad = ?, twit = ?, isUploaded = ? WHERE upload_ID = ?";
             sqlAuthors = "UPDATE upload_Authors SET contact_ID = ?, nameUsed = ? WHERE upload_ID = ?";
             sqlFiles = "UPDATE upload_Files SET File = ? WHERE upload_ID = ?";
@@ -65,17 +70,13 @@ public class UploadDB {
             pstmt.setBoolean(11, u.isgSch());pstmt.setBoolean(12, u.isLinIn());pstmt.setBoolean(13, u.isScopus());
             pstmt.setBoolean(14, u.isPure());pstmt.setBoolean(15, u.isAcad());pstmt.setBoolean(16, u.isTwit());
             //isUpload column defines if it has been uploaded or saved, so if the upload btn is pressed, then true
-            if(isUpload) {
-                pstmt.setBoolean(17, true);
-            }else{
-                pstmt.setBoolean(17, false);
-            }
+            pstmt.setBoolean(17, isUpload);
             //If the upload already exists then the update requires a primary key, uploadID
-            if(u.getUploadID() != 0){
+            if(isExisting){
                 pstmt.setInt(18, u.uploadID);
             }
 
-            pstmt.executeUpdate(); //Execute the statment
+            pstmt.executeUpdate(); //Execute the statement
             ResultSet rs = pstmt.getGeneratedKeys(); //generated keys has the row that was entered
             // if we are working with an upload that didn't exist before
             if (rs.next() && u.getUploadID() == 0) { //if we are working with an upload that didn't exist before

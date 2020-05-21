@@ -7,30 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/*
+ The representation of a log. A log can have either an Upload or Contact Associated with it. Log is instntiated with a ResultSet, so it is limited to being used with LogDB in it's current form, this can be changed if necessary.
+ */
+
+
 public class Log {
     int logID;
-    LocalDate date;
-    String type;
-    String action;
-    Object data; //Either Upload or Contact
-//    String description;
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object at) {
-        this.data = at;
-    }
-
-    //Deprecated
-//    Log(int logID, LocalDate time, String type, String action, String description){
-//        this.logID = logID;
-//        this.type = type;
-//        this.date = time;
-//        this.action = type;
-//        this.description = description;
-//    }
+    LocalDate date; //The date at which the log was recorded
+    String type; //Upload or Contact
+    String action; //What action the log has tracked
+    Object data; //Either Upload or Contact instantiations
 
     public Log(ResultSet rs) throws SQLException {
         this.logID = rs.getInt("log_ID");
@@ -41,17 +28,23 @@ public class Log {
         //Find associated data for its particular type
         if(this.type.equals("Upload")){
             int uploadID = rs.getInt("associate_ID");
-//            actionType = new Upload(uploadID, "Temp");
             data = UploadDB.getUpload(uploadID);
-//            description = data.toString();
         }else {
             int contactID = rs.getInt("associate_ID");
             ContactDB db = new ContactDB();
             data = db.getContactDetails(contactID);
-//            description = data.toString();
-//            System.out.println("Description");
         }
     }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object at) {
+        this.data = at;
+    }
+
+
     public int getLogID() {
         return logID;
     }
@@ -82,14 +75,6 @@ public class Log {
     public void setAction(String action) {
         this.action = action;
     }
-
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
 
     public String toString(){
         return String.valueOf(logID);

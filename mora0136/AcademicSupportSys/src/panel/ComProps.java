@@ -3,7 +3,11 @@ package panel;
 import javax.swing.*;
 import java.awt.*;
 
-//ComponentProperties
+/*
+ * To have a more consistant design language and reduce repeating methods, this class aims to achieve some of the common
+ * property settings that apply for a given 'J' component. It can be seen that settings like heading properties are
+ * simply just changing the font size and some are applying images.
+ */
 public class ComProps {
 
     public static void headingProperties(JLabel label, int fontSize){

@@ -18,14 +18,23 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+/*
+ LogPanel is the panel structure for a single day of logs. It composes the title/day of the logs, followed by a table
+ of the logs. This approach allows for multiple instances of these panels to be used to form a potentially endless
+ scrolling Panel inside of HistoryPanel for the visual display of logs. The table utilises a custom Table LogTableModel
+ to be able to present the information desired. Any time a Log is chosen from the table. A pop-up window is shown with a
+ non-editable view of that Log's associated data(Contact or Upload). This is currently limited to only showing the
+ newest data of that Contact or Upload, not the changes at the point of the log. This can be changed by adding more
+ tables to the database, but adds complexity and time consuming. This is already beyond the scope of the spec so it was
+ decided this was sufficient.
+ */
+
 public class LogPanel extends JPanel{
     JLabel day;
     JTable logTable;
     int mainFont = 32;
 
     public LogPanel(LocalDate date, List log){
-        GridBagLayout gb = new GridBagLayout();
-        GridBagConstraints c = new GridBagConstraints();
         setLayout(new BorderLayout());
         if(DAYS.between(date, LocalDate.now()) == 0){
             day = new JLabel("Today");

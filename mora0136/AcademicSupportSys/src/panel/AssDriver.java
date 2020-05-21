@@ -5,6 +5,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*
+ * The driver class which instantiates the opening window frame. The whole GUI utilises a cardLayout to display
+ * different Panels depending on the button pressed. The default view is the HomePanel.
+ */
+
 public class AssDriver {
     public static void main(String[] args) throws IOException, SQLException {
         JFrame frame = new JFrame("Academic Support System");
@@ -18,14 +23,13 @@ public class AssDriver {
         UploadPanel upload = new UploadPanel(cardPane);
         EditPanel edit = new EditPanel(cardPane);
         HistoryPanel history = new HistoryPanel(cardPane);
-        SettingPanel setting = new SettingPanel(cardPane);
+//        SettingPanel setting = new SettingPanel(cardPane);
         ContactsPanel contacts = new ContactsPanel(cardPane);
 
         cardPane.add(home, "Home");
         cardPane.add(upload, "Upload");
         cardPane.add(edit, "Edit");
         cardPane.add(history, "History");
-        cardPane.add(setting, "Settings");
         cardPane.add(contacts, "Contacts");
         frame.add(cardPane);
         //Systems with high DPI and more then 100% scaling will not utilise the proper minimum size()

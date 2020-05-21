@@ -16,8 +16,8 @@ public class HomePanel extends JPanel implements ActionListener {
     JPanel cardPane, buttonGroupTop, buttonGroupBottom;
     CardLayout cardLayout;
     //Instance variables of image and button allow for resizing to change dimensions as per window size
-    Image uploadImg, editImg, historyImg, settingImg, contactsImg;
-    JButton upload, edit, history, setting, contacts;
+    Image uploadImg, editImg, historyImg, exitImg, contactsImg;
+    JButton upload, edit, history, exit, contacts;
     HomePanel(JPanel pane){
         buttonGroupTop = new JPanel();
         buttonGroupBottom = new JPanel();
@@ -36,22 +36,27 @@ public class HomePanel extends JPanel implements ActionListener {
             editImg = ImageIO.read(new File("resources/edit.png"));
             historyImg = ImageIO.read(new File("resources/history.png"));
             contactsImg = ImageIO.read(new File("resources/contacts.png"));
-            settingImg = ImageIO.read(new File("resources/setting.png"));
+            exitImg = ImageIO.read(new File("resources/exit.png"));
         }catch(IOException io){
-            System.out.println(io);
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Image files failed to load. No images will be available", "", JOptionPane.WARNING_MESSAGE);
+            uploadImg = null;
+            editImg = null;
+            historyImg = null;
+            contactsImg = null;
+            exitImg = null;
         }
 
         buttonGroupTop.add(upload = new JButton("Upload"));
         buttonGroupTop.add(edit = new JButton("Edit"));
         buttonGroupTop.add(history = new JButton("History"));
         buttonGroupBottom.add(contacts = new JButton("Contacts"));
-        buttonGroupBottom.add(setting = new JButton("Settings"));
+        buttonGroupBottom.add(exit = new JButton("Exit"));
 
         upload.addActionListener(this);
         edit.addActionListener(this);
         history.addActionListener(this);
         contacts.addActionListener(this);
-        setting.addActionListener(this);
+        exit.addActionListener(this);
 
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(buttonGroupTop, c);
@@ -86,7 +91,7 @@ public class HomePanel extends JPanel implements ActionListener {
                     buttonProperties(edit, editImg, width, height, font, gridBag, c2);
                     buttonProperties(history, historyImg, width, height, font, gridBag, c2);
                     buttonProperties(contacts, contactsImg, width, height, font, gridBag, c2);
-                    buttonProperties(setting, settingImg, width, height, font, gridBag, c2);
+                    buttonProperties(exit, exitImg, width, height, font, gridBag, c2);
             }
         });
     }
@@ -106,8 +111,8 @@ public class HomePanel extends JPanel implements ActionListener {
             case "Contacts":
                 cardLayout.show(cardPane, "Contacts");
                 break;
-            case "Settings":
-                cardLayout.show(cardPane, "Settings");
+            case "Exit":
+                System.exit(1);
                 break;
             default:
                 System.out.print("error action not recognised");

@@ -3,8 +3,14 @@ package template;
 import javax.swing.*;
 import java.sql.*;
 
-public class TemplateDB {
+/*
+ * Much like LogDB and UploadDB, this is a simple talker between the GUI and database for template statements.
+ */
+public final class TemplateDB {
 
+    private TemplateDB(){
+
+    }
     public static DefaultListModel<Template> getTemplates(){
         DefaultListModel<Template> list = new DefaultListModel<>();
         String sql = "SELECT * FROM template WHERE isDeleted = false";
