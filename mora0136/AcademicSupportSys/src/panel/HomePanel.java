@@ -65,7 +65,6 @@ public class HomePanel extends JPanel implements ActionListener {
         gridBag.setConstraints(buttonGroupBottom,c);
         add(buttonGroupBottom);
 
-        //TO-DO declare get height and get width as variables.
         addComponentListener(new ComponentAdapter(){
             public void componentResized(ComponentEvent e){
 //                System.out.println("x="+getWidth()+", y="+getHeight()); // easily observe the current view port size
@@ -83,7 +82,7 @@ public class HomePanel extends JPanel implements ActionListener {
                     width = (windowWidth) / (1200/200);
                     height = (windowHeight) / (600/200);
                     width = (int)(getWidth()*0.16);
-                    font = (int)(Double.min(windowWidth /(1300/font), windowHeight/(600/font)));
+                    font = (Integer.min(windowWidth /(1300/font), windowHeight/(600/font)));
                     c2.insets = new Insets((int)(getHeight()*0.0333), (int)(getWidth()*0.0416), (int)(getHeight()*0.0333), (int)(getWidth()*0.0416));
 
                 }

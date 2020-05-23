@@ -55,7 +55,6 @@ public class Upload {
     public void setFiles(ResultSet rs){
         try {
             while (rs.next()) {
-                System.out.println("adding file");
                 attachedFiles.addElement(new File(rs.getString("File")));
             }
         }catch(SQLException e){

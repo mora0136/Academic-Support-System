@@ -21,7 +21,7 @@ public class UploadPanelDisabled extends UploadPanel{
         contactsListPanel.remove(notAddedContactList);
         contactsListPanel.remove(contactListScroll);
         SpringUtilities.makeCompactGrid(contactsListPanel, 2, 1, 0, 0, 5, 5);
-        //Remove the first element as this is displays the info of the drag feature
+        //Remove the first element as this is displays the info of the drag feature, this is not needed in this view
         DefaultListModel l = (DefaultListModel) attachedFileList.getModel();
         l.remove(0);
 
