@@ -45,18 +45,18 @@ public class UploadDB {
         return null;
     }
 
-    public static void addExistingUpload(Upload u, boolean isUpload, boolean isExisting){
-        String sqlUpload, sqlAuthors, sqlFiles;
+    public static int addExistingUpload(Upload u, boolean isUpload, boolean isExisting){
+        String sqlUpload, sqlAuthors, sqlFiles, deleteAuthors, deleteFiles;
         if(isExisting){
             sqlUpload = "UPDATE uploads SET Title = ?,Description = ?, type = ?, Date = ?, cv = ?, resGate = ?, orcid = ?, inst = ?, publ = ?, wos = ?, gSch = ?, linIn = ?, scopus = ?, pure = ?, acad = ?, twit = ?, isUploaded = ? WHERE upload_ID = ?";
-            sqlAuthors = "UPDATE upload_Authors SET contact_ID = ?, nameUsed = ? WHERE upload_ID = ?";
-            sqlFiles = "UPDATE upload_Files SET File = ? WHERE upload_ID = ?";
         }else{
             sqlUpload = "INSERT INTO uploads(Title,Description, type, Date, cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit, isUploaded) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            sqlAuthors = "INSERT INTO upload_Authors(contact_ID, nameUsed, upload_ID) VALUES(?,?,?)";
-            sqlFiles = "INSERT INTO upload_Files(File, upload_ID) VALUES(?,?)";
 
         }
+        sqlAuthors = "INSERT INTO upload_Authors(contact_ID, nameUsed, upload_ID) VALUES(?,?,?)";
+        sqlFiles = "INSERT INTO upload_Files(File, upload_ID) VALUES(?,?)";
+        deleteAuthors = "DELETE FROM upload_Authors WHERE upload_ID = "+u.getUploadID();
+        deleteFiles = "DELETE FROM upload_Files WHERE upload_ID = "+u.getUploadID();
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sqlUpload, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, u.getTitle());
@@ -73,7 +73,7 @@ public class UploadDB {
             pstmt.setBoolean(17, isUpload);
             //If the upload already exists then the update requires a primary key, uploadID
             if(isExisting){
-                pstmt.setInt(18, u.uploadID);
+                pstmt.setInt(18, u.getUploadID());
             }
 
             pstmt.executeUpdate(); //Execute the statement
@@ -82,32 +82,44 @@ public class UploadDB {
             if (rs.next() && u.getUploadID() == 0) { //if we are working with an upload that didn't exist before
                 u.setUploadID(rs.getInt(1)); //Allows for authors and files to be associated with upload
             }
+
+            //Delete any previous upload. This method is inconsistent with the approach of setting the file to deleted.
+            //But this is done to make this system easier to implement.
+            PreparedStatement pstmtDeleteAuthors = conn.prepareStatement(deleteAuthors);
+            pstmtDeleteAuthors.executeUpdate();
+            PreparedStatement pstmtDeleteFiles = conn.prepareStatement(deleteFiles);
+            pstmtDeleteFiles.executeUpdate();
+
+            //Delete all previous contacts in db before
             //add in each contact into upload_Authors, associating it with the upload.
             for (int i = 0; i < u.addedContacts.getSize(); i++) {
                 PreparedStatement pstmtAuthors = conn.prepareStatement(sqlAuthors);
                 Contact c = (Contact) u.addedContacts.getElementAt(i);
                 pstmtAuthors.setInt(1, c.getContact_ID());
                 pstmtAuthors.setBoolean(2, true);
-                pstmtAuthors.setInt(3, u.uploadID);
+                pstmtAuthors.setInt(3, u.getUploadID());
                 pstmtAuthors.executeUpdate();
             }
+
+            //Delete all previous files in db before
+
             //add in each file into upload_Files, associating it with the upload.
             for (int i = 0; i < u.attachedFiles.getSize(); i++) {
                 PreparedStatement pstmtFiles = conn.prepareStatement(sqlFiles);
                 pstmtFiles.setString(1, u.attachedFiles.getElementAt(i).toString());
-                pstmtFiles.setInt(2, u.uploadID);
+                pstmtFiles.setInt(2, u.getUploadID());
                 pstmtFiles.executeUpdate();
             }
             if(isUpload) {
-                LogDB.logUploadedUpload(u.uploadID);
+                LogDB.logUploadedUpload(u.getUploadID());
             }else{
-                LogDB.logSavedUpload(u.uploadID);
+                LogDB.logSavedUpload(u.getUploadID());
             }
 
         } catch (SQLException et) {
             System.out.println(et.getMessage());
         }
-
+        return u.getUploadID();
     }
 
     public static DefaultListModel getAllEditableUploads(){

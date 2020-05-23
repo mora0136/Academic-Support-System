@@ -38,7 +38,7 @@ import java.util.Date;
  * information can be found where they exist.
  */
 
-public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
+public class UploadPanel extends JPanel implements DocumentListener, FocusListener{
     CardLayout cardLayout;
     JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel,
             saveUploadPanel, filePanel, typeDatePanel, fileTypeDatePanel, contactsListPanel, titlePanel, descPanel;
@@ -55,10 +55,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JList attachedFileList, notAddedContactList, addedContactsList, templateStatement;
     JCheckBox cv, resGate, orcid, inst, publ, wos, gSch, linIn, scopus, pure, acad, twit;
     JFileChooser fc;
-    int uploadID = 0; //Always 0 unless upload has been selected from edit
     int mainFont = 32;
-    ContactDB contactDB; //Should be changed to static
-    Upload currentUpload = new Upload();
+    ContactDB contactDB;
+    Upload currentUpload = new Upload(); // If the upload already exists, it is stored in here so that the DB can update
     JSplitPane sp;
 
     public UploadPanel(JPanel pane){
@@ -371,12 +370,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         add(leftPanel);
         add(rightPanel);
 
-        //The following defines what should happen to a component when the window is resized.
+        //The following defines what should happen to a component when the window is resized. or this panel is shown
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
-                if(uploadID == 0){
+                if(currentUpload.getUploadID() == 0){
                     resetAll();
                 }
             }
@@ -459,7 +458,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
         if(attachedFileList.getModel().getSize() > 1) {
             DefaultListModel f = (DefaultListModel) attachedFileList.getModel();
-            f.removeRange(1, f.getSize() - 1);
+            if(this instanceof UploadPanelDisabled) { //The fileList in disabled view contains files at index 0 we want to remove
+                f.removeRange(0, f.getSize() - 1);
+            }else{
+                f.removeRange(1, f.getSize() - 1);
+            }
         }
 
         addedContacts.removeAllElements();
@@ -480,21 +483,17 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
      */
     public void setToExistingUpload(int uploadID){
         resetAll();
-        this.uploadID = uploadID;
         currentUpload = UploadDB.getUpload(uploadID);
         titleField.setText(currentUpload.getTitle());
         descriptionTextArea.setText(currentUpload.getDescription());
         selectTypeComboBox.setSelectedItem(currentUpload.getType());
-
-        for(int i = 0; i < currentUpload.getAttachedFiles().getSize(); i++){
+        for (int i = 0; i < currentUpload.getAttachedFiles().getSize(); i++) {
             ((DefaultListModel<File>) attachedFileList.getModel()).addElement((File) currentUpload.getAttachedFiles().getElementAt(i));
         }
 
-        //Why wont it set the date?
+
         LocalDate date = currentUpload.getDate();
-//        if(date != null) {
-            publishDatePanel.getModel().setDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-//        }
+        publishDatePanel.getModel().setDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
         for(int i = 0; i< currentUpload.getAddedContacts().getSize(); i++){
             addedContacts.addElement((Contact) currentUpload.getAddedContacts().getElementAt(i));
             displayedContacts.removeElement(currentUpload.getAddedContacts().getElementAt(i));
@@ -508,9 +507,9 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
 
     public void actionPerformedBack(ActionEvent e){
-        if(uploadID == 0) {
+        if(currentUpload.getUploadID() == 0) {
             int n = JOptionPane.showConfirmDialog(this,
-                    "Would you like to return to the Home Panel?\nAll unsaved data will be erased.",
+                    "NOTE: All unsaved data will be erased\nWould you like to return to the Home Panel?",
                     "Continue Back?",
                     JOptionPane.YES_NO_OPTION);
             if(n == JOptionPane.OK_OPTION){
@@ -533,7 +532,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             if(titleField.getText().isBlank()){
                 JOptionPane.showMessageDialog(this, "Please Enter a Title");
                 titleField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-                return; // exit the upload action, fields still required
+                return; // exit the upload action because fields still required
             }else if(descriptionTextArea.getText().isBlank()){
                 JOptionPane.showMessageDialog(this, "Please Enter a Description");
                 descriptionTextArea.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
@@ -557,7 +556,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             if(titleField.getText().isBlank()){
                 JOptionPane.showMessageDialog(this, "Please Enter a Title");
                 titleField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-                return; // exit the save action, fields still required
+                return; // exit the save action because fields still required
             }
         }
 
@@ -584,7 +583,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         currentUpload.setgSch(gSch.isSelected());currentUpload.setLinIn(linIn.isSelected());currentUpload.setScopus(scopus.isSelected());
         currentUpload.setPure(pure.isSelected());currentUpload.setAcad(acad.isSelected());currentUpload.setTwit(twit.isSelected());
 
-        UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, uploadID != 0);
+        int uploadID = UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, currentUpload.getUploadID() != 0);
+        currentUpload.setUploadID(uploadID);
         if(e.getSource() == uploadBtn){
             cardLayout.show(cardPane, "Home");
             JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully Upload!", "Successful Upload", JOptionPane.PLAIN_MESSAGE);
@@ -613,7 +613,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             descriptionTextArea.requestFocusInWindow();
         }else {
             if(templates.getElementAt(templateStatement.getSelectedIndex()).getTemplateID() == -1){
-
                 JOptionPane.showConfirmDialog(null, new TemplatePanel(), "Edit Templates", JOptionPane.PLAIN_MESSAGE);
                 templates.removeAllElements();
                 DefaultListModel temp = TemplateDB.getTemplates();
@@ -719,7 +718,6 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         }else{
         }
     }
-
 }
 
 /**
@@ -767,11 +765,13 @@ class FileListTransferHandler extends TransferHandler {
  */
 class FileRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if(value == null) { // Any element that is null is considered as a placeholder for the drag file info
+        if(value == null) { // Any element that is null is considered as a placeholder for the drag file info row
             try {
                 super.getListCellRendererComponent(list, value, index, false, false);
-                Image i = ImageIO.read(new File("resources/addFile.png"));
-                i = i.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+                Image addFile = ImageIO.read(new File("resources/addFile.png"));
+                //Unfortunately I could not find a way to scale this image according to the size of the window.
+                //This means at the smallest view it takes up more space then would be liked.
+                Image i = addFile.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
                 setIcon(new ImageIcon(i));
                 setText("Drag a file to attach");
                 setToolTipText("Drag a file to attach");

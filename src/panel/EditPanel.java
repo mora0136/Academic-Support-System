@@ -84,7 +84,6 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         cardLayout.show(cardPane, "Editting");
     }
 
-    //Consider moving/marking info rather then deleting?
     public void actionPerformedDelete(ActionEvent e){
         UploadDB.deleteUpload(editList.getSelectedValue());
 

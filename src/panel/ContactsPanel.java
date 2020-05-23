@@ -148,19 +148,21 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
                 listOfContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
             }
+            //Since contact was deleted and no contact is selected, make edit and delete buttons disabled
             contactInfoPanel.setTextEmpty();
-        }else if(e.getActionCommand().equals("Cancel")){ // reset contact fields to what it was previously
+            edit.setEnabled(false);
+            delete.setEnabled(false);
+
+        }else if(e.getActionCommand().equals("Cancel")){ // reset contact fields to what it was previously before any changes were made.
             try {
                 contactInfoPanel.setContact(contactList.getModel().getElementAt(contactList.getSelectedIndex()));
             }catch(ArrayIndexOutOfBoundsException a){
                 contactInfoPanel.setTextEmpty();
             }
         }
-        contactInfoPanel.setEditable(false);
-        edit.setEnabled(false);
-        setEditToSave(false);
-        delete.setEnabled(false);
         delete.setText("Delete");
+        contactInfoPanel.setEditable(false);
+        setEditToSave(false);
         contactList.setEnabled(true);
         addNew.setEnabled(true);
     }

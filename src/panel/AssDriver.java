@@ -2,8 +2,6 @@ package panel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.sql.SQLException;
 
 /*
  * The driver class which instantiates the opening window frame. The whole GUI utilises a cardLayout to display
@@ -11,7 +9,7 @@ import java.sql.SQLException;
  */
 
 public class AssDriver {
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args){
         JFrame frame = new JFrame("Academic Support System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -23,7 +21,6 @@ public class AssDriver {
         UploadPanel upload = new UploadPanel(cardPane);
         EditPanel edit = new EditPanel(cardPane);
         HistoryPanel history = new HistoryPanel(cardPane);
-//        SettingPanel setting = new SettingPanel(cardPane);
         ContactsPanel contacts = new ContactsPanel(cardPane);
 
         cardPane.add(home, "Home");
