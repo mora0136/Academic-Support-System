@@ -4,7 +4,6 @@ import log.Log;
 import log.LogDB;
 import log.LogPanel;
 import org.jdatepicker.JDatePicker;
-import suffixtree.SuffixTrie;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -35,7 +34,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
     JFormattedTextField fromText, toText;
     JScrollPane logScroll;
     int mainFont = 32;
-    SuffixTrie st;
 
     HistoryPanel(JPanel pane){
         super(pane);
@@ -238,7 +236,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
     }
 
     public void displayLogs(){
-        st = new SuffixTrie();
         displayPanel.removeAll();
         displayPanel.setLayout(gridBag);
         c.fill = GridBagConstraints.BOTH;
@@ -276,9 +273,6 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
                 l = LogDB.getLogsForDay(dateTo);
             }
             if(!l.isEmpty()) {
-                for(Log li : l){
-                    st.insert(li.getData().toString(), li);
-                }
                 JPanel log = new LogPanel(dateTo, l);
                 gridBag.setConstraints(log, c);
                 displayPanel.add(log);
