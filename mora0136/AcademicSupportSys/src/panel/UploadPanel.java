@@ -59,6 +59,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     ContactDB contactDB;
     Upload currentUpload = new Upload(); // If the upload already exists, it is stored in here so that the DB can update
     JSplitPane sp;
+    boolean isEditView = false;
 
     public UploadPanel(JPanel pane){
         this.cardPane = pane;
@@ -108,10 +109,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //Define the back button
         backBtn = new JButton("Back");
         backBtn.addActionListener(this::actionPerformedBack);
+        backBtn.setMnemonic('b');
         backResetPanel.add(backBtn);
         //Define the Reset Button
         resetBtn = new JButton("Reset");
         resetBtn.addActionListener(this::actionPerformedReset);
+        resetBtn.setMnemonic('r');
         backResetPanel.add(resetBtn);
 
         //A generic inset that will apply until next changed
@@ -122,7 +125,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         gridBag.setConstraints(titleLabel, c);
         titlePanel.add(titleLabel);
         titleField = new JTextField();
-        c.weightx = 5;
+        titleField.setColumns(15);
+        c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(titleField, c);
@@ -276,6 +280,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         searchField.setForeground(Color.GRAY);
         searchField.getDocument().addDocumentListener((DocumentListener) this);
         searchField.addFocusListener(this);
+        searchField.setToolTipText("Search for a Contact to Add");
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.weightx = 0.9;
         gridBag.setConstraints(searchField, c);
@@ -356,10 +361,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //Defining Save btn
         saveBtn = new JButton("Save");
         saveBtn.addActionListener(this::actionPerformedUpdateDB);
+        saveBtn.setMnemonic('s');
         saveUploadPanel.add(saveBtn);
         //Defining Upload btn
         uploadBtn = new JButton("Upload");
         uploadBtn.addActionListener(this::actionPerformedUpdateDB);
+        uploadBtn.setMnemonic('u');
         saveUploadPanel.add(uploadBtn);
 
         //Adding to the rightPanel
@@ -370,15 +377,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         add(leftPanel);
         add(rightPanel);
 
-        //The following defines what should happen to a component when the window is resized. or this panel is shown
+        //The following defines what should happen to a component when the window is resized
         addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-                if(currentUpload.getUploadID() == 0){
-                    resetAll();
-                }
-            }
             @Override
             public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
@@ -447,6 +447,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
      * Sets all components in the window to their default values
      */
     public void resetAll(){
+        currentUpload = new Upload();
         selectTypeComboBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
         titleField.setText("");
@@ -456,13 +457,11 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         DateModel d = publishDatePanel.getModel();
         d.setValue(new Date(System.currentTimeMillis()));
 
-        if(attachedFileList.getModel().getSize() > 1) {
-            DefaultListModel f = (DefaultListModel) attachedFileList.getModel();
-            if(this instanceof UploadPanelDisabled) { //The fileList in disabled view contains files at index 0 we want to remove
-                f.removeRange(0, f.getSize() - 1);
-            }else{
-                f.removeRange(1, f.getSize() - 1);
-            }
+        DefaultListModel f = (DefaultListModel) attachedFileList.getModel();
+        if(this instanceof UploadPanelDisabled && f.getSize() > 0) { //The fileList in disabled view contains files at index 0 we want to remove
+            f.removeAllElements();
+        }else if(f.getSize() > 1){ //Boundary checking to ensure aren't removing range not in bounds.
+            f.removeRange(1, f.getSize()-1); //Don't include first element, as this is the tip to drag file
         }
 
         addedContacts.removeAllElements();
@@ -483,6 +482,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
      */
     public void setToExistingUpload(int uploadID){
         resetAll();
+        isEditView = true;
         currentUpload = UploadDB.getUpload(uploadID);
         titleField.setText(currentUpload.getTitle());
         descriptionTextArea.setText(currentUpload.getDescription());
@@ -507,7 +507,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
 
     public void actionPerformedBack(ActionEvent e){
-        if(currentUpload.getUploadID() == 0) {
+        if(!isEditView) {
             int n = JOptionPane.showConfirmDialog(this,
                     "NOTE: All unsaved data will be erased\nWould you like to return to the Home Panel?",
                     "Continue Back?",

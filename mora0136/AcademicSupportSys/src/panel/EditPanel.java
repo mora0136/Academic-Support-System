@@ -33,11 +33,11 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
         searchField.getDocument().addDocumentListener(this);
         searchField.addFocusListener(this);
+        searchField.setToolTipText("Search for a Saved Upload");
 
         //Get some type of list from upload where isUploaded is false
         editable = new DefaultListModel<>();
         editList = new JList<>(editable);
-        populateListToEdit(); //
         editList.addListSelectionListener(this::valueChanged);
         scrollContactPanel = new JScrollPane(editList);
 
@@ -53,7 +53,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
             @Override
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
-                populateListToEdit();
+                resetAll();
             }
 
             @Override
@@ -73,7 +73,11 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
     @Override
     protected void resetAll() {
+        displayUpload.resetAll();
         editList.clearSelection();
+        DefaultListModel l = (DefaultListModel) editList.getModel();
+        l.removeAllElements();
+        populateListToEdit();
     }
 
     public void actionPerformedEdit(ActionEvent e){

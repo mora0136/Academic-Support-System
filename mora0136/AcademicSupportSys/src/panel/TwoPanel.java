@@ -66,6 +66,7 @@ abstract class TwoPanel extends JPanel{
 
         back = new JButton("Back");
         back.addActionListener(this::actionPerformedBack);
+        back.setMnemonic('b');
 
         searchField = new JTextField("Search...");
         searchField.setFont(new Font("Arial", Font.PLAIN, 32));
@@ -73,14 +74,17 @@ abstract class TwoPanel extends JPanel{
 
         addNew = new JButton("Add New");
         addNew.addActionListener(this::actionPerformedNew);
+        addNew.setMnemonic('a');
 
         edit = new JButton("Edit");
         edit.setEnabled(false);
         edit.addActionListener(this::actionPerformedEdit);
+        edit.setMnemonic('e');
 
         delete = new JButton("Delete");
         delete.setEnabled(false);
         delete.addActionListener(this::actionPerformedDelete);
+        delete.setMnemonic('d');
 
         leftPanel.setLayout(new BorderLayout());
         rightPanel.setLayout(new BorderLayout());

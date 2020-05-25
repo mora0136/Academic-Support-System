@@ -51,6 +51,7 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             resetImg = null;
         }
         reset.addActionListener(this::actionPerformedReset);
+        reset.setMnemonic('r');
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(0,0,0,0);
         c.weightx = 1;
@@ -279,6 +280,8 @@ public class HistoryPanel extends TwoPanel implements FocusListener{
             }
 
         }
+        revalidate();
+        repaint();
     }
 
     //Allow for the display of the "Search..." text on the text area while not in focus
