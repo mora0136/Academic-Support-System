@@ -65,6 +65,7 @@ public class ContactDisplayPanel extends JPanel{
         add(email);
         emailField = new JTextField();
         emailField.setEditable(false);
+        emailField.setToolTipText("example@mail.com");
         c.insets = bottom;
         gridBag.setConstraints(emailField, c);
         add(emailField);
@@ -75,6 +76,7 @@ public class ContactDisplayPanel extends JPanel{
         add(phone);
         phoneField = new JTextField();
         phoneField.setEditable(false);
+        phoneField.setToolTipText("Must contain 8 or 10 digits");
         c.insets = bottom;
         gridBag.setConstraints(phoneField, c);
         add(phoneField);

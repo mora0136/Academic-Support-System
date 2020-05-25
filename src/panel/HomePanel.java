@@ -53,10 +53,14 @@ public class HomePanel extends JPanel implements ActionListener {
         buttonGroupBottom.add(exit = new JButton("Exit"));
 
         upload.addActionListener(this);
+        upload.setMnemonic('u');
         edit.addActionListener(this);
+        edit.setMnemonic('e');
         history.addActionListener(this);
+        history.setMnemonic('h');
         contacts.addActionListener(this);
         exit.addActionListener(this);
+        exit.setMnemonic('e');
 
         c.gridwidth = GridBagConstraints.REMAINDER;
         gridBag.setConstraints(buttonGroupTop, c);

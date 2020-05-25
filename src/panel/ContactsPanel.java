@@ -31,6 +31,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         contactDB = new ContactDB();
         searchField.getDocument().addDocumentListener(this);
         searchField.addFocusListener(this);
+        searchField.setToolTipText("Search for a Contacts Name");
 
         listOfContacts = contactDB.getListModel();
         contactList = new JList<>(listOfContacts);
@@ -71,11 +72,11 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         contactList.setEnabled(false);
 
         //Alter the edit button to suit the context, in this case change to save;
-        setEditToSave(true);
+        setEditToSave();
         edit.setEnabled(true);
 
         //Change delete to suit the context
-        delete.setText("Cancel");
+        setDeleteToCancel();
         delete.setEnabled(true);
 
         addNew.setEnabled(false);
@@ -90,15 +91,17 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         switch (e.getActionCommand()) {
             case "Edit":
                 contactInfoPanel.setEditable(true);
-                contactList.setEnabled(false); // Do not allow for the selection og a different contact
-                delete.setText("Cancel"); //Change so it suits the context. Cannot delete from within edit mode
-                setEditToSave(true);
+                contactList.setEnabled(false); // Do not allow for the selection of a different contact
+                setDeleteToCancel();
+                setEditToSave();
                 addNew.setEnabled(false);
                 break;
             case "Save":
                 //Error checking on Email and Phone to ensure correct format
                 String[] details = contactInfoPanel.getTextFields();
-                if(!contactInfoPanel.isValidEmail()) {
+                if(details[0].isBlank() || details[1].isBlank()){
+                    JOptionPane.showMessageDialog(this, "No name was given, please enter a name.");
+                }else if(!contactInfoPanel.isValidEmail()) {
                     JOptionPane.showMessageDialog(this, "the email \""+details[2]+"\" entered was not valid.");
                 }else if(!contactInfoPanel.isValidPhone()) {
                     JOptionPane.showMessageDialog(this, "The phone entered was not valid");
@@ -126,10 +129,11 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                     contactList.setSelectedIndex(indexOfCurrentContact);
                     contactList.setEnabled(true);
 
-                    setEditToSave(false);
+                    setSaveToEdit();
+                    setCancelToDelete();
+
                     edit.setEnabled(false);
                     delete.setEnabled(false);
-                    delete.setText("Delete");
                     addNew.setEnabled(true);
                     break;
                 }
@@ -157,12 +161,16 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             try {
                 contactInfoPanel.setContact(contactList.getModel().getElementAt(contactList.getSelectedIndex()));
             }catch(ArrayIndexOutOfBoundsException a){
+                //There was no previously selected contact, so set the fields and buttons appropriately
                 contactInfoPanel.setTextEmpty();
+                delete.setEnabled(false);
+                edit.setEnabled(false);
             }
         }
-        delete.setText("Delete");
+
         contactInfoPanel.setEditable(false);
-        setEditToSave(false);
+        setCancelToDelete();
+        setSaveToEdit();
         contactList.setEnabled(true);
         addNew.setEnabled(true);
     }
@@ -243,17 +251,30 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
 
     /**
      * Change the edit button to a save button
-     * @param isSave true if the button is to shown as save
      */
-    private void setEditToSave(boolean isSave) {
-        if(isSave){
-            edit.setText("Save");
-            editImg = saveImg;
-        }else{
-            edit.setText("Edit");
-            editImg = tempImg;
-        }
+    private void setEditToSave() {
+        edit.setText("Save");
+        editImg = saveImg;
+        edit.setMnemonic('s');
         int font = Integer.min(Integer.min(getWidth() /(1300/32), getHeight()/(600/32)), 32);
         ComProps.buttonProperties(edit, editImg, (int)(getHeight() * 0.0625), 50, font, true);
+    }
+
+    private void setSaveToEdit(){
+        edit.setText("Edit");
+        editImg = tempImg;
+        edit.setMnemonic('e');
+        int font = Integer.min(Integer.min(getWidth() /(1300/32), getHeight()/(600/32)), 32);
+        ComProps.buttonProperties(edit, editImg, (int)(getHeight() * 0.0625), 50, font, true);
+    }
+
+    private void setDeleteToCancel(){
+        delete.setText("Cancel");
+        delete.setMnemonic('c');
+    }
+
+    private void setCancelToDelete(){
+        delete.setText("Delete");
+        delete.setMnemonic('d');
     }
 }
