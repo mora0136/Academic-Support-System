@@ -9,7 +9,7 @@ import java.awt.*;
  */
 
 public class AssDriver {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         JFrame frame = new JFrame("Academic Support System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -33,7 +33,7 @@ public class AssDriver {
         //target system is 1920x1080 displays, a typical academic workstation
         frame.setMinimumSize(new Dimension(622, 350)); // minimum size 16:9
         frame.setSize(1280, 720); //Default to 16:9 HD
-        frame.setExtendedState( frame.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
 }

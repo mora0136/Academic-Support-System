@@ -16,18 +16,18 @@ import java.awt.event.ComponentEvent;
  displaying a contact any time it is necessary. For example inside ContactPanel and HistoryPanel when a contact
  is selected.
  */
-public class ContactDisplayPanel extends JPanel{
+public class ContactDisplayPanel extends JPanel {
     JTextField givenNameField, lastNameField, emailField, phoneField;
     Contact c;
     int mainFont = 32;
     Insets top, bottom;
 
-    public ContactDisplayPanel(Contact c){
+    public ContactDisplayPanel(Contact c) {
         this();
         setContact(c);
     }
 
-    public ContactDisplayPanel(){
+    public ContactDisplayPanel() {
         //Output area when a contact is selected or a new one is to added
         GridBagLayout gridBag = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -83,36 +83,50 @@ public class ContactDisplayPanel extends JPanel{
 
         emailField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) { validateEmail(); }
+            public void insertUpdate(DocumentEvent e) {
+                validateEmail();
+            }
+
             @Override
-            public void removeUpdate(DocumentEvent e) { validateEmail(); }
+            public void removeUpdate(DocumentEvent e) {
+                validateEmail();
+            }
+
             @Override
-            public void changedUpdate(DocumentEvent e) {            }
+            public void changedUpdate(DocumentEvent e) {
+            }
         });
 
         phoneField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) { validatePhone(); }
+            public void insertUpdate(DocumentEvent e) {
+                validatePhone();
+            }
+
             @Override
-            public void removeUpdate(DocumentEvent e) { validatePhone(); }
+            public void removeUpdate(DocumentEvent e) {
+                validatePhone();
+            }
+
             @Override
-            public void changedUpdate(DocumentEvent e) { }
+            public void changedUpdate(DocumentEvent e) {
+            }
         });
 
-        addComponentListener(new ComponentAdapter(){
-            public void componentResized(ComponentEvent e){
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
                 int windowWidth = getParent().getParent().getWidth();
                 int windowHeight = getParent().getParent().getHeight();
                 int headerFont = mainFont;
-                int listFont = (int)(mainFont*(0.75));
+                int listFont = (int) (mainFont * (0.75));
                 int borderHeight = 40;
                 int borderWidth = 20;
 
                 if (windowWidth < 1000 || windowHeight < 500) {
-                    borderHeight = (int) (borderHeight / (1000/40));
-                    borderWidth = (int)(windowWidth / (500/20));
-                    headerFont = (int)(Double.min(windowWidth /(1000/headerFont), windowHeight/(500/headerFont)));
-                    listFont = (int)(Double.min(windowWidth/(1000/listFont), windowHeight/(500/listFont)));
+                    borderHeight = (int) (borderHeight / (1000 / 40));
+                    borderWidth = (int) (windowWidth / (500 / 20));
+                    headerFont = (int) (Double.min(windowWidth / (1000 / headerFont), windowHeight / (500 / headerFont)));
+                    listFont = (int) (Double.min(windowWidth / (1000 / listFont), windowHeight / (500 / listFont)));
                 }
 
                 setBorder(BorderFactory.createEmptyBorder(borderHeight, borderWidth, borderHeight, borderWidth));
@@ -134,7 +148,7 @@ public class ContactDisplayPanel extends JPanel{
         mainFont = size;
     }
 
-    public void setContact(Contact c){
+    public void setContact(Contact c) {
         this.c = c;
         givenNameField.setText(c.getName());
         lastNameField.setText(c.getSurname());
@@ -142,7 +156,7 @@ public class ContactDisplayPanel extends JPanel{
         phoneField.setText(c.getPhone());
     }
 
-    public void setEditable(boolean isEdit){
+    public void setEditable(boolean isEdit) {
         givenNameField.setEditable(isEdit);
         lastNameField.setEditable(isEdit);
         emailField.setEditable(isEdit);
@@ -150,43 +164,43 @@ public class ContactDisplayPanel extends JPanel{
     }
 
 
-    public void setTextEmpty(){
+    public void setTextEmpty() {
         givenNameField.setText("");
         lastNameField.setText("");
         emailField.setText("");
         phoneField.setText("");
     }
 
-    public String[] getTextFields(){
+    public String[] getTextFields() {
         return new String[]{givenNameField.getText(), lastNameField.getText(), emailField.getText(), phoneField.getText()};
     }
 
-    public void validateEmail(){
-        if(!isValidEmail()){
+    public void validateEmail() {
+        if (!isValidEmail()) {
             emailField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-        }else{
+        } else {
             emailField.setBorder(UIManager.getBorder("TextField.border"));
         }
     }
 
-    public void validatePhone(){
-        if(!isValidPhone()){
+    public void validatePhone() {
+        if (!isValidPhone()) {
             phoneField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-        }else{
+        } else {
             phoneField.setBorder(UIManager.getBorder("TextField.border"));
         }
     }
 
-    public boolean isValidEmail(){
-        if(emailField.getText().isEmpty()) {
+    public boolean isValidEmail() {
+        if (emailField.getText().isEmpty()) {
             return true;
         }
         String regexTut = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return emailField.getText().matches(regexTut);
     }
 
-    public boolean isValidPhone(){
-        if(phoneField.getText().isEmpty()) {
+    public boolean isValidPhone() {
+        if (phoneField.getText().isEmpty()) {
             return true;
         }
         String regex = "^(?=[0-9]*$)(?:.{8}|.{10})$";

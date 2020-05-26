@@ -14,7 +14,7 @@ import java.awt.event.*;
 
 /*
  * The view in which an address book of the contacts saved are shown. This panel inherits from TwoPanel, allowing for
- * the repeating of a common design language, more informatin can be found in twoPanel. It allows for contacts to be
+ * the repeating of a common design language, more information can be found in twoPanel. It allows for contacts to be
  * added, edited, saved and deleted. A suffix Trie is implemented to assist user's in finding their desired contact.
  * The searching of which is instantaneous due to document Listeners.
  */
@@ -26,7 +26,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     DefaultListModel<Contact> listOfContacts;
     ContactDisplayPanel contactInfoPanel;
 
-    ContactsPanel(JPanel pane){
+    ContactsPanel(JPanel pane) {
         super(pane);
         contactDB = new ContactDB();
         searchField.getDocument().addDocumentListener(this);
@@ -62,7 +62,15 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
 
     @Override
     protected void resetAll() {
+        contactInfoPanel.setTextEmpty();
+        contactInfoPanel.setEditable(false);
         contactList.clearSelection();
+        contactList.setEnabled(true);
+        setSaveToEdit();
+        edit.setEnabled(false);
+        setCancelToDelete();
+        delete.setEnabled(false);
+        addNew.setEnabled(true);
     }
 
     public void actionPerformedNew(ActionEvent e) {
@@ -83,8 +91,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     }
 
     /**
-     * A contact has been selected and the edit button has been hit. This button doubles as a save and edit buttons
-     * The code in setEditToSave() shows how the icon and text change.
+     * A contact has been selected and the edit button has been hit. This button doubles as a save and edit button
      * @param e
      */
     public void actionPerformedEdit(ActionEvent e) {
@@ -97,19 +104,19 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
                 addNew.setEnabled(false);
                 break;
             case "Save":
-                //Error checking on Email and Phone to ensure correct format
+                //Error checking on Email and Phone to ensure correct format before entering into database
                 String[] details = contactInfoPanel.getTextFields();
-                if(details[0].isBlank() || details[1].isBlank()){
+                if (details[0].isBlank() || details[1].isBlank()) {
                     JOptionPane.showMessageDialog(this, "No name was given, please enter a name.");
-                }else if(!contactInfoPanel.isValidEmail()) {
-                    JOptionPane.showMessageDialog(this, "the email \""+details[2]+"\" entered was not valid.");
-                }else if(!contactInfoPanel.isValidPhone()) {
+                } else if (!contactInfoPanel.isValidEmail()) {
+                    JOptionPane.showMessageDialog(this, "the email \"" + details[2] + "\" entered was not valid.");
+                } else if (!contactInfoPanel.isValidPhone()) {
                     JOptionPane.showMessageDialog(this, "The phone entered was not valid");
-                }else{
+                } else {
                     contactInfoPanel.setEditable(false);
                     if (contactSelected == 0) {
                         contactSelected = contactDB.addContact(details[0], details[1], details[2], details[3]);
-                        LogDB.logNewContact(contactSelected);
+                        LogDB.logAddedContact(contactSelected);
                     } else {
                         contactDB.updateContact(details[0], details[1], details[2], details[3], contactSelected);
                         LogDB.logSavedContact(contactSelected);
@@ -141,11 +148,16 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     }
 
     /**
-     * Any time a contact has been selected and delete is then pressed
+     * Any time a contact has been selected and delete is then pressed.
+     * This button doubles as a cancel and a delete button.
      * @param e
      */
     public void actionPerformedDelete(ActionEvent e) {
         if (e.getActionCommand().equals("Delete")) {
+            int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this contact?", "Are you sure?", JOptionPane.YES_NO_OPTION);
+            if(n == JOptionPane.NO_OPTION) {
+                return;
+            }
             contactDB.deleteContact(contactSelected);
             LogDB.logDeletedContact(contactSelected);
             listOfContacts.removeAllElements();
@@ -157,10 +169,10 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
             edit.setEnabled(false);
             delete.setEnabled(false);
 
-        }else if(e.getActionCommand().equals("Cancel")){ // reset contact fields to what it was previously before any changes were made.
+        } else if (e.getActionCommand().equals("Cancel")) { // reset contact fields to what it was previously before any changes were made.
             try {
                 contactInfoPanel.setContact(contactList.getModel().getElementAt(contactList.getSelectedIndex()));
-            }catch(ArrayIndexOutOfBoundsException a){
+            } catch (ArrayIndexOutOfBoundsException a) {
                 //There was no previously selected contact, so set the fields and buttons appropriately
                 contactInfoPanel.setTextEmpty();
                 delete.setEnabled(false);
@@ -194,7 +206,7 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         }
     }
 
-    //Any text entry into JTextField will search for the contact desired.
+    //Any text entry into searchField will search for the contact desired.
     @Override
     public void insertUpdate(DocumentEvent e) {
         search();
@@ -226,11 +238,11 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
     }
 
     /**
-     * Remove the Search... and set the text being added to normal
+     * Remove the Search... and set the text being added to normal properties
      * @param e
      */
     public void focusGained(FocusEvent e) {
-        if(searchField.getText().equals("Search...")) {
+        if (searchField.getText().equals("Search...")) {
             searchField.setText("");
             searchField.setForeground(Color.BLACK);
         }
@@ -242,12 +254,14 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
      */
     public void focusLost(FocusEvent e) {
         if (searchField.getText().isEmpty()) {
+            //Need to remove the document listener since it acts as if a search is being initiated and screws with the list results
             searchField.getDocument().removeDocumentListener(this);
             searchField.setText("Search...");
             searchField.setForeground(Color.GRAY);
             searchField.getDocument().addDocumentListener(this);
         }
     }
+
 
     /**
      * Change the edit button to a save button
@@ -256,24 +270,33 @@ public class ContactsPanel extends TwoPanel implements DocumentListener, FocusLi
         edit.setText("Save");
         editImg = saveImg;
         edit.setMnemonic('s');
-        int font = Integer.min(Integer.min(getWidth() /(1300/32), getHeight()/(600/32)), 32);
-        ComProps.buttonProperties(edit, editImg, (int)(getHeight() * 0.0625), 50, font, true);
+        int font = Integer.min(Integer.min(getWidth() / (1300 / 32), getHeight() / (600 / 32)), 32);
+        ComProps.buttonProperties(edit, editImg, (int) (getHeight() * 0.0625), 50, font, true);
     }
 
-    private void setSaveToEdit(){
+    /**
+     * Change the save button to an edit button
+     */
+    private void setSaveToEdit() {
         edit.setText("Edit");
         editImg = tempImg;
         edit.setMnemonic('e');
-        int font = Integer.min(Integer.min(getWidth() /(1300/32), getHeight()/(600/32)), 32);
-        ComProps.buttonProperties(edit, editImg, (int)(getHeight() * 0.0625), 50, font, true);
+        int font = Integer.min(Integer.min(getWidth() / (1300 / 32), getHeight() / (600 / 32)), 32);
+        ComProps.buttonProperties(edit, editImg, (int) (getHeight() * 0.0625), 50, font, true);
     }
 
-    private void setDeleteToCancel(){
+    /**
+     * Change the delete button to a cancel button
+     */
+    private void setDeleteToCancel() {
         delete.setText("Cancel");
         delete.setMnemonic('c');
     }
 
-    private void setCancelToDelete(){
+    /**
+     * Change the cancel button to a delete button
+     */
+    private void setCancelToDelete() {
         delete.setText("Delete");
         delete.setMnemonic('d');
     }

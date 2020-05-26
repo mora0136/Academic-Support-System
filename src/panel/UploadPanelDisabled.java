@@ -9,8 +9,8 @@ import java.awt.*;
  * This is utilised anytime an upload needs to be shown such as in edit Panel and log Panel.
  */
 
-public class UploadPanelDisabled extends UploadPanel{
-    public UploadPanelDisabled(){
+public class UploadPanelDisabled extends UploadPanel {
+    public UploadPanelDisabled() {
         super(new JPanel(new CardLayout()));
         leftPanel.remove(backResetPanel);
         rightPanel.remove(saveUploadPanel);
@@ -25,28 +25,28 @@ public class UploadPanelDisabled extends UploadPanel{
         DefaultListModel l = (DefaultListModel) attachedFileList.getModel();
         l.remove(0);
 
-        for(Component com : titlePanel.getComponents()){
+        for (Component com : titlePanel.getComponents()) {
             com.setEnabled(false);
         }
-        for(Component com : descPanel.getComponents()){
+        for (Component com : descPanel.getComponents()) {
             com.setEnabled(false);
         }
         descriptionTextArea.setEnabled(false); //is inside split pane so set false manually
-        for(Component com : filePanel.getComponents()){
+        for (Component com : filePanel.getComponents()) {
             com.setEnabled(false);
         }
         attachedFileList.setEnabled(false); //is inside scroll pane sp manually set
-        for(Component com : typeDatePanel.getComponents()){
+        for (Component com : typeDatePanel.getComponents()) {
             com.setEnabled(false);
         }
-        for(Component com : contactsPanel.getComponents()){
+        for (Component com : contactsPanel.getComponents()) {
             com.setEnabled(false);
         }
-        for(Component com : contactsListPanel.getComponents()){
+        for (Component com : contactsListPanel.getComponents()) {
             com.setEnabled(false);
         }
         addedContactsList.setEnabled(false);
-        for(Component com : servicesPanel.getComponents()){
+        for (Component com : servicesPanel.getComponents()) {
             com.setEnabled(false);
         }
     }
