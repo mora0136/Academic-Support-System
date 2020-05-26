@@ -5,7 +5,7 @@ package contacts;
     contacts.
  */
 
-public class Contact{
+public class Contact {
     int contact_ID;
     String givenName;
     String surname;
@@ -27,6 +27,7 @@ public class Contact{
     public void setContact_ID(int contact_ID) {
         this.contact_ID = contact_ID;
     }
+
     public String getName() {
         return givenName;
     }
@@ -59,12 +60,12 @@ public class Contact{
         this.phone = phone;
     }
 
-    public String toString(){
+    public String toString() {
         return givenName + " " + surname;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return contact_ID == ((Contact)obj).getContact_ID();
+        return contact_ID == ((Contact) obj).getContact_ID();
     }
 }

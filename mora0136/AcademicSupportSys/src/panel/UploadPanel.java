@@ -32,13 +32,13 @@ import java.util.Date;
  * understand the workings of this project. UploadPanel has the most user input of all panels and the layout of the
  * information per mockups were very incompatible with the Layout Managers of java. This then required a lot of JPanel
  * objects to contain sometimes one Component. Utilising GridBag Layout is powerful but overwhelming in how it can
- * clutter code. The structure of this class is first, insantiating all fields on the left side of the windows, and
+ * clutter code. The structure of this class is first, instantiating all fields on the left side of the windows, and
  * then instantiating the right side of the window. Button listeners are given their own methods that take an Action
  * Event. Some other classes are contained within and are exclusively used inside of the UploadPanel. Further
  * information can be found where they exist.
  */
 
-public class UploadPanel extends JPanel implements DocumentListener, FocusListener{
+public class UploadPanel extends JPanel implements DocumentListener, FocusListener {
     CardLayout cardLayout;
     JPanel cardPane, leftPanel, rightPanel, backResetPanel, uploadDetailsLeftPanel, contactsPanel, servicesPanel,
             saveUploadPanel, filePanel, typeDatePanel, fileTypeDatePanel, contactsListPanel, titlePanel, descPanel;
@@ -61,7 +61,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     JSplitPane sp;
     boolean isEditView = false;
 
-    public UploadPanel(JPanel pane){
+    public UploadPanel(JPanel pane) {
         this.cardPane = pane;
         this.cardLayout = (CardLayout) pane.getLayout();
 
@@ -97,7 +97,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
             resetImg = ImageIO.read(new File("resources/reset.png"));
             saveImg = ImageIO.read(new File("resources/save.png"));
             uploadImg = ImageIO.read(new File("resources/upload.png"));
-        }catch(IOException e){
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Image files failed to load. No images will be available", "", JOptionPane.WARNING_MESSAGE);
             backImg = null;
             resetImg = null;
@@ -145,7 +145,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         //Defining the template statements
         templates = new DefaultListModel<>();
         DefaultListModel t = TemplateDB.getTemplates();
-        for(int i = 0; i < t.getSize(); i++){
+        for (int i = 0; i < t.getSize(); i++) {
             templates.addElement((Template) t.get(i));
         }
         templates.add(0, new Template(-1, "Add/Edit Templates"));
@@ -299,7 +299,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         displayedContacts = contactDB.getListModel(); //The displayed list which changes according to the search results
         addedContacts = new DefaultListModel<>(); //The contacts that have been added to the upload
         notAddedContacts = new DefaultListModel<>(); //Stores a list in the background of the full list of contacts that could be added, this can be used to search for
-        for(int i = 0; i< displayedContacts.getSize(); i++){ // simply copying the values to the other
+        for (int i = 0; i < displayedContacts.getSize(); i++) { // simply copying the values to the other
             notAddedContacts.addElement(displayedContacts.getElementAt(i));
         }
         //Defining the not added contact List and adding a Scroll Pane
@@ -336,22 +336,14 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         deselectAll.addActionListener(this::actionPerformedSelect);
         servicesPanel.add(deselectAll);
         //The CheckBoxes that are added to the services Panel
-        cv = new JCheckBox("Personal C.V.");
-        resGate = new JCheckBox("Research Gate");
-        orcid = new JCheckBox("ORCID");
-        inst = new JCheckBox("Institue Page");
-        publ = new JCheckBox("Publons");
-        wos = new JCheckBox("World of Research");
-        gSch = new JCheckBox("Google Scholar");
-        linIn = new JCheckBox("LinkedIn");
-        scopus = new JCheckBox("Scopus");
-        pure = new JCheckBox("Pure");
-        acad = new JCheckBox("Academia");
-        twit = new JCheckBox("Twitter");
-        servicesPanel.add(cv);servicesPanel.add(resGate);servicesPanel.add(orcid);
-        servicesPanel.add(inst);servicesPanel.add(publ);servicesPanel.add(wos);
-        servicesPanel.add(gSch);servicesPanel.add(linIn);servicesPanel.add(scopus);
-        servicesPanel.add(pure);servicesPanel.add(acad);servicesPanel.add(twit);
+        cv = new JCheckBox("Personal C.V."); resGate = new JCheckBox("Research Gate"); orcid = new JCheckBox("ORCID");
+        inst = new JCheckBox("Institute Page"); publ = new JCheckBox("Publons"); wos = new JCheckBox("World of Research");
+        gSch = new JCheckBox("Google Scholar"); linIn = new JCheckBox("LinkedIn"); scopus = new JCheckBox("Scopus");
+        pure = new JCheckBox("Pure"); acad = new JCheckBox("Academia"); twit = new JCheckBox("Twitter");
+        servicesPanel.add(cv); servicesPanel.add(resGate); servicesPanel.add(orcid);
+        servicesPanel.add(inst); servicesPanel.add(publ); servicesPanel.add(wos);
+        servicesPanel.add(gSch); servicesPanel.add(linIn); servicesPanel.add(scopus);
+        servicesPanel.add(pure); servicesPanel.add(acad); servicesPanel.add(twit);
 
         //Adding to the contactsServicesPanel
         contactsServicesPanel.add(contactsPanel);
@@ -384,18 +376,18 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
-                int listFont = (int)(mainFont*(0.75));
-                int bodyFont = (int)(mainFont*(0.6));
-                int checkBoxFont = (int)(mainFont*(0.75));
+                int listFont = (int) (mainFont * (0.75));
+                int bodyFont = (int) (mainFont * (0.6));
+                int checkBoxFont = (int) (mainFont * (0.75));
                 int width = 50;
                 int height = 50;
 
                 if (windowWidth < 1300 || windowHeight < 600) {
                     width = (int) (windowHeight * 0.0625);
-                    headerFont = (Integer.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
-                    listFont = (Integer.min(windowWidth/(1300/listFont), windowHeight/(600/listFont)));
-                    bodyFont = (Integer.min(windowWidth/(1300/bodyFont), windowHeight/(600/bodyFont)));
-                    checkBoxFont = (Integer.min(windowWidth/(1300/checkBoxFont), windowHeight/(600/checkBoxFont)));
+                    headerFont = (Integer.min(windowWidth / (1300 / headerFont), windowHeight / (600 / headerFont)));
+                    listFont = (Integer.min(windowWidth / (1300 / listFont), windowHeight / (600 / listFont)));
+                    bodyFont = (Integer.min(windowWidth / (1300 / bodyFont), windowHeight / (600 / bodyFont)));
+                    checkBoxFont = (Integer.min(windowWidth / (1300 / checkBoxFont), windowHeight / (600 / checkBoxFont)));
                 }
 
                 ComProps.buttonProperties(backBtn, backImg, width, height, headerFont, true);
@@ -415,8 +407,8 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                 ComProps.headingProperties(dateLabel, headerFont);
                 ComProps.headingProperties(uploadLabel, headerFont);
                 ComProps.headingProperties(authorsLabel, headerFont);
-                ComProps.headingProperties(contactsLabel, headerFont-4);
-                ComProps.headingProperties(addedLabel, headerFont-4);
+                ComProps.headingProperties(contactsLabel, headerFont - 4);
+                ComProps.headingProperties(addedLabel, headerFont - 4);
 
                 ComProps.checkBoxProperties(cv, checkBoxFont);
                 ComProps.checkBoxProperties(resGate, checkBoxFont);
@@ -446,7 +438,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     /**
      * Sets all components in the window to their default values
      */
-    public void resetAll(){
+    public void resetAll() {
         currentUpload = new Upload();
         selectTypeComboBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
@@ -458,88 +450,101 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         d.setValue(new Date(System.currentTimeMillis()));
 
         DefaultListModel f = (DefaultListModel) attachedFileList.getModel();
-        if(this instanceof UploadPanelDisabled && f.getSize() > 0) { //The fileList in disabled view contains files at index 0 we want to remove
+        if (this instanceof UploadPanelDisabled && f.getSize() > 0) { //The fileList in disabled view contains files at index 0 we want to remove
             f.removeAllElements();
-        }else if(f.getSize() > 1){ //Boundary checking to ensure aren't removing range not in bounds.
-            f.removeRange(1, f.getSize()-1); //Don't include first element, as this is the tip to drag file
+        } else if (f.getSize() > 1) { //Boundary checking to ensure aren't removing range not in bounds.
+            f.removeRange(1, f.getSize() - 1); //Don't include first element, as this is the tip to drag file
         }
 
         addedContacts.removeAllElements();
         displayedContacts.removeAllElements();
-        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-            displayedContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+        for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
+            displayedContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
         }
 
-        cv.setSelected(false);resGate.setSelected(false);orcid.setSelected(false);
-        inst.setSelected(false);publ.setSelected(false);wos.setSelected(false);
-        gSch.setSelected(false);linIn.setSelected(false);scopus.setSelected(false);
-        pure.setSelected(false);acad.setSelected(false);twit.setSelected(false);
+        setServicesToFalse();
     }
 
     /**
-     * Sets all the components in the window to a state as saved in the database for the corresponding uplaod_ID
+     * Sets all the components in the window to a state as saved in the database for the corresponding upload_ID
+     *
      * @param uploadID The uploadID of the upload to be viewed/set
      */
-    public void setToExistingUpload(int uploadID){
+    public void setToExistingUpload(int uploadID) {
         resetAll();
         isEditView = true;
         currentUpload = UploadDB.getUpload(uploadID);
         titleField.setText(currentUpload.getTitle());
         descriptionTextArea.setText(currentUpload.getDescription());
         selectTypeComboBox.setSelectedItem(currentUpload.getType());
+
         for (int i = 0; i < currentUpload.getAttachedFiles().getSize(); i++) {
             ((DefaultListModel<File>) attachedFileList.getModel()).addElement((File) currentUpload.getAttachedFiles().getElementAt(i));
         }
 
-
         LocalDate date = currentUpload.getDate();
         publishDatePanel.getModel().setDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        for(int i = 0; i< currentUpload.getAddedContacts().getSize(); i++){
+        for (int i = 0; i < currentUpload.getAddedContacts().getSize(); i++) {
             addedContacts.addElement((Contact) currentUpload.getAddedContacts().getElementAt(i));
             displayedContacts.removeElement(currentUpload.getAddedContacts().getElementAt(i));
         }
-        cv.setSelected(currentUpload.isCv());resGate.setSelected(currentUpload.isResGate());orcid.setSelected(currentUpload.isOrcid());
-        inst.setSelected(currentUpload.isInst());publ.setSelected(currentUpload.isPubl());wos.setSelected(currentUpload.isWos());
-        gSch.setSelected(currentUpload.isgSch());linIn.setSelected(currentUpload.isLinIn());scopus.setSelected(currentUpload.isScopus());
-        pure.setSelected(currentUpload.isPure());acad.setSelected(currentUpload.isAcad());twit.setSelected(currentUpload.isTwit());
+
+        cv.setSelected(currentUpload.isCv()); resGate.setSelected(currentUpload.isResGate()); orcid.setSelected(currentUpload.isOrcid());
+        inst.setSelected(currentUpload.isInst()); publ.setSelected(currentUpload.isPubl()); wos.setSelected(currentUpload.isWos());
+        gSch.setSelected(currentUpload.isgSch()); linIn.setSelected(currentUpload.isLinIn()); scopus.setSelected(currentUpload.isScopus());
+        pure.setSelected(currentUpload.isPure()); acad.setSelected(currentUpload.isAcad()); twit.setSelected(currentUpload.isTwit());
 
     }
 
 
-    public void actionPerformedBack(ActionEvent e){
-        if(!isEditView) {
+    public void actionPerformedBack(ActionEvent e) {
+        if (!isEditView) {
             int n = JOptionPane.showConfirmDialog(this,
                     "NOTE: All unsaved data will be erased\nWould you like to return to the Home Panel?",
                     "Continue Back?",
                     JOptionPane.YES_NO_OPTION);
-            if(n == JOptionPane.OK_OPTION){
+            if (n == JOptionPane.OK_OPTION) {
                 resetAll();
                 cardLayout.show(cardPane, "Home");
             }
-        }else{
+        } else {
             cardLayout.show(cardPane, "Edit");
         }
     }
 
-    public void actionPerformedReset(ActionEvent e){
+    private void setServicesToFalse() {
+        cv.setSelected(false); resGate.setSelected(false); orcid.setSelected(false);
+        inst.setSelected(false); publ.setSelected(false); wos.setSelected(false);
+        gSch.setSelected(false); linIn.setSelected(false); scopus.setSelected(false);
+        pure.setSelected(false); acad.setSelected(false); twit.setSelected(false);
+    }
+
+    private void setServicesToTrue(){
+        cv.setSelected(true); resGate.setSelected(true); orcid.setSelected(true);
+        inst.setSelected(true); publ.setSelected(true); wos.setSelected(true);
+        gSch.setSelected(true); linIn.setSelected(true); scopus.setSelected(true);
+        pure.setSelected(true); acad.setSelected(true); twit.setSelected(true);
+    }
+
+    public void actionPerformedReset(ActionEvent e) {
         resetAll();
     }
 
     public void actionPerformedUpdateDB(ActionEvent e) {
         titleField.setBorder(UIManager.getBorder("TextField.border"));
         descriptionTextArea.setBorder(UIManager.getBorder("TextField.border"));
-        if(e.getSource() == uploadBtn){
-            if(titleField.getText().isBlank()){
+        if (e.getSource() == uploadBtn) {
+            if (titleField.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Please Enter a Title");
                 titleField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
                 return; // exit the upload action because fields still required
-            }else if(descriptionTextArea.getText().isBlank()){
+            } else if (descriptionTextArea.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Please Enter a Description");
                 descriptionTextArea.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
                 return;
-            }else if(!(cv.isSelected() || resGate.isSelected() || orcid.isSelected() || inst.isSelected() ||
+            } else if (!(cv.isSelected() || resGate.isSelected() || orcid.isSelected() || inst.isSelected() ||
                     publ.isSelected() || wos.isSelected() || gSch.isSelected() || linIn.isSelected() ||
-                    scopus.isSelected() || pure.isSelected() || acad.isSelected() || twit.isSelected())){
+                    scopus.isSelected() || pure.isSelected() || acad.isSelected() || twit.isSelected())) {
                 JOptionPane.showMessageDialog(this, "Please Enter at least one service to upload to");
                 return;
             }
@@ -548,12 +553,12 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
                     "Are you sure you want to upload?\nUploaded data cannot be changed and is permanent.",
                     "Continue Upload?",
                     JOptionPane.YES_NO_OPTION);
-            if(n == JOptionPane.NO_OPTION || n == JOptionPane.CLOSED_OPTION){
+            if (n == JOptionPane.NO_OPTION || n == JOptionPane.CLOSED_OPTION) {
                 return;
             }
 
-        }else if (e.getSource() == saveBtn){
-            if(titleField.getText().isBlank()){
+        } else if (e.getSource() == saveBtn) {
+            if (titleField.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Please Enter a Title");
                 titleField.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
                 return; // exit the save action because fields still required
@@ -564,63 +569,61 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
         currentUpload.setDescription(descriptionTextArea.getText());
         DefaultListModel f = new DefaultListModel<>();
         // removes the null at the front of the list
-        for(int i = 1; i < attachedFileList.getModel().getSize(); i++){
+        for (int i = 1; i < attachedFileList.getModel().getSize(); i++) {
             f.addElement(attachedFileList.getModel().getElementAt(i));
         }
         currentUpload.setAttachedFiles(f);
         currentUpload.setType((String) selectTypeComboBox.getSelectedItem());
-        if(publishDatePanel.getModel().isSelected()) {
+        if (publishDatePanel.getModel().isSelected()) {
             Date date = (Date) (publishDatePanel.getModel().getValue());
             Instant instant = date.toInstant();
             currentUpload.setDate(instant.atZone(ZoneId.systemDefault()).toLocalDate());
-        }else{
+        } else {
             //default to todays date
             currentUpload.setDate(LocalDate.now());
         }
         currentUpload.setAddedContacts(addedContacts);
-        currentUpload.setCv(cv.isSelected());currentUpload.setResGate(resGate.isSelected());currentUpload.setOrcid(orcid.isSelected());
-        currentUpload.setInst(inst.isSelected());currentUpload.setPubl(publ.isSelected());currentUpload.setWos(wos.isSelected());
-        currentUpload.setgSch(gSch.isSelected());currentUpload.setLinIn(linIn.isSelected());currentUpload.setScopus(scopus.isSelected());
-        currentUpload.setPure(pure.isSelected());currentUpload.setAcad(acad.isSelected());currentUpload.setTwit(twit.isSelected());
+        currentUpload.setCv(cv.isSelected()); currentUpload.setResGate(resGate.isSelected()); currentUpload.setOrcid(orcid.isSelected());
+        currentUpload.setInst(inst.isSelected()); currentUpload.setPubl(publ.isSelected()); currentUpload.setWos(wos.isSelected());
+        currentUpload.setgSch(gSch.isSelected()); currentUpload.setLinIn(linIn.isSelected()); currentUpload.setScopus(scopus.isSelected());
+        currentUpload.setPure(pure.isSelected()); currentUpload.setAcad(acad.isSelected()); currentUpload.setTwit(twit.isSelected());
 
         int uploadID = UploadDB.addExistingUpload(currentUpload, e.getSource() == uploadBtn, currentUpload.getUploadID() != 0);
         currentUpload.setUploadID(uploadID);
-        if(e.getSource() == uploadBtn){
+        if (e.getSource() == uploadBtn) {
             cardLayout.show(cardPane, "Home");
-            JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully Upload!", "Successful Upload", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showConfirmDialog(null,
+                    "\'" + currentUpload.getTitle() + "\' was successfully Upload!",
+                    "Successful Upload", JOptionPane.PLAIN_MESSAGE);
             resetAll();
-        }else{
-            JOptionPane.showConfirmDialog(null, "\'"+currentUpload.getTitle()+"\' was successfully saved!", "Successfully Saved", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            JOptionPane.showConfirmDialog(null,
+                    "\'" + currentUpload.getTitle() + "\' was successfully saved!",
+                    "Successfully Saved", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
-    public void actionPerformedSelect(ActionEvent e){
-        if(e.getSource() == selectAll){
-            cv.setSelected(true);resGate.setSelected(true);orcid.setSelected(true);
-            inst.setSelected(true);publ.setSelected(true);wos.setSelected(true);
-            gSch.setSelected(true);linIn.setSelected(true);scopus.setSelected(true);
-            pure.setSelected(true);acad.setSelected(true);twit.setSelected(true);
-        }else{
-            cv.setSelected(false);resGate.setSelected(false);orcid.setSelected(false);
-            inst.setSelected(false);publ.setSelected(false);wos.setSelected(false);
-            gSch.setSelected(false);linIn.setSelected(false);scopus.setSelected(false);
-            pure.setSelected(false);acad.setSelected(false);twit.setSelected(false);
+    public void actionPerformedSelect(ActionEvent e) {
+        if (e.getSource() == selectAll) {
+            setServicesToTrue();
+        } else {
+            setServicesToFalse();
         }
     }
 
     public void valueChangedTemplate(ListSelectionEvent e) {
-        if(templateStatement.isSelectionEmpty()){
+        if (templateStatement.isSelectionEmpty()) {
             descriptionTextArea.requestFocusInWindow();
-        }else {
-            if(templates.getElementAt(templateStatement.getSelectedIndex()).getTemplateID() == -1){
+        } else {
+            if (templates.getElementAt(templateStatement.getSelectedIndex()).getTemplateID() == -1) {
                 JOptionPane.showConfirmDialog(null, new TemplatePanel(), "Edit Templates", JOptionPane.PLAIN_MESSAGE);
                 templates.removeAllElements();
                 DefaultListModel temp = TemplateDB.getTemplates();
-                for(int i = 0; i < temp.getSize(); i++){
+                for (int i = 0; i < temp.getSize(); i++) {
                     templates.addElement((Template) temp.get(i));
                 }
                 templates.add(0, new Template(-1, "Add/Edit Templates"));
-            }else {
+            } else {
                 String keyword = templateStatement.getSelectedValue().toString();
                 descriptionTextArea.append(keyword);
                 templateStatement.clearSelection();
@@ -629,11 +632,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
     public void valueChangedFile(ListSelectionEvent e) {
-        if(attachedFileList.getSelectedIndex() > 0) {
+        if (attachedFileList.getSelectedIndex() > 0) {
             String[] options = {"Back", "Remove File"};
-            int result = JOptionPane.showOptionDialog(null, new FileOptionPanel((File) attachedFileList.getSelectedValue()), "File Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            int result = JOptionPane.showOptionDialog(null,
+                    new FileOptionPanel((File) attachedFileList.getSelectedValue()),
+                    "File Options", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[0]);
             if (result == JOptionPane.NO_OPTION) {
-                //remove from the list was selected so do this
                 DefaultListModel l = (DefaultListModel) attachedFileList.getModel();
                 l.remove(attachedFileList.getSelectedIndex());
             }
@@ -642,6 +647,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
     /**
      * Defines what to do when a Contact is clicked on in the list of potential contacts to add
+     *
      * @param e The event
      */
     public void valueChangedToAdd(ListSelectionEvent e) {
@@ -658,6 +664,7 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 
     /**
      * Defines what to do when a contact is clicked on in the added contacts
+     *
      * @param e The event
      */
     public void valueChangedAdded(ListSelectionEvent e) {
@@ -675,28 +682,38 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     //The Properties of the search contacts field when adding text and focus is moved.
     //Defines what should be done any time text is entered into the SearchField
     @Override
-    public void insertUpdate(DocumentEvent e) { search(); }
+    public void insertUpdate(DocumentEvent e) {
+        search();
+    }
+
     @Override
-    public void removeUpdate(DocumentEvent e) { search(); }
+    public void removeUpdate(DocumentEvent e) {
+        search();
+    }
+
     @Override
-    public void changedUpdate(DocumentEvent e) { }
-    private void search(){
+    public void changedUpdate(DocumentEvent e) {
+    }
+
+    private void search() {
         contactDB.searchForContact(searchField.getText());
         displayedContacts.removeAllElements();
-        for(int i = 0; i<contactDB.getListModel().getSize(); i++){
-            if(notAddedContacts.contains(contactDB.getListModel().getElementAt(i))){
-                displayedContacts.addElement((Contact)contactDB.getListModel().getElementAt(i));
+        for (int i = 0; i < contactDB.getListModel().getSize(); i++) {
+            if (notAddedContacts.contains(contactDB.getListModel().getElementAt(i))) {
+                displayedContacts.addElement((Contact) contactDB.getListModel().getElementAt(i));
             }
         }
     }
+
     //Clear whatever was in the search textField previously
     public void focusGained(FocusEvent e) {
         searchField.setText("");
         searchField.setForeground(Color.BLACK);
     }
+
     //Allow for the display of the "Search..." text on the text area while not in focus and empty
     public void focusLost(FocusEvent e) {
-        if(searchField.getText().isEmpty()){
+        if (searchField.getText().isEmpty()) {
             searchField.getDocument().removeDocumentListener(this);
             searchField.setText("Search...");
             searchField.setForeground(Color.GRAY);
@@ -705,17 +722,18 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
     }
 
     //Select a file via the fileSelectButton
-    public void fileSelectedAction(ActionEvent e){
+    public void fileSelectedAction(ActionEvent e) {
         int returnVal = fc.showOpenDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = fc.getSelectedFile();
-                DefaultListModel l = (DefaultListModel)attachedFileList.getModel();
+                DefaultListModel l = (DefaultListModel) attachedFileList.getModel();
                 l.addElement(file);
-            }catch(Exception e1){
-                JOptionPane.showMessageDialog(this, e,"Warning!", JOptionPane.WARNING_MESSAGE);
-            };
-        }else{
+            } catch (Exception e1) {
+                JOptionPane.showMessageDialog(this, e, "Warning!", JOptionPane.WARNING_MESSAGE);
+            }
+            ;
+        } else {
         }
     }
 }
@@ -726,13 +744,13 @@ public class UploadPanel extends JPanel implements DocumentListener, FocusListen
 class FileListTransferHandler extends TransferHandler {
     private JList list;
 
-    FileListTransferHandler(JList list){
+    FileListTransferHandler(JList list) {
         this.list = list;
     }
 
     @Override
     public boolean canImport(TransferSupport support) {
-        if(!support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
+        if (!support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
             return false;
         }
         return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
@@ -751,7 +769,7 @@ class FileListTransferHandler extends TransferHandler {
             for (int i = 0; i < files.size(); i++) {
                 model.addElement(files.get(i));
             }
-        } catch(UnsupportedFlavorException | IOException e){
+        } catch (UnsupportedFlavorException | IOException e) {
             e.printStackTrace();
         }
         return true;
@@ -765,7 +783,7 @@ class FileListTransferHandler extends TransferHandler {
  */
 class FileRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if(value == null) { // Any element that is null is considered as a placeholder for the drag file info row
+        if (value == null) { // Any element that is null is considered as a placeholder for the drag file info row
             try {
                 super.getListCellRendererComponent(list, value, index, false, false);
                 Image addFile = ImageIO.read(new File("resources/addFile.png"));
@@ -779,12 +797,12 @@ class FileRenderer extends DefaultListCellRenderer {
                 setHorizontalTextPosition(SwingConstants.RIGHT);
                 setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, e,"Warning!", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, e, "Warning!", JOptionPane.WARNING_MESSAGE);
             }
-        }else{
+        } else {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            File file = (File)value;
-            setText( file.getName() );
+            File file = (File) value;
+            setText(file.getName());
         }
 
         return this;
@@ -797,13 +815,13 @@ class FileRenderer extends DefaultListCellRenderer {
  * a unique look, a cell renderer changes the background of that single element and it's properties to better convey
  * importance to the user
  */
-class templateCellRenderer extends DefaultListCellRenderer{
+class templateCellRenderer extends DefaultListCellRenderer {
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
+        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         setToolTipText(this.getText());
-        if(index == 0){
-            setFont(new Font("Arial", Font.BOLD, this.getFont().getSize()+2));
+        if (index == 0) {
+            setFont(new Font("Arial", Font.BOLD, this.getFont().getSize() + 2));
             setBackground(Color.LIGHT_GRAY);
         }
         return this;

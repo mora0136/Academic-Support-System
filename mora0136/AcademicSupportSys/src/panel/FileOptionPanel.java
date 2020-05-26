@@ -10,7 +10,7 @@ import java.util.Date;
  * and is best suited for display in a JOptionPane.
  */
 
-public class FileOptionPanel extends JPanel{
+public class FileOptionPanel extends JPanel {
     public FileOptionPanel(File file) {
         JLabel name, path, size, lastMod, readable;
         JLabel nameField, pathField, sizeField, lastModField, readableField;
@@ -24,7 +24,7 @@ public class FileOptionPanel extends JPanel{
 
         nameField = new JLabel(file.getName());
         pathField = new JLabel(file.getPath());
-        sizeField = new JLabel(String.valueOf((file.length()))+"B");
+        sizeField = new JLabel(String.valueOf((file.length())) + "B");
         lastModField = new JLabel(String.valueOf(new Date(file.lastModified())));
         readableField = new JLabel(String.valueOf(file.canRead()));
 
@@ -39,8 +39,8 @@ public class FileOptionPanel extends JPanel{
         add(lastModField);
         add(readable);
         add(readableField);
-        for(Component c : this.getComponents()){
-            c.setFont(new Font("Arial", Font.PLAIN,16));
+        for (Component c : this.getComponents()) {
+            c.setFont(new Font("Arial", Font.PLAIN, 16));
         }
 
         SpringUtilities.makeCompactGrid(this,

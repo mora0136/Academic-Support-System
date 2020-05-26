@@ -134,16 +134,16 @@ abstract class TwoPanel extends JPanel{
         });
     }
 
+    protected abstract void resetAll();
+
     /**
-     * Details the actions required for a specific button on this panel
+     * Details the actions required for the back button on this panel
      * @param e The Action Event call
      */
     public void actionPerformedBack(ActionEvent e){
         resetAll();
         cardLayout.show(cardPane, "Home");
     }
-
-    protected abstract void resetAll();
 
     public void actionPerformedNew(ActionEvent e){
         edit.setEnabled(true);

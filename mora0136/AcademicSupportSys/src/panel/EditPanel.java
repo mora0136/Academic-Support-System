@@ -28,7 +28,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
     UploadVerticalOrientation displayUpload;
     SuffixTrie sf;
 
-    EditPanel(JPanel pane){
+    EditPanel(JPanel pane) {
         super(pane);
 
         searchField.getDocument().addDocumentListener(this);
@@ -49,7 +49,7 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         rightPanel.add(displayScroll, BorderLayout.CENTER);
 
         // Details what styles should apply to buttons at the certain size of a window
-        addComponentListener(new ComponentAdapter(){
+        addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
@@ -57,16 +57,16 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
             }
 
             @Override
-            public void componentResized(ComponentEvent e){
+            public void componentResized(ComponentEvent e) {
                 int windowWidth = getWidth();
                 int windowHeight = getHeight();
                 int headerFont = mainFont;
 
                 if (windowWidth < 1300 || windowHeight < 600) {
-                    headerFont = (int)(Integer.min(windowWidth /(1300/headerFont), windowHeight/(600/headerFont)));
+                    headerFont = (int) (Integer.min(windowWidth / (1300 / headerFont), windowHeight / (600 / headerFont)));
                 }
-                    searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
-                    ComProps.listProperties(editList, headerFont);
+                searchField.setFont(new Font("Arial", Font.PLAIN, headerFont));
+                ComProps.listProperties(editList, headerFont);
             }
         });
     }
@@ -78,26 +78,36 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         DefaultListModel l = (DefaultListModel) editList.getModel();
         l.removeAllElements();
         populateListToEdit();
+        edit.setEnabled(false);
+        delete.setEnabled(false);
     }
 
-    public void actionPerformedEdit(ActionEvent e){
+    public void actionPerformedNew(ActionEvent e) {
+        resetAll();
+        cardLayout.show(cardPane, "Upload");
+    }
+
+    public void actionPerformedEdit(ActionEvent e) {
         UploadPanel toEdit = new UploadPanel(cardPane);
         toEdit.setToExistingUpload(editable.getElementAt(editList.getSelectedIndex()).getUploadID());
         toEdit.backBtn.setText("Cancel");
-        cardPane.add(toEdit, "Editting");
-        cardLayout.show(cardPane, "Editting");
+        toEdit.backBtn.setMnemonic('c');
+        cardPane.add(toEdit, "Editing");
+        cardLayout.show(cardPane, "Editing");
     }
 
-    public void actionPerformedDelete(ActionEvent e){
+    public void actionPerformedDelete(ActionEvent e) {
+        int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this Upload?", "Are you sure?", JOptionPane.YES_NO_OPTION);
+        if(n == JOptionPane.NO_OPTION) {
+            return;
+        }
         UploadDB.deleteUpload(editList.getSelectedValue());
-
         LogDB.logDeletedUpload((editList.getSelectedValue()).getUploadID());
-
         editable.removeElementAt(editList.getSelectedIndex());
-        editList.setSelectedIndex(-1);
+        editList.clearSelection();
     }
 
-    public void valueChanged(ListSelectionEvent e){
+    public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
             if (editList.getSelectedIndex() == -1) {
                 //No selection, disable fire button.
@@ -113,23 +123,26 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
     //Any text entry into JTextField will search for the contact desired.
     @Override
-    public void insertUpdate(DocumentEvent e) { search();
+    public void insertUpdate(DocumentEvent e) {
+        search();
     }
 
     @Override
-    public void removeUpdate(DocumentEvent e) { search();
+    public void removeUpdate(DocumentEvent e) {
+        search();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
     }
 
-    private void search(){
+    private void search() {
+        editList.setEnabled(true);
         //Search for the Title
-        if(searchField.getText().length() == 0 || searchField.getText().equals("Search...")) {
+        if (searchField.getText().length() == 0 || searchField.getText().equals("Search...")) {
             editable = UploadDB.getAllEditableUploads();
             editList.setModel(editable);
-        }else{
+        } else {
             ArrayList<SuffixIndex> startIndexes;
             editable.removeAllElements();
             SuffixTrieNode sn = sf.get(searchField.getText());
@@ -144,8 +157,8 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
 
             } else {
                 //This is where an error message should be returned as nothing found.
-                JLabel noContent = new JLabel("Contact not Found");
-                noContent.setFont(new Font("Arial", Font.PLAIN, 16));
+                editable.addElement(new Upload(-1, "No Editable Uploads Found"));
+                editList.setEnabled(false);
             }
         }
     }
@@ -155,8 +168,9 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         searchField.setText("");
         searchField.setForeground(Color.BLACK);
     }
+
     public void focusLost(FocusEvent e) {
-        if(searchField.getText().isEmpty()){
+        if (searchField.getText().isEmpty()) {
             searchField.getDocument().removeDocumentListener(this);
             searchField.setText("Search...");
             searchField.setForeground(Color.GRAY);
@@ -164,10 +178,10 @@ public class EditPanel extends TwoPanel implements DocumentListener, FocusListen
         }
     }
 
-    private void populateListToEdit(){
+    private void populateListToEdit() {
         DefaultListModel<Upload> temp = UploadDB.getAllEditableUploads();
         sf = new SuffixTrie();
-        for(int i = 0; i < temp.size(); i++){
+        for (int i = 0; i < temp.size(); i++) {
             editable.addElement(temp.getElementAt(i));
             sf.insert(editable.getElementAt(i).toString(), editable.getElementAt(i));
         }

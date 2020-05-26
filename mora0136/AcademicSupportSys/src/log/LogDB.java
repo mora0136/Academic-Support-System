@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- *  LogDb is responsible for communicating with the database and handling requests from the GUI. As such it should not
+ *  LogDB is responsible for communicating with the database and handling requests from the GUI. As such it should not
  *  be instantiated, this class is designated as a getter and giver of information, it does not keep it. This is the
  *  preferred approach as opposed to ContactDB. The Logs being track are Upload: Saved, Deleted, Uploaded and
  *  Contact:Added, Saved, Deleted
@@ -98,13 +98,13 @@ public final class LogDB {
         }
     }
 
-    public static int logNewContact(int contactID){
+    public static int logAddedContact(int contactID){
         String sql = "INSERT INTO log(date, type, action, associate_ID) VALUES(?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, System.currentTimeMillis());
             pstmt.setString(2, "Contact");
-            pstmt.setString(3, "New");
+            pstmt.setString(3, "Added");
             pstmt.setInt(4, contactID);
 
             return pstmt.executeUpdate();
@@ -113,7 +113,7 @@ public final class LogDB {
             return -1;
         }
     }
-    //Day represents the first millisecond of that day, so adding a day gets the range for that single day
+
     public static List<Log> getLogsForDay(LocalDate day){
         String sql = "SELECT * FROM log WHERE date >= ? AND date < ? ORDER BY date DESC";
         try (Connection conn = connect();

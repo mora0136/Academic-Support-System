@@ -22,7 +22,7 @@ public class SuffixTrie {
             currentNode = root;
             //c[i+j] uses i as an offset, it first pass through enters str as per normal since i=0
             //Next iteration i = 1, then it will start with offset i and continue until the end. Since
-            //c.lenggth-i ensures i+j never exceeds the Array bounds.
+            //c.length-i ensures i+j never exceeds the Array bounds.
             for(int j = 0; j < c.length-i; j++){
                 SuffixTrieNode childNode = currentNode.getChild((c[i+j]));
                 if(childNode == null){
